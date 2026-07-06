@@ -10,7 +10,7 @@ const serviceMarks = { 'IEEE ICETCI 2026': 'ICETCI', 'CIKM 2026': 'CIKM', 'ICIP 
 const talkMarks = { 'Osmania University': 'OU', 'ACE Engineering College': 'ACE' }
 
 export default function Research() {
-  return <section id="research" className="section-shell relative scroll-mt-28 overflow-hidden py-10 sm:py-12"><NetworkDecoration position="right"/>
+  return <section id="research" className="section-shell relative scroll-mt-28 overflow-hidden py-10 sm:py-12"><NetworkDecoration position="right"/><NetworkDecoration position="left" className="bottom-[18%] scale-75 opacity-70"/>
     <div className="relative"><SectionHeading {...sectionMeta.research}/>
     <div className="mb-6 flex max-w-5xl items-center gap-4 rounded-xl border-l-2 border-pink bg-card/60 px-5 py-4 text-sm leading-6 text-inkSoft"><LogoBadge mark="MU" label="Mahindra University"/><p>{research.supervision.prefix} <a href={research.supervision.href} target="_blank" rel="noopener" className="font-medium text-purpleDeep underline decoration-purple/30 underline-offset-4 hover:decoration-pink">{research.supervision.name}</a>, {research.supervision.suffix}</p></div>
     <div className="mb-10 grid max-w-6xl gap-4 text-base leading-7 text-inkSoft lg:grid-cols-2 lg:gap-10">{research.intro.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}</div>

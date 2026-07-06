@@ -19,7 +19,7 @@ function venueMark(venue) {
 }
 
 export default function Publications() {
-  return <section id="publications" className="section-shell relative scroll-mt-28 overflow-hidden py-10 sm:py-12"><NetworkDecoration position="left"/><div className="relative">
+  return <section id="publications" className="section-shell relative scroll-mt-28 overflow-hidden py-10 sm:py-12"><NetworkDecoration position="left"/><NetworkDecoration position="right" className="top-[58%] scale-75 opacity-70"/><div className="relative">
     <SectionHeading {...sectionMeta.publications}/>
     <div className="mb-7 rounded-xl border border-hairline bg-card/40 p-4">
       <p className="mb-3 font-mono text-[0.68rem] uppercase tracking-wider text-inkSoft">Publication venues</p>
