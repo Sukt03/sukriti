@@ -28,6 +28,12 @@ export const publications = [
 ]
 
 export const research = {
+  supervision: {
+    prefix: 'I work under the supervision of',
+    name: 'Dr. Nidhi Goyal',
+    suffix: 'Assistant Professor in the Department of CSE at École Centrale School of Engineering, Mahindra University.',
+    href: 'https://www.mahindrauniversity.edu.in/faculty/nidhi-goyal/',
+  },
   intro: [
     'I work at the intersection of non-invasive brain decoding and generative AI, with a focus on understanding what EEG-to-image systems preserve, distort, or lose when brain activity is translated into visual content.',
     'My research also spans subject-independent EEG emotion recognition, biomedical graph learning, safe clinical text generation, and GeoAI. Previously, I worked with the Lab for Spatial Informatics at IIIT Hyderabad on remote sensing and geospatial machine learning.',
