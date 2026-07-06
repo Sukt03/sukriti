@@ -11,13 +11,12 @@ const logos = {
   ACE: logoPath('ace-engineering-college.svg'),
   IIITH: logoPath('iiit-hyderabad.png'),
   MU: logoPath('mahindra-university.png'),
-  KMIT: logoPath('kmit.png'),
-  FIITJEE: logoPath('fiitjee.svg'),
+  JNTUH: logoPath('jntuh.png'),
 }
 
 export default function LogoBadge({ mark, label, compact = false }) {
   const src = logos[mark]
-  const institution = ['MU', 'OU', 'ACE', 'IIITH', 'KMIT', 'FIITJEE'].includes(mark)
+  const institution = ['MU', 'OU', 'ACE', 'IIITH', 'JNTUH'].includes(mark)
   const imageSize = institution ? compact ? 'h-14 w-32 p-2' : 'h-20 w-36 p-3' : compact ? 'h-12 w-24 p-2' : 'h-16 w-28 p-2.5'
   return <span className={`inline-flex shrink-0 items-center justify-center rounded-lg border border-purple/25 bg-white shadow-sm ${src ? imageSize : compact ? 'h-8 min-w-8 px-1.5 text-[0.62rem]' : 'h-11 min-w-11 px-2 text-xs'}`} title={label} aria-label={label}>{src ? <img src={src} alt={label} className="max-h-full max-w-full object-contain"/> : <span className="font-mono font-medium tracking-tight text-purpleDeep">{mark}</span>}</span>
 }

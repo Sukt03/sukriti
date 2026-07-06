@@ -66,10 +66,14 @@ export const experience = [
   { when: 'Jan 2024 — Aug 2024', title: 'Machine Learning Engineer Trainee, Magnocode Tech Pvt. Ltd.', description: 'Data collection, cleaning, and schema validation for downstream model development. Git-based version control and testing of end-to-end ML pipelines.' },
 ]
 
-export const education = [
-  { mark: 'KMIT', school: 'Keshav Memorial Institute of Technology', qualification: 'B.Tech in Computer Science', when: 'June 2024', detail: 'GPA: 7.01' },
-  { mark: 'FIITJEE', school: 'FIITJEE Junior College', qualification: 'Mathematics, Physics and Chemistry', when: 'June 2020', detail: 'GPA: 8.3/10' },
-]
+export const education = {
+  mark: 'JNTUH',
+  school: 'Keshav Memorial Institute of Technology',
+  affiliation: 'Affiliated to Jawaharlal Nehru Technological University Hyderabad',
+  qualification: 'B.Tech in Computer Science',
+  when: 'June 2024',
+  detail: 'GPA: 7.01',
+}
 
 export const achievements = [
   { year: '2023 — 2024', title: 'Student Council, KMIT', detail: 'Head of Organizing Committee and member; led cultural and technical events with 4,000+ attendees.' },
