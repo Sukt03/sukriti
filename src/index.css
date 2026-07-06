@@ -15,11 +15,15 @@
 @keyframes orbit { to { transform: rotate(360deg); } }
 @keyframes orbit-reverse { to { transform: rotate(-360deg); } }
 @keyframes network-node { 0%, 100% { opacity: .55; } 50% { opacity: 1; } }
+@keyframes ambient-float { 0%, 100% { transform: translate(0, 0); } 35% { transform: translate(6px, -8px); } 70% { transform: translate(-3px, 6px); } }
+@keyframes ambient-float-alt { 0%, 100% { transform: translate(0, 0) scale(1); } 50% { transform: translate(-7px, 9px) scale(1.25); } }
 
 .node-pulse { animation: node-pulse 5s ease-in-out infinite; }
 .orbit-slow { animation: orbit 24s linear infinite; }
 .orbit-reverse { animation: orbit-reverse 18s linear infinite; }
 .network-node { animation: network-node 3.5s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+.ambient-float, .ambient-float-alt { transform-box: fill-box; transform-origin: center; animation: ambient-float 8s ease-in-out infinite; }
+.ambient-float-alt { animation-name: ambient-float-alt; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }

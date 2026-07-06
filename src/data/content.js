@@ -13,6 +13,7 @@ export const site = {
     name: 'Sukriti Tiwari',
     lede: 'Trying to figure out how brains work and whether AI can read them.',
     visualLabel: 'Abstract research network connecting geospatial AI, generative AI, and machine learning',
+    ambientLabel: 'Decorative floating research particles',
     portraitAlt: 'Sukriti Tiwari',
     portraitSrc: `${import.meta.env.BASE_URL}sukriti-linkedin-portrait.png`,
   },
@@ -80,8 +81,8 @@ export const contact = {
 export const socialLinks = [
   { label: 'Google Scholar', icon: 'scholar', href: 'https://scholar.google.com/citations?user=kihFUmsAAAAJ&hl=en' },
   { label: 'LinkedIn', icon: 'linkedin', href: 'https://www.linkedin.com/in/sukriti-tiwari3' },
-  { label: 'Email', icon: 'email', href: 'mailto:tiwarisukriti2003@gmail.com' },
   { label: 'GitHub', icon: 'github', href: 'https://github.com/Sukt03' },
+  { label: 'Email', icon: 'email', href: 'mailto:tiwarisukriti2003@gmail.com' },
 ]
 
 export const sectionMeta = {
