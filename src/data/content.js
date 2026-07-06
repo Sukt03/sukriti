@@ -10,7 +10,7 @@ export const site = {
   ],
   hero: {
     name: 'Sukriti Tiwari',
-    lede: 'JRF at Mahindra University, trying to figure out how brains work and whether AI can read them.',
+    lede: 'Trying to figure out how brains work and whether AI can read them.',
     actions: [
       { label: 'Get in touch', href: 'mailto:tiwarisukriti2003@gmail.com', primary: true },
       { label: 'GitHub ↗', href: 'https://github.com/Sukt03', external: true },
