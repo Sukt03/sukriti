@@ -18,7 +18,7 @@ export const site = {
     ],
     visualLabel: 'Abstract research network connecting geospatial AI, generative AI, and machine learning',
     portraitAlt: 'Sukriti Tiwari',
-    portraitSrc: `${import.meta.env.BASE_URL}sukriti-portrait-v3.png`,
+    portraitSrc: `${import.meta.env.BASE_URL}sukriti-portrait-v4.png`,
   },
   footer: '© 2026 Sukriti Tiwari',
 }
