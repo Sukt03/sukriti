@@ -45,7 +45,7 @@ export const projects = [
 ]
 
 export const contact = {
-  details: 'tiwarisukriti2003@gmail.com · +91 9959105307',
+  details: 'tiwarisukriti2003@gmail.com',
   github: 'github.com/Sukt03',
   githubUrl: 'https://github.com/Sukt03',
 }
