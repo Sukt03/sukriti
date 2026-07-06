@@ -6,7 +6,8 @@ import SectionHeading from './SectionHeading'
 function venueMark(venue) {
   if (venue.startsWith('ACS')) return 'ACS'
   if (venue.includes('IJCAI')) return 'IJCAI'
-  return 'IEEE'
+  if (venue.includes('WCCI')) return 'WCCI'
+  return 'ICETCI'
 }
 
 export default function Publications() {

@@ -5,7 +5,7 @@ import RevealItem from './RevealItem'
 import SectionHeading from './SectionHeading'
 
 const focusIcons = ['brain', 'signal', 'spark', 'map']
-const serviceMarks = { 'IEEE ICETCI 2026': 'IEEE', 'CIKM 2026': 'CIKM', 'ICIP 2026': 'ICIP', 'IEEE WCCI 2026 / IJCNN': 'IEEE' }
+const serviceMarks = { 'IEEE ICETCI 2026': 'ICETCI', 'CIKM 2026': 'CIKM', 'ICIP 2026': 'ICIP', 'IEEE WCCI 2026 / IJCNN': 'WCCI' }
 const talkMarks = { 'Osmania University': 'OU', 'ACE Engineering College': 'ACE' }
 
 export default function Research() {
