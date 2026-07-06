@@ -25,6 +25,11 @@
 @keyframes chip-enter { from { opacity: 0; transform: translateY(8px) scale(.96); } to { opacity: 1; transform: translateY(0) scale(1); } }
 @keyframes portrait-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
 @keyframes wash-drift { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+@keyframes gradient-slide { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+@keyframes heading-line { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes soft-bob { 0%, 100% { transform: translateY(0) rotate(0); } 50% { transform: translateY(-3px) rotate(-4deg); } }
+@keyframes status-glow { 0%, 100% { box-shadow: 0 0 0 0 rgb(139 95 163 / 0); } 50% { box-shadow: 0 0 0 4px rgb(139 95 163 / .08); } }
+@keyframes sheen { from { transform: translateX(-140%) skewX(-18deg); } to { transform: translateX(340%) skewX(-18deg); } }
 
 .node-pulse { animation: node-pulse 5s ease-in-out infinite; }
 .orbit-slow { animation: orbit 24s linear infinite; }
@@ -36,6 +41,26 @@
 .chip-enter { opacity: 0; animation: chip-enter .45s ease-out both; }
 .portrait-float { animation: portrait-float 6s ease-in-out infinite; }
 .hero-wash { background-image: radial-gradient(circle at 15% 30%, rgb(139 95 163 / .07), transparent 28%), radial-gradient(circle at 85% 65%, rgb(212 82 126 / .06), transparent 26%); background-size: 130% 130%; animation: wash-drift 14s ease-in-out infinite; }
+.section-heading-line { transform-origin: left; animation: heading-line .75s cubic-bezier(.22, 1, .36, 1) both; }
+.status-motion { animation: status-glow 3.2s ease-in-out infinite; }
+
+/* Section-specific motion enhancements without adding presentation logic to components. */
+.hero-wash h1 + div { background-size: 200% 100%; animation: gradient-slide 4s ease-in-out infinite; }
+.hero-wash a, #contact a { transition: transform .25s ease, border-color .25s ease, background-color .25s ease, box-shadow .25s ease; }
+.hero-wash a:hover, #contact a:hover { transform: translateY(-3px); box-shadow: 0 10px 24px rgb(92 59 112 / .1); }
+.hero-wash a:hover span, #contact a:hover span { animation: soft-bob .55s ease-in-out; }
+#research article, #projects article { position: relative; isolation: isolate; overflow: hidden; transition: transform .3s ease, border-color .3s ease, box-shadow .3s ease; }
+#research article::before, #projects article::before { content: ''; position: absolute; inset: 0 auto 0 -35%; z-index: -1; width: 24%; background: linear-gradient(90deg, transparent, rgb(255 255 255 / .5), transparent); transform: translateX(-140%) skewX(-18deg); pointer-events: none; }
+#research article:hover, #projects article:hover { transform: translateY(-4px); border-color: rgb(139 95 163 / .5); box-shadow: 0 14px 32px rgb(92 59 112 / .1); }
+#research article:hover::before, #projects article:hover::before { animation: sheen .75s ease-out; }
+#research article h4, #projects article h3 { transition: color .25s ease; }
+#research article:hover h4, #projects article:hover h3 { color: #8A2C4C; }
+#experience article { transition: padding-left .3s ease, background-color .3s ease; }
+#experience article:hover { padding-left: .75rem; background-color: rgb(245 231 240 / .45); }
+#experience article h3 { transition: color .25s ease; }
+#experience article:hover h3 { color: #8A2C4C; }
+#projects article a { background-image: linear-gradient(#D4527E, #D4527E); background-position: 0 100%; background-repeat: no-repeat; background-size: 0 1px; transition: color .2s ease, background-size .3s ease; }
+#projects article a:hover { color: #8A2C4C; background-size: 100% 1px; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
