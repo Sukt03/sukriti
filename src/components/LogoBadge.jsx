@@ -1,11 +1,12 @@
+const logoPath = (file) => `${import.meta.env.BASE_URL}logos/${file}`
 const logos = {
-  ACS: 'https://pubs.acs.org/pb-assets/ux3/pubs-logo-481x82-1523435513963.png',
-  IJCAI: 'https://2026.ijcai.org/wp-content/uploads/2025/09/IJCAI_Bremen_Logo-300x115.png',
-  CIKM: 'https://cikm2026.diag.uniroma1.it/wp-content/uploads/2026/02/CIMK26-scritta-small.png',
-  ICIP: 'https://2026.ieeeicip.org/wp-content/uploads/sites/4/2025/10/ICIP26_logo_tiny.png',
-  IEEE: 'https://attend.ieee.org/wcci-2026/wp-content/uploads/sites/689/IEEE-370x148.png',
-  WCCI: 'https://attend.ieee.org/wcci-2026/wp-content/uploads/sites/689/IEEE-370x148.png',
-  ICETCI: 'https://attend.ieee.org/wcci-2026/wp-content/themes/ieee-dci/images/logo-ieee.svg',
+  ACS: logoPath('acs-publications.png'),
+  IJCAI: logoPath('ijcai-ecai-2026.png'),
+  CIKM: logoPath('cikm-2026.png'),
+  ICIP: logoPath('icip-2026.png'),
+  IEEE: logoPath('ieee.png'),
+  WCCI: logoPath('ieee.png'),
+  ICETCI: logoPath('ieee.png'),
 }
 
 export default function LogoBadge({ mark, label, compact = false }) {
