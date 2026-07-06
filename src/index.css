@@ -47,7 +47,6 @@
 .status-motion { animation: status-glow 3.2s ease-in-out infinite; }
 
 /* Section-specific motion enhancements without adding presentation logic to components. */
-.relative > .pointer-events-none.absolute.inset-0 { z-index: 20; }
 .hero-wash h1 + div { background-size: 200% 100%; animation: gradient-slide 4s ease-in-out infinite; }
 .hero-wash a, #contact a { transition: transform .25s ease, border-color .25s ease, background-color .25s ease, box-shadow .25s ease; }
 .hero-wash a:hover, #contact a:hover { transform: translateY(-3px); box-shadow: 0 10px 24px rgb(92 59 112 / .1); }

@@ -25,8 +25,7 @@ function ResearchVisual({ reducedMotion }) {
 }
 
 function AmbientParticles({ reducedMotion }) {
-  const dots = [[8,8,2],[30,18,3],[17,31,1.5],[38,43,2],[12,56,4],[31,68,1.5],[16,82,2.5],[36,98,2]]
-  return <div aria-label={site.hero.ambientLabel} role="img" className="pointer-events-none absolute inset-0 hidden overflow-hidden sm:block"><svg viewBox="0 0 50 110" className="absolute -left-1 top-6 h-[88%] w-20 overflow-visible text-purple" opacity="0.3">{dots.map(([x,y,r], index) => <g key={index} className={reducedMotion ? '' : 'ambient-float'} style={reducedMotion ? undefined : { animationDelay: `${index * -1.3}s`, animationDuration: `${6 + index * .7}s` }}><circle cx={x} cy={y} r={r} fill={index % 2 ? '#D4527E' : 'currentColor'}/>{index < dots.length - 1 && <line x1={x} y1={y} x2={dots[index + 1][0]} y2={dots[index + 1][1]} stroke="currentColor" strokeWidth="0.45" strokeDasharray="2 4"/>}</g>)}</svg><svg viewBox="0 0 50 110" className="absolute -right-1 bottom-2 h-[86%] w-20 scale-x-[-1] overflow-visible text-pink" opacity="0.27">{dots.slice().reverse().map(([x,y,r], index) => <g key={index} className={reducedMotion ? '' : 'ambient-float-alt'} style={reducedMotion ? undefined : { animationDelay: `${index * -1.7}s`, animationDuration: `${7 + index * .8}s` }}><circle cx={x} cy={y} r={r} fill={index % 2 ? '#8B5FA3' : 'currentColor'}/></g>)}</svg></div>
+  return null
 }
 
 export default function Hero() {
