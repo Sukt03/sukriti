@@ -7,6 +7,9 @@ const logos = {
   IEEE: logoPath('ieee.png'),
   WCCI: logoPath('ieee.png'),
   ICETCI: logoPath('ieee.png'),
+  OU: logoPath('osmania-university.png'),
+  ACE: logoPath('ace-engineering-college.svg'),
+  IIITH: logoPath('iiit-hyderabad.png'),
 }
 
 export default function LogoBadge({ mark, label, compact = false }) {
