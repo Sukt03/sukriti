@@ -21,6 +21,7 @@
 @keyframes network-node { 0%, 100% { opacity: .55; } 50% { opacity: 1; } }
 @keyframes ambient-float { 0%, 100% { transform: translate(0, 0); } 35% { transform: translate(6px, -8px); } 70% { transform: translate(-3px, 6px); } }
 @keyframes ambient-float-alt { 0%, 100% { transform: translate(0, 0) scale(1); } 50% { transform: translate(-7px, 9px) scale(1.25); } }
+@keyframes particle-drift { 0%, 100% { opacity: .3; transform: translate(0, 0) scale(.85); } 45% { opacity: 1; transform: translate(4px, -6px) scale(1.25); } 75% { opacity: .55; transform: translate(-3px, 3px) scale(1); } }
 @keyframes hero-enter { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes chip-enter { from { opacity: 0; transform: translateY(8px) scale(.96); } to { opacity: 1; transform: translateY(0) scale(1); } }
 @keyframes portrait-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
@@ -37,6 +38,7 @@
 .network-node { animation: network-node 3.5s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
 .ambient-float, .ambient-float-alt { transform-box: fill-box; transform-origin: center; animation: ambient-float 8s ease-in-out infinite; }
 .ambient-float-alt { animation-name: ambient-float-alt; }
+.particle-drift { transform-box: fill-box; transform-origin: center; animation: particle-drift 7s ease-in-out infinite; }
 .hero-enter { animation: hero-enter .7s ease-out both; }
 .chip-enter { opacity: 0; animation: chip-enter .45s ease-out both; }
 .portrait-float { animation: portrait-float 6s ease-in-out infinite; }
