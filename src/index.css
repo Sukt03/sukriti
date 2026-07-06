@@ -22,6 +22,7 @@
 @keyframes ambient-float { 0%, 100% { transform: translate(0, 0); } 35% { transform: translate(6px, -8px); } 70% { transform: translate(-3px, 6px); } }
 @keyframes ambient-float-alt { 0%, 100% { transform: translate(0, 0) scale(1); } 50% { transform: translate(-7px, 9px) scale(1.25); } }
 @keyframes particle-drift { 0%, 100% { opacity: .3; transform: translate(0, 0) scale(.85); } 45% { opacity: 1; transform: translate(4px, -6px) scale(1.25); } 75% { opacity: .55; transform: translate(-3px, 3px) scale(1); } }
+@keyframes dot-field-drift { 0%, 100% { background-position: 4% 15%, 16% 74%, 38% 28%, 58% 82%, 76% 18%, 92% 62%; } 50% { background-position: 7% 11%, 13% 79%, 41% 23%, 55% 87%, 80% 14%, 89% 68%; } }
 @keyframes hero-enter { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes chip-enter { from { opacity: 0; transform: translateY(8px) scale(.96); } to { opacity: 1; transform: translateY(0) scale(1); } }
 @keyframes portrait-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
@@ -43,10 +44,12 @@
 .chip-enter { opacity: 0; animation: chip-enter .45s ease-out both; }
 .portrait-float { animation: portrait-float 6s ease-in-out infinite; }
 .hero-wash { background-image: radial-gradient(circle at 15% 30%, rgb(139 95 163 / .07), transparent 28%), radial-gradient(circle at 85% 65%, rgb(212 82 126 / .06), transparent 26%); background-size: 130% 130%; animation: wash-drift 14s ease-in-out infinite; }
+.hero-wash::before { content: ''; position: absolute; inset: 0; pointer-events: none; background-image: radial-gradient(circle, rgb(139 95 163 / .75) 0 3px, transparent 4px), radial-gradient(circle, rgb(212 82 126 / .7) 0 2px, transparent 3px), radial-gradient(circle, rgb(139 95 163 / .6) 0 2px, transparent 3px), radial-gradient(circle, rgb(212 82 126 / .65) 0 3px, transparent 4px), radial-gradient(circle, rgb(139 95 163 / .65) 0 2px, transparent 3px), radial-gradient(circle, rgb(212 82 126 / .7) 0 2px, transparent 3px); background-repeat: no-repeat; animation: dot-field-drift 9s ease-in-out infinite; }
 .section-heading-line { transform-origin: left; animation: heading-line .75s cubic-bezier(.22, 1, .36, 1) both; }
 .status-motion { animation: status-glow 3.2s ease-in-out infinite; }
 
 /* Section-specific motion enhancements without adding presentation logic to components. */
+.relative > .pointer-events-none.absolute.inset-0 { z-index: 20; }
 .hero-wash h1 + div { background-size: 200% 100%; animation: gradient-slide 4s ease-in-out infinite; }
 .hero-wash a, #contact a { transition: transform .25s ease, border-color .25s ease, background-color .25s ease, box-shadow .25s ease; }
 .hero-wash a:hover, #contact a:hover { transform: translateY(-3px); box-shadow: 0 10px 24px rgb(92 59 112 / .1); }
