@@ -50,7 +50,7 @@ export const contact = {
 }
 
 export const socialLinks = [
-  { label: 'Google Scholar', href: 'https://scholar.google.com/scholar?q=%22Sukriti+Tiwari%22' },
+  { label: 'Google Scholar', href: 'https://scholar.google.com/citations?user=kihFUmsAAAAJ&hl=en' },
   { label: 'LinkedIn', href: 'https://www.linkedin.com/in/sukriti-tiwari3' },
   { label: 'Email', href: 'mailto:tiwarisukriti2003@gmail.com' },
   { label: 'GitHub', href: 'https://github.com/Sukt03' },
