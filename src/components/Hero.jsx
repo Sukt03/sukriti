@@ -13,7 +13,7 @@ function ResearchVisual({ reducedMotion }) {
     <div className={`absolute inset-[3%] rounded-full border border-dashed border-purple/25 ${reducedMotion ? '' : 'orbit-slow'}`}/>
     <div className={`absolute inset-[10%] rounded-full border border-dashed border-pink/20 ${reducedMotion ? '' : 'orbit-reverse'}`}/>
     <div className="absolute inset-[15%] z-10 overflow-hidden rounded-full border-4 border-paper shadow-[0_18px_60px_rgba(92,59,112,0.22)] ring-1 ring-purple/20">
-      <img src={site.hero.portraitSrc} alt={site.hero.portraitAlt} className="h-full w-full -translate-x-4 -rotate-90 scale-125 object-cover object-[68%_35%] sm:-translate-x-5"/>
+      <img src={site.hero.portraitSrc} alt={site.hero.portraitAlt} className="h-full w-full -translate-x-8 -rotate-90 scale-125 object-cover object-[68%_35%] sm:-translate-x-10"/>
     </div>
     <svg viewBox="0 0 380 210" role="img" aria-label={site.hero.visualLabel} className="absolute inset-0 h-full w-full overflow-visible">
       <defs><linearGradient id="research-gradient" x1="0" y1="0" x2="1" y2="1"><stop stopColor="#8B5FA3"/><stop offset="1" stopColor="#D4527E"/></linearGradient></defs>
