@@ -1,0 +1,27 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html { @apply scroll-smooth bg-paper; }
+  body { @apply m-0 min-w-0 overflow-x-hidden bg-paper font-sans leading-relaxed text-ink antialiased; }
+  * { @apply box-border; }
+  ::selection { @apply bg-pink/20; }
+}
+
+@keyframes node-pulse { 0%, 100% { opacity: .14; } 50% { opacity: .24; } }
+@keyframes orbit { to { transform: rotate(360deg); } }
+@keyframes orbit-reverse { to { transform: rotate(-360deg); } }
+@keyframes network-node { 0%, 100% { opacity: .55; } 50% { opacity: 1; } }
+
+.node-pulse { animation: node-pulse 5s ease-in-out infinite; }
+.orbit-slow { animation: orbit 24s linear infinite; }
+.orbit-reverse { animation: orbit-reverse 18s linear infinite; }
+.network-node { animation: network-node 3.5s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
