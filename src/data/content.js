@@ -66,6 +66,11 @@ export const experience = [
   { when: 'Jan 2024 — Aug 2024', title: 'Machine Learning Engineer Trainee, Magnocode Tech Pvt. Ltd.', description: 'Data collection, cleaning, and schema validation for downstream model development. Git-based version control and testing of end-to-end ML pipelines.' },
 ]
 
+export const education = [
+  { mark: 'KMIT', school: 'Keshav Memorial Institute of Technology', qualification: 'B.Tech in Computer Science', when: 'June 2024', detail: 'GPA: 7.01' },
+  { mark: 'FIITJEE', school: 'FIITJEE Junior College', qualification: 'Mathematics, Physics and Chemistry', when: 'June 2020', detail: 'GPA: 8.3/10' },
+]
+
 export const projects = [
   { title: 'CLIP-based reverse image search', description: 'Multimodal caption generation and reverse image search via visual-semantic similarity, with FAISS-based retrieval.', stack: 'Python · PyTorch · CLIP · FAISS', href: 'https://github.com/Sukt03/CLIP-reverse-image-search', linkLabel: 'Code ↗' },
   { title: 'AutoGNN — neural architecture search on GNNs', description: 'Automated NAS over GCN, GAT, GraphSAGE, GIN for node classification on Cora, CiteSeer, PubMed.', stack: 'PyTorch Geometric · scikit-learn', href: 'https://github.com/Sukt03/AutoGNN', linkLabel: 'Code ↗' },
