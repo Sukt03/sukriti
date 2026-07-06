@@ -23,6 +23,7 @@
 @keyframes ambient-float-alt { 0%, 100% { transform: translate(0, 0) scale(1); } 50% { transform: translate(-7px, 9px) scale(1.25); } }
 @keyframes particle-drift { 0%, 100% { opacity: .3; transform: translate(0, 0) scale(.85); } 45% { opacity: 1; transform: translate(4px, -6px) scale(1.25); } 75% { opacity: .55; transform: translate(-3px, 3px) scale(1); } }
 @keyframes dot-field-drift { 0%, 100% { background-position: 4% 15%, 16% 74%, 38% 28%, 58% 82%, 76% 18%, 92% 62%; } 50% { background-position: 7% 11%, 13% 79%, 41% 23%, 55% 87%, 80% 14%, 89% 68%; } }
+@keyframes middle-float { 0%, 100% { opacity: .35; transform: translate3d(0, 0, 0) scale(.85); } 35% { opacity: .8; transform: translate3d(18px, -14px, 0) scale(1.25); } 70% { opacity: .5; transform: translate3d(-12px, 10px, 0) scale(1); } }
 @keyframes hero-enter { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes chip-enter { from { opacity: 0; transform: translateY(8px) scale(.96); } to { opacity: 1; transform: translateY(0) scale(1); } }
 @keyframes portrait-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
@@ -40,6 +41,7 @@
 .ambient-float, .ambient-float-alt { transform-box: fill-box; transform-origin: center; animation: ambient-float 8s ease-in-out infinite; }
 .ambient-float-alt { animation-name: ambient-float-alt; }
 .particle-drift { transform-box: fill-box; transform-origin: center; animation: particle-drift 7s ease-in-out infinite; }
+.middle-particle { box-shadow: 0 0 14px rgb(139 95 163 / .2); animation: middle-float 8s ease-in-out infinite; }
 .hero-enter { animation: hero-enter .7s ease-out both; }
 .chip-enter { opacity: 0; animation: chip-enter .45s ease-out both; }
 .portrait-float { animation: portrait-float 6s ease-in-out infinite; }
