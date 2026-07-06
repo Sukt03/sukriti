@@ -1,6 +1,7 @@
 import { site, socialLinks } from '../data/content'
 import { useReducedMotion } from '../hooks/useReducedMotion'
 import SocialIcon from './SocialIcon'
+import NetworkDecoration from './NetworkDecoration'
 
 const nodes = [
   [52, 48, 7], [134, 24, 4], [200, 72, 5], [278, 38, 4],
@@ -25,7 +26,7 @@ function ResearchVisual({ reducedMotion }) {
 }
 
 function AmbientParticles({ reducedMotion }) {
-  return null
+  return <><NetworkDecoration position="left" className="bottom-0 scale-90 opacity-75"/><NetworkDecoration position="right" className="top-4 scale-75 opacity-65"/></>
 }
 
 export default function Hero() {
