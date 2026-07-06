@@ -71,6 +71,15 @@ export const education = [
   { mark: 'FIITJEE', school: 'FIITJEE Junior College', qualification: 'Mathematics, Physics and Chemistry', when: 'June 2020', detail: 'GPA: 8.3/10' },
 ]
 
+export const achievements = [
+  { year: '2023 — 2024', title: 'Student Council, KMIT', detail: 'Head of Organizing Committee and member; led cultural and technical events with 4,000+ attendees.' },
+  { year: '2024', title: 'Smart India Hackathon Runner-Up', detail: 'Internal KMIT competition — cyclone-eye detection using deep learning.' },
+  { year: '2020', title: 'Vachan Speakers Club', detail: 'Core member and mentor for public speaking, stage presence, and speaker development.' },
+  { year: '2018', title: 'CBSE Computer Science Centum', detail: 'Scored 100/100 in the Class X board examination.' },
+  { year: '2020', title: 'Creative Lead, KMIT', detail: 'Created branding, posters, logos, and promotional media for college events.' },
+  { year: '2024', title: 'Class Representative, KMIT', detail: 'Coordinated academic communication and feedback for 80+ students.' },
+]
+
 export const projects = [
   { title: 'CLIP-based reverse image search', description: 'Multimodal caption generation and reverse image search via visual-semantic similarity, with FAISS-based retrieval.', stack: 'Python · PyTorch · CLIP · FAISS', href: 'https://github.com/Sukt03/CLIP-reverse-image-search', linkLabel: 'Code ↗' },
   { title: 'AutoGNN — neural architecture search on GNNs', description: 'Automated NAS over GCN, GAT, GraphSAGE, GIN for node classification on Cora, CiteSeer, PubMed.', stack: 'PyTorch Geometric · scikit-learn', href: 'https://github.com/Sukt03/AutoGNN', linkLabel: 'Code ↗' },
