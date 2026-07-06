@@ -80,7 +80,7 @@ export const achievements = [
   { year: '2020', title: 'Vachan Speakers Club', detail: 'Core member and mentor for public speaking, stage presence, and speaker development.' },
   { year: '2018', title: 'CBSE Computer Science Centum', detail: 'Scored 100/100 in the Class X board examination.' },
   { year: '2020', title: 'Creative Lead, KMIT', detail: 'Created branding, posters, logos, and promotional media for college events.' },
-  { year: '2024', title: 'Certificate of Appreciation, KMIT', detail: 'Awarded by the college for exceptional work ethic and commitment.' },
+  { year: '2024', title: 'Awarded Exceptional Work Ethic', detail: 'Certificate of appreciation awarded by KMIT.' },
 ]
 
 export const projects = [
