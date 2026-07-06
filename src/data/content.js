@@ -49,6 +49,13 @@ export const contact = {
   githubUrl: 'https://github.com/Sukt03',
 }
 
+export const socialLinks = [
+  { label: 'Google Scholar', href: 'https://scholar.google.com/scholar?q=%22Sukriti+Tiwari%22' },
+  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/sukriti-tiwari3' },
+  { label: 'Email', href: 'mailto:tiwarisukriti2003@gmail.com' },
+  { label: 'GitHub', href: 'https://github.com/Sukt03' },
+]
+
 export const sectionMeta = {
   publications: { number: '01', title: 'Publications' },
   experience: { number: '02', title: 'Experience' },
