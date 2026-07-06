@@ -10,8 +10,7 @@ export const site = {
   ],
   hero: {
     name: 'Sukriti Tiwari',
-    eyebrow: 'Ex-IIIT Hyderabad',
-    lede: 'Research spanning EEG-based brain decoding and geospatial AI — currently evaluating where generative models fail when translating brain activity into images, and where they succeed at reading terrain from space.',
+    lede: 'JRF at Mahindra University, trying to figure out how brains work and whether AI can read them.',
     actions: [
       { label: 'Get in touch', href: 'mailto:tiwarisukriti2003@gmail.com', primary: true },
       { label: 'GitHub ↗', href: 'https://github.com/Sukt03', external: true },
