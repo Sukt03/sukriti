@@ -3,6 +3,7 @@ export const site = {
   brand: 'Sukriti Tiwari',
   navLabel: 'Primary navigation',
   nav: [
+    { label: 'Research', href: '#research' },
     { label: 'Publications', href: '#publications' },
     { label: 'Experience', href: '#experience' },
     { label: 'Projects', href: '#projects' },
@@ -26,6 +27,32 @@ export const publications = [
   { title: 'Generative AI for Non-Invasive Brain Decoding', description: 'Survey of generative AI approaches, challenges, and future directions for non-invasive brain decoding across EEG, fMRI, MEG, and hybrid systems.', status: 'Accepted', venue: 'IEEE ICETCI 2026' },
 ]
 
+export const research = {
+  intro: [
+    'I work at the intersection of non-invasive brain decoding and generative AI, with a focus on understanding what EEG-to-image systems preserve, distort, or lose when brain activity is translated into visual content.',
+    'My research also spans subject-independent EEG emotion recognition, biomedical graph learning, safe clinical text generation, and GeoAI. Previously, I worked with the Lab for Spatial Informatics at IIIT Hyderabad on remote sensing and geospatial machine learning.',
+  ],
+  focusTitle: 'Research focus',
+  focus: [
+    { title: 'Brain decoding evaluation', description: 'Perceptual-semantic evaluation of EEG-to-image reconstruction using VLM-routed annotations and human validation.' },
+    { title: 'EEG representation learning', description: 'Topology-, asymmetry-, contrastive-, and language-aligned methods for subject-independent emotion recognition.' },
+    { title: 'Generative and biomedical AI', description: 'Safe clinical generation, heterogeneous biomedical graphs, and reproducible evaluation workflows.' },
+    { title: 'GeoAI and remote sensing', description: 'Terrace detection, hyperspectral preprocessing, and multi-temporal satellite-image segmentation.' },
+  ],
+  serviceTitle: 'Reviewing & service',
+  service: ['IEEE ICETCI 2026', 'CIKM 2026', 'ICIP 2026', 'IEEE WCCI 2026 / IJCNN'],
+  talksTitle: 'Talks & outreach',
+  talks: [
+    { title: 'Generative AI and NLP sessions', venue: 'Osmania University' },
+    { title: 'PM SHRI Schools session', venue: 'ACE Engineering College' },
+  ],
+  openWorkTitle: 'Open work',
+  openWork: [
+    { label: 'Agricultural terrace mapping using ML', href: 'https://github.com/Sukt03/Agricultural-terrace-mapping-using-ML' },
+    { label: 'Lab for Spatial Informatics · IIIT Hyderabad', href: 'https://lsi.iiit.ac.in/' },
+  ],
+}
+
 export const experience = [
   { when: 'Nov 2024 — Sept 2025', title: 'Research Intern, Lab for Spatial Informatics, IIIT Hyderabad', description: 'Automated terrace-detection pipeline in Google Earth Engine and Python for geomorphological analysis in the Western Himalayas. Hyperspectral preprocessing (PCA, radiometric/geometric/atmospheric correction). Multi-temporal Sentinel-2 lake-encroachment mapping over Hyderabad using deep-learning segmentation.' },
   { when: 'Aug 2024 — Aug 2025', title: 'Machine Learning Engineer, Magnocode Tech Pvt. Ltd.', description: 'Automated data pipelines for large-scale web crawling and domain-specific dataset preprocessing. Dataset preparation for LLM fine-tuning and inference on Runpod GPU infrastructure. Contributed to a patent-filed AI prediction system.' },
@@ -33,9 +60,9 @@ export const experience = [
 ]
 
 export const projects = [
-  { title: 'CLIP-based reverse image search', description: 'Multimodal caption generation and reverse image search via visual-semantic similarity, with FAISS-based retrieval.', stack: 'Python · PyTorch · CLIP · FAISS' },
-  { title: 'AutoGNN — neural architecture search on GNNs', description: 'Automated NAS over GCN, GAT, GraphSAGE, GIN for node classification on Cora, CiteSeer, PubMed.', stack: 'PyTorch Geometric · scikit-learn' },
-  { title: 'SHAP-based model interpretability interface', description: 'Interactive dashboard for local and global interpretability in tabular ML models, with report export.', stack: 'Streamlit · SHAP · Pandas' },
+  { title: 'CLIP-based reverse image search', description: 'Multimodal caption generation and reverse image search via visual-semantic similarity, with FAISS-based retrieval.', stack: 'Python · PyTorch · CLIP · FAISS', href: 'https://github.com/Sukt03/CLIP-reverse-image-search', linkLabel: 'Code ↗' },
+  { title: 'AutoGNN — neural architecture search on GNNs', description: 'Automated NAS over GCN, GAT, GraphSAGE, GIN for node classification on Cora, CiteSeer, PubMed.', stack: 'PyTorch Geometric · scikit-learn', href: 'https://github.com/Sukt03/AutoGNN', linkLabel: 'Code ↗' },
+  { title: 'SHAP-based model interpretability interface', description: 'Interactive dashboard for local and global interpretability in tabular ML models, with report export.', stack: 'Streamlit · SHAP · Pandas', href: 'https://github.com/Sukt03/Explainable-AI-Dashboard', linkLabel: 'Code ↗' },
 ]
 
 export const contact = {
@@ -45,15 +72,16 @@ export const contact = {
 }
 
 export const socialLinks = [
-  { label: 'Google Scholar', href: 'https://scholar.google.com/citations?user=kihFUmsAAAAJ&hl=en' },
-  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/sukriti-tiwari3' },
-  { label: 'Email', href: 'mailto:tiwarisukriti2003@gmail.com' },
-  { label: 'GitHub', href: 'https://github.com/Sukt03' },
+  { label: 'Google Scholar', icon: 'scholar', href: 'https://scholar.google.com/citations?user=kihFUmsAAAAJ&hl=en' },
+  { label: 'LinkedIn', icon: 'linkedin', href: 'https://www.linkedin.com/in/sukriti-tiwari3' },
+  { label: 'Email', icon: 'email', href: 'mailto:tiwarisukriti2003@gmail.com' },
+  { label: 'GitHub', icon: 'github', href: 'https://github.com/Sukt03' },
 ]
 
 export const sectionMeta = {
-  publications: { number: '01', title: 'Publications' },
-  experience: { number: '02', title: 'Experience' },
-  projects: { number: '03', title: 'Projects', graphLabel: 'Generative AI node graph decoration' },
-  contact: { number: '04', title: 'Contact' },
+  research: { number: '01', title: 'Research' },
+  publications: { number: '02', title: 'Publications' },
+  experience: { number: '03', title: 'Experience' },
+  projects: { number: '04', title: 'Projects', graphLabel: 'Generative AI node graph decoration' },
+  contact: { number: '05', title: 'Contact' },
 }
