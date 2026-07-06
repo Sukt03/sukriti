@@ -12,7 +12,7 @@ export default function Experience() {
       <article className="rounded-2xl border border-hairline bg-card/50 p-6 sm:p-8">
         <div className="flex flex-col gap-5 border-b border-hairline pb-6 sm:flex-row sm:items-center">
           <LogoBadge mark={education.mark} label="JNTUH"/>
-          <div><p className="mb-1 font-mono text-xs text-pinkDeep">{education.affiliation}</p><h4 className="font-display text-2xl text-purpleDeep">{education.school}</h4><p className="mt-2 text-sm text-inkSoft">{education.qualification}</p><p className="mt-2 font-mono text-xs text-pinkDeep">{education.when} · {education.detail}</p></div>
+          <div><p className="mb-1 font-mono text-xs text-pinkDeep">{education.affiliation}</p><h4 className="font-display text-2xl text-purpleDeep">{education.school}</h4><p className="mt-2 text-sm text-inkSoft">{education.qualification}</p><p className="mt-2 font-mono text-xs text-pinkDeep">{education.when}</p></div>
         </div>
         <h4 className="mb-4 mt-6 font-display text-xl text-purpleDeep">Achievements & leadership</h4>
         <div className="grid gap-3 sm:grid-cols-2">{achievements.map((item) => <div key={item.title} className="rounded-xl border border-hairline bg-paper/80 p-4"><span className="font-mono text-[0.68rem] text-pinkDeep">{item.year}</span><h5 className="mb-1 mt-2 font-medium text-purpleDeep">{item.title}</h5><p className="text-sm leading-5 text-inkSoft">{item.detail}</p></div>)}</div>

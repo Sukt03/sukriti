@@ -72,7 +72,6 @@ export const education = {
   affiliation: 'Affiliated to Jawaharlal Nehru Technological University Hyderabad',
   qualification: 'B.Tech in Computer Science',
   when: 'June 2024',
-  detail: 'GPA: 7.01',
 }
 
 export const achievements = [
@@ -81,7 +80,7 @@ export const achievements = [
   { year: '2020', title: 'Vachan Speakers Club', detail: 'Core member and mentor for public speaking, stage presence, and speaker development.' },
   { year: '2018', title: 'CBSE Computer Science Centum', detail: 'Scored 100/100 in the Class X board examination.' },
   { year: '2020', title: 'Creative Lead, KMIT', detail: 'Created branding, posters, logos, and promotional media for college events.' },
-  { year: '2024', title: 'Class Representative, KMIT', detail: 'Coordinated academic communication and feedback for 80+ students.' },
+  { year: '2024', title: 'Certificate of Appreciation, KMIT', detail: 'Awarded by the college for exceptional work ethic and commitment.' },
 ]
 
 export const projects = [
