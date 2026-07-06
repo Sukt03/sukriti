@@ -11,10 +11,6 @@ export const site = {
   hero: {
     name: 'Sukriti Tiwari',
     lede: 'Trying to figure out how brains work and whether AI can read them.',
-    actions: [
-      { label: 'Get in touch', href: 'mailto:tiwarisukriti2003@gmail.com', primary: true },
-      { label: 'GitHub ↗', href: 'https://github.com/Sukt03', external: true },
-    ],
     visualLabel: 'Abstract research network connecting geospatial AI, generative AI, and machine learning',
     portraitAlt: 'Sukriti Tiwari',
     portraitSrc: `${import.meta.env.BASE_URL}sukriti-linkedin-portrait.png`,
