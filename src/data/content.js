@@ -27,7 +27,6 @@ export const publications = [
 ]
 
 export const experience = [
-  { when: 'Oct 2025 — Present', title: 'Junior Research Fellow, Mahindra University', description: 'Research across generative AI, NLP, brain–computer interfaces, EEG-based decoding, and biomedical AI. Reproducible HPC workflows with GPU experimentation and Slurm scheduling. Built and deployed the lab website. Reviewer for ICIP 2026, IEEE WCCI 2026 / IJCNN, and CIKM 26.' },
   { when: 'Nov 2024 — Sept 2025', title: 'Research Intern, Lab for Spatial Informatics, IIIT Hyderabad', description: 'Automated terrace-detection pipeline in Google Earth Engine and Python for geomorphological analysis in the Western Himalayas. Hyperspectral preprocessing (PCA, radiometric/geometric/atmospheric correction). Multi-temporal Sentinel-2 lake-encroachment mapping over Hyderabad using deep-learning segmentation.' },
   { when: 'Aug 2024 — Aug 2025', title: 'Machine Learning Engineer, Magnocode Tech Pvt. Ltd.', description: 'Automated data pipelines for large-scale web crawling and domain-specific dataset preprocessing. Dataset preparation for LLM fine-tuning and inference on Runpod GPU infrastructure. Contributed to a patent-filed AI prediction system.' },
   { when: 'Jan 2024 — Aug 2024', title: 'Machine Learning Engineer Trainee, Magnocode Tech Pvt. Ltd.', description: 'Data collection, cleaning, and schema validation for downstream model development. Git-based version control and testing of end-to-end ML pipelines.' },
