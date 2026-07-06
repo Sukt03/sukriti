@@ -8,5 +8,5 @@ import Contact from './components/Contact'
 import { site } from './data/content'
 
 export default function App() {
-  return <><Nav/><main className="mx-auto w-full max-w-[1440px]"><Hero/><Research/><Publications/><Experience/><Projects/><Contact/></main><footer className="border-t border-hairline px-5 py-8 text-center text-sm text-inkSoft">{site.footer}</footer></>
+  return <><Nav/><main className="w-full"><Hero/><Research/><Publications/><Experience/><Projects/><Contact/></main><footer className="border-t border-hairline px-5 py-8 text-center text-sm text-inkSoft">{site.footer}</footer></>
 }
