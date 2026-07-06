@@ -33,7 +33,7 @@ export const research = {
     prefix: 'I am a JRF at Mahindra University, and I work under the supervision of',
     name: 'Dr. Nidhi Goyal',
     suffix: 'Assistant Professor in the Department of CSE at École Centrale School of Engineering, Mahindra University.',
-    href: 'https://www.mahindrauniversity.edu.in/faculty/nidhi-goyal/',
+    href: 'https://www.linkedin.com/in/nidhigoyalgoyal/',
   },
   intro: [
     'I work at the intersection of non-invasive brain decoding and generative AI, with a focus on understanding what EEG-to-image systems preserve, distort, or lose when brain activity is translated into visual content.',
