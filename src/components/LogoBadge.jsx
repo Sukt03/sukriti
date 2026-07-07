@@ -5,7 +5,7 @@ const logos = {
   CIKM: logoPath('cikm-2026.png'),
   ICIP: logoPath('icip-2026.png'),
   IEEE: logoPath('ieee.png'),
-  WCCI: logoPath('ieee.png'),
+  WCCI: logoPath('ieee-wcci-2026.jpeg'),
   ICETCI: logoPath('ieee.png'),
   OU: logoPath('osmania-university.png'),
   ACE: logoPath('ace-engineering-college.svg'),
