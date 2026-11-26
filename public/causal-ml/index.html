@@ -13,7 +13,7 @@
 :root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
 *{box-sizing:border-box;min-width:0}
 body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Figtree,system-ui,sans-serif;overflow-x:clip}
-.band{padding:clamp(24px,4vw,52px) max(5vw,16px);max-width:1340px;margin:0 auto}
+.band{padding:clamp(24px,3.5vw,52px) max(4vw,16px);width:100%}
 h1{font-weight:800;font-size:clamp(32px,5vw,48px);line-height:1.05;margin:0 0 8px;text-wrap:balance}
 h2{font-weight:800;font-size:28px;line-height:1.1;margin:0 0 6px;text-wrap:balance}
 h3{font-size:17px;margin:18px 0 6px}
@@ -54,11 +54,18 @@ ul{padding-left:20px;margin:6px 0}li{margin:3px 0}
 .small{font-size:13px;color:var(--muted)}
 .quiz{grid-template-columns:minmax(0,1fr)}
 .cheat{margin-top:22px}.cheat[hidden]{display:none}
-.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,370px),1fr));gap:18px;margin-top:14px}
-.card{background:var(--card);border-radius:14px;padding:18px;border-top:8px solid var(--red)}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,460px),1fr));gap:26px;margin-top:18px}
+.card{background:var(--card);border-radius:14px;padding:clamp(18px,2vw,28px);border-top:8px solid var(--red)}
 .card:nth-child(4n+2){border-top-color:var(--blue)}.card:nth-child(4n+3){border-top-color:var(--amber)}.card:nth-child(4n){border-top-color:var(--green)}
 .card h3{margin:0 0 6px;font-size:19px;font-weight:800}
-.card p{font-size:15.5px}
+.card p{font-size:16px;max-width:none}
+.num .cards{grid-template-columns:minmax(0,1fr)}
+.num .card{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:4px 40px;align-items:start}
+@media(max-width:900px){.num .card{grid-template-columns:minmax(0,1fr)}}
+.ask{background:var(--bg);border:3px solid var(--ink);border-radius:12px;padding:14px 18px;margin:12px 0}
+.ask b.l{display:block;font-size:13px;letter-spacing:.02em;color:var(--red);margin-bottom:4px}
+.ask ol{margin:6px 0 0;padding-left:22px}.ask li{font-size:16.5px;font-weight:600;margin:4px 0}
+.terms td,.terms th{text-align:left!important;white-space:normal!important;vertical-align:top}
 .f{font:14px/1.5 ui-monospace,Menlo,Consolas,monospace;background:var(--bg);padding:8px 10px;border-radius:8px;margin:8px 0;overflow-x:auto;white-space:nowrap}
 .card table{border-collapse:collapse;width:100%;font-size:14px;margin:6px 0 10px;font-variant-numeric:tabular-nums}
 .card th,.card td{padding:5px 6px;border-bottom:1px solid var(--grid);text-align:right;white-space:nowrap}
@@ -86,8 +93,8 @@ summary:focus-visible{outline:3px solid var(--blue)}
 .cast{display:flex;flex-wrap:wrap;gap:12px 22px;margin:10px 0 4px}
 .cast div{display:flex;align-items:center;gap:8px;font-size:15px}.cast svg{width:52px;height:52px;flex:none}
 @media(prefers-reduced-motion:no-preference){.who svg{animation:bob 3s ease-in-out infinite}@keyframes bob{50%{transform:translateY(-3px)}}}
-.q{background:var(--card);border-radius:14px;padding:18px;margin-bottom:14px;max-width:820px}
-.q p{font-weight:600}.q .btns{flex-direction:column;align-items:stretch}
+.q{background:var(--card);border-radius:14px;padding:clamp(18px,2vw,28px);margin-bottom:18px;max-width:1100px}
+.q p{font-weight:700;font-size:18px;max-width:none}.q .btns{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));align-items:stretch}
 .q button{text-align:left;border-radius:10px;border-width:2px}
 .q button.ok{border-color:var(--green);background:color-mix(in srgb,var(--green) 18%,var(--bg))}
 .q button.no{border-color:var(--red);background:color-mix(in srgb,var(--red) 14%,var(--bg))}
@@ -391,18 +398,19 @@ a{color:var(--blue)}
 <h3>Notes</h3><ul><li><b>T-learner</b>: fit one model on treated, one on control, subtract.</li><li><b>S-learner</b>: one model with T as a feature. A model that cannot express T×X interactions returns a flat effect.</li><li>Small n + big noise: T-learner slope gets unstable. That is why X-learners, R-learners and DML exist.</li></ul>
 </div></section>
 
-<section class="cheat" id="v-numericals" hidden>
+<section class="cheat num" id="v-numericals" hidden>
 <h2>Numericals</h2>
 <p>Five practice problems. Each one says which method it uses. Solve on paper first, then open the steps.</p>
 <div class="cards">
 
-<div class="card"><h3>N1. Why a simple comparison lies</h3>
+<div class="card"><div><h3>N1. Why a simple comparison lies</h3>
 <div class="who"><svg><use href="#zed"/></svg><div class="bub">I chose who got treated. Can you see through me?</div></div>
 <p><b>Method:</b> potential outcomes (two possible outcomes per person).</p>
-<p style="margin:8px 0 0"><b>Terms used here</b></p><div class="scroll" style="margin:0"><table><tr><th>Term</th><th>Meaning</th><th>Short name</th></tr><tr><td>Individual effect</td><td style="white-space:normal">Outcome if treated minus outcome if not treated, for one person</td><td>ITE</td></tr><tr><td>Average treatment effect</td><td style="white-space:normal">Individual effect averaged over everyone</td><td>ATE</td></tr><tr><td>Average effect on the treated</td><td style="white-space:normal">Individual effect averaged over only the people who got the treatment</td><td>ATT</td></tr><tr><td>Naive difference</td><td style="white-space:normal">Treated average minus untreated average, as seen in data</td><td>—</td></tr><tr><td>Selection bias</td><td style="white-space:normal">How different the two groups were before any treatment</td><td>—</td></tr></table></div>
+
 <div class="scroll" style="margin:0"><table><tr><th>Person</th><th>Treated?</th><th>Outcome if treated</th><th>Outcome if not treated</th></tr>
 <tr><td>P1</td><td>Yes</td><td>12</td><td>10</td></tr><tr><td>P2</td><td>No</td><td>9</td><td>9</td></tr><tr><td>P3</td><td>Yes</td><td>15</td><td>10</td></tr><tr><td>P4</td><td>Yes</td><td>11</td><td>8</td></tr><tr><td>P5</td><td>No</td><td>7</td><td>6</td></tr></table></div>
-<p>Find (a) the average treatment effect, (b) the average effect on the treated, (c) the naive difference, (d) the selection bias.</p>
+<div class="ask"><b class="l">Question</b>Use the table to find:<ol><li>The average treatment effect (for everyone)</li><li>The average effect on the treated (only P1, P3, P4)</li><li>The naive difference (what the data alone shows)</li><li>The selection bias</li></ol></div>
+</div><div><p style="margin:8px 0 0"><b>Terms used here</b></p><div class="scroll terms" style="margin:0"><table><tr><th>Term</th><th>Meaning</th><th>Short name</th></tr><tr><td>Individual effect</td><td style="white-space:normal">Outcome if treated minus outcome if not treated, for one person</td><td>ITE</td></tr><tr><td>Average treatment effect</td><td style="white-space:normal">Individual effect averaged over everyone</td><td>ATE</td></tr><tr><td>Average effect on the treated</td><td style="white-space:normal">Individual effect averaged over only the people who got the treatment</td><td>ATT</td></tr><tr><td>Naive difference</td><td style="white-space:normal">Treated average minus untreated average, as seen in data</td><td>—</td></tr><tr><td>Selection bias</td><td style="white-space:normal">How different the two groups were before any treatment</td><td>—</td></tr></table></div>
 <details><summary>Show steps</summary>
 <div class="f">Each person's effect = outcome if treated − outcome if not treated<br>= 2, 0, 5, 3, 1</div>
 <div class="f">(a) Average treatment effect = (2+0+5+3+1) / 5 = 2.2</div>
@@ -411,59 +419,63 @@ a{color:var(--blue)}
 <div class="f">(d) Selection bias = mean "if not treated" of treated − mean "if not treated" of untreated<br>    = mean(10, 10, 8) − mean(9, 6) = 9.33 − 7.5 = 1.83</div>
 <div class="f">Check: naive = effect on treated + bias → 3.33 + 1.83 = 5.17 ✓</div>
 <p class="rem">For untreated people you only see the "if not treated" outcome (use 6 for P5, not 7). The naive answer (5.17) is more than double the true average (2.2).</p>
-</details></div>
+</details></div></div>
 
-<div class="card"><h3>N2. Compare within groups, then average</h3>
+<div class="card"><div><h3>N2. Compare within groups, then average</h3>
 <div class="who"><svg><use href="#dot"/></svg><div class="bub">Same data, two different questions, two different answers.</div></div>
 <p><b>Method:</b> stratification (compare inside each group, then take a weighted average).</p>
-<p style="margin:8px 0 0"><b>Terms used here</b></p><div class="scroll" style="margin:0"><table><tr><th>Term</th><th>Meaning</th><th>Short name</th></tr><tr><td>Average treatment effect</td><td style="white-space:normal">Individual effect averaged over everyone</td><td>ATE</td></tr><tr><td>Average effect on the treated</td><td style="white-space:normal">Individual effect averaged over only the people who got the treatment</td><td>ATT</td></tr><tr><td>Group effect</td><td style="white-space:normal">Average effect for one kind of person (here: one age group)</td><td>CATE</td></tr><tr><td>Confounder</td><td style="white-space:normal">Affects both who gets treated and the outcome (here: age)</td><td>—</td></tr></table></div>
+
 <div class="scroll" style="margin:0"><table><tr><th>Group</th><th>Share of everyone</th><th>Share of treated</th><th>Treated average</th><th>Untreated average</th></tr>
 <tr><td>Young</td><td>60%</td><td>20%</td><td>50</td><td>40</td></tr><tr><td>Old</td><td>40%</td><td>80%</td><td>30</td><td>26</td></tr></table></div>
-<p>Age is the only thing that affects both. Find the average treatment effect and the average effect on the treated.</p>
+<div class="ask"><b class="l">Question</b>Age is the only thing that affects both who gets treated and the outcome. Find:<ol><li>The average treatment effect (for everyone)</li><li>The average effect on the treated (only for people who got it)</li></ol></div>
+</div><div><p style="margin:8px 0 0"><b>Terms used here</b></p><div class="scroll terms" style="margin:0"><table><tr><th>Term</th><th>Meaning</th><th>Short name</th></tr><tr><td>Average treatment effect</td><td style="white-space:normal">Individual effect averaged over everyone</td><td>ATE</td></tr><tr><td>Average effect on the treated</td><td style="white-space:normal">Individual effect averaged over only the people who got the treatment</td><td>ATT</td></tr><tr><td>Group effect</td><td style="white-space:normal">Average effect for one kind of person (here: one age group)</td><td>CATE</td></tr><tr><td>Confounder</td><td style="white-space:normal">Affects both who gets treated and the outcome (here: age)</td><td>—</td></tr></table></div>
 <details><summary>Show steps</summary>
 <div class="f">Effect in young = 50 − 40 = 10<br>Effect in old = 30 − 26 = 4</div>
 <div class="f">Average treatment effect (weights = share of everyone)<br>= 0.6×10 + 0.4×4 = 6 + 1.6 = 7.6</div>
 <div class="f">Average effect on the treated (weights = share of treated)<br>= 0.2×10 + 0.8×4 = 2 + 3.2 = 5.2</div>
 <p>Answers: <span class="ans">7.6</span> and <span class="ans">5.2</span>.</p>
 <p class="rem">Same group effects, different weights. Always say whose effect you want.</p>
-</details></div>
+</details></div></div>
 
-<div class="card"><h3>N3. Weighting by chance, two ways</h3>
+<div class="card"><div><h3>N3. Weighting by chance, two ways</h3>
 <div class="who"><svg><use href="#dot"/></svg><div class="bub">Divide by the chance of getting what you got.</div></div>
 <p><b>Method:</b> inverse probability weighting.</p>
-<p style="margin:8px 0 0"><b>Terms used here</b></p><div class="scroll" style="margin:0"><table><tr><th>Term</th><th>Meaning</th><th>Short name</th></tr><tr><td>Chance of treatment</td><td style="white-space:normal">Probability a person like this gets treated (propensity score)</td><td>e(x)</td></tr><tr><td>Weight</td><td style="white-space:normal">1 ÷ chance of getting what you got</td><td>—</td></tr><tr><td>Inverse probability weighting</td><td style="white-space:normal">Average outcomes using those weights</td><td>IPW</td></tr><tr><td>Horvitz–Thompson estimate</td><td style="white-space:normal">Weighted sum ÷ number of people</td><td>HT</td></tr><tr><td>Normalised estimate</td><td style="white-space:normal">Weighted sum ÷ total weight</td><td>—</td></tr></table></div>
+
 <div class="scroll" style="margin:0"><table><tr><th>Unit</th><th>Treated?</th><th>Outcome</th><th>Chance of treatment</th></tr>
 <tr><td>1</td><td>Yes</td><td>10</td><td>0.8</td></tr><tr><td>2</td><td>Yes</td><td>6</td><td>0.4</td></tr><tr><td>3</td><td>No</td><td>4</td><td>0.8</td></tr><tr><td>4</td><td>No</td><td>3</td><td>0.4</td></tr></table></div>
-<p>Find (a) the Horvitz–Thompson estimate (divide by the number of people) and (b) the normalised estimate (divide by the total weight).</p>
+<div class="ask"><b class="l">Question</b>Find the treatment effect using weights, in two ways:<ol><li>Horvitz–Thompson: divide each weighted sum by the number of people (4)</li><li>Normalised: divide each group's weighted sum by that group's total weight</li></ol></div>
+</div><div><p style="margin:8px 0 0"><b>Terms used here</b></p><div class="scroll terms" style="margin:0"><table><tr><th>Term</th><th>Meaning</th><th>Short name</th></tr><tr><td>Chance of treatment</td><td style="white-space:normal">Probability a person like this gets treated (propensity score)</td><td>e(x)</td></tr><tr><td>Weight</td><td style="white-space:normal">1 ÷ chance of getting what you got</td><td>—</td></tr><tr><td>Inverse probability weighting</td><td style="white-space:normal">Average outcomes using those weights</td><td>IPW</td></tr><tr><td>Horvitz–Thompson estimate</td><td style="white-space:normal">Weighted sum ÷ number of people</td><td>HT</td></tr><tr><td>Normalised estimate</td><td style="white-space:normal">Weighted sum ÷ total weight</td><td>—</td></tr></table></div>
 <details><summary>Show steps</summary>
 <div class="f">Weight if treated = 1 ÷ chance: 1/0.8 = 1.25, 1/0.4 = 2.5<br>Weight if not treated = 1 ÷ (1 − chance): 1/0.2 = 5, 1/0.6 = 1.67</div>
 <div class="f">(a) Treated part = (10×1.25 + 6×2.5) / 4 = 27.5 / 4 = 6.875<br>    Untreated part = (4×5 + 3×1.67) / 4 = 25 / 4 = 6.25<br>    Estimate = 6.875 − 6.25 = 0.625</div>
 <div class="f">(b) Treated = 27.5 / (1.25+2.5) = 27.5 / 3.75 = 7.33<br>    Untreated = 25 / (5+1.67) = 25 / 6.67 = 3.75<br>    Estimate = 7.33 − 3.75 = 3.58</div>
 <p>Answers: <span class="ans">0.625</span> and <span class="ans">3.58</span>.</p>
 <p class="rem">With few people the two disagree a lot. Unit 3 (weight 5) dominates the untreated side. Dividing by total weight is usually more stable.</p>
-</details></div>
+</details></div></div>
 
-<div class="card"><h3>N4. Guess, then correct the guess</h3>
+<div class="card"><div><h3>N4. Guess, then correct the guess</h3>
 <div class="who"><svg><use href="#coin"/></svg><div class="bub">Model guess plus a weighted correction.</div></div>
 <p><b>Method:</b> augmented inverse probability weighting (doubly robust).</p>
-<p style="margin:8px 0 0"><b>Terms used here</b></p><div class="scroll" style="margin:0"><table><tr><th>Term</th><th>Meaning</th><th>Short name</th></tr><tr><td>Predicted if treated / not</td><td style="white-space:normal">A model's guess of the outcome with or without treatment</td><td>μ₁(x), μ₀(x)</td></tr><tr><td>Chance of treatment</td><td style="white-space:normal">Probability a person like this gets treated</td><td>e(x)</td></tr><tr><td>Augmented inverse probability weighting</td><td style="white-space:normal">Model guess plus a weighted correction</td><td>AIPW</td></tr><tr><td>Doubly robust</td><td style="white-space:normal">Right if either of the two models is right</td><td>—</td></tr></table></div>
+
 <div class="scroll" style="margin:0"><table><tr><th>Person</th><th>Treated?</th><th>Outcome</th><th>Chance of treatment</th><th>Predicted if treated</th><th>Predicted if not</th></tr>
 <tr><td>A</td><td>Yes</td><td>9</td><td>0.6</td><td>8</td><td>5</td></tr><tr><td>B</td><td>No</td><td>4</td><td>0.6</td><td>7</td><td>5</td></tr></table></div>
-<p>Score for a treated person = (predicted if treated − predicted if not) + (outcome − predicted if treated) ÷ chance.<br>Score for an untreated person = (predicted if treated − predicted if not) − (outcome − predicted if not) ÷ (1 − chance).<br>Find the average score.</p>
+<div class="ask"><b class="l">Question</b>Use these rules to find each person's score, then the average score:<ol><li>Treated person: (predicted if treated − predicted if not) + (outcome − predicted if treated) ÷ chance</li><li>Untreated person: (predicted if treated − predicted if not) − (outcome − predicted if not) ÷ (1 − chance)</li></ol></div>
+</div><div><p style="margin:8px 0 0"><b>Terms used here</b></p><div class="scroll terms" style="margin:0"><table><tr><th>Term</th><th>Meaning</th><th>Short name</th></tr><tr><td>Predicted if treated / not</td><td style="white-space:normal">A model's guess of the outcome with or without treatment</td><td>μ₁(x), μ₀(x)</td></tr><tr><td>Chance of treatment</td><td style="white-space:normal">Probability a person like this gets treated</td><td>e(x)</td></tr><tr><td>Augmented inverse probability weighting</td><td style="white-space:normal">Model guess plus a weighted correction</td><td>AIPW</td></tr><tr><td>Doubly robust</td><td style="white-space:normal">Right if either of the two models is right</td><td>—</td></tr></table></div>
 <details><summary>Show steps</summary>
 <div class="f">A (treated): (8 − 5) + (9 − 8) ÷ 0.6 = 3 + 1.67 = 4.67</div>
 <div class="f">B (untreated): (7 − 5) − (4 − 5) ÷ 0.4 = 2 + 2.5 = 4.5</div>
 <div class="f">Average = (4.67 + 4.5) / 2 = 4.58</div>
 <p>Answer: <span class="ans">4.58</span>.</p>
 <p class="rem">The model's guess alone is (3 + 2) / 2 = 2.5. The corrections push it up because A did better than predicted and B did worse.</p>
-</details></div>
+</details></div></div>
 
-<div class="card"><h3>N5. Cole's college in numbers</h3>
+<div class="card"><div><h3>N5. Cole's college in numbers</h3>
 <div class="who"><svg><use href="#cole"/></svg><div class="bub">Filter on me and watch a link appear from nothing.</div></div>
 <p><b>Method:</b> conditional probability on a collider.</p>
-<p style="margin:8px 0 0"><b>Terms used here</b></p><div class="scroll" style="margin:0"><table><tr><th>Term</th><th>Meaning</th><th>Short name</th></tr><tr><td>Collider</td><td style="white-space:normal">Caused by two other things (admission, caused by smart and by sporty)</td><td>—</td></tr><tr><td>Conditional probability</td><td style="white-space:normal">Chance of A when you only look at cases where B is true</td><td>P(A | B)</td></tr><tr><td>Collider bias</td><td style="white-space:normal">A fake link from filtering on a collider</td><td>—</td></tr></table></div>
+
 <p>100 students, 25 of each type: smart and sporty, smart only, sporty only, neither. Smart and sporty are unrelated. The college admits anyone smart <b>or</b> sporty.</p>
-<p>Among admitted students, find the chance of being sporty if smart, and if not smart.</p>
+<div class="ask"><b class="l">Question</b>Looking only at admitted students, find:<ol><li>The chance of being sporty if a student is smart</li><li>The chance of being sporty if a student is not smart</li></ol>Then compare with all 100 students.</div>
+</div><div><p style="margin:8px 0 0"><b>Terms used here</b></p><div class="scroll terms" style="margin:0"><table><tr><th>Term</th><th>Meaning</th><th>Short name</th></tr><tr><td>Collider</td><td style="white-space:normal">Caused by two other things (admission, caused by smart and by sporty)</td><td>—</td></tr><tr><td>Conditional probability</td><td style="white-space:normal">Chance of A when you only look at cases where B is true</td><td>P(A | B)</td></tr><tr><td>Collider bias</td><td style="white-space:normal">A fake link from filtering on a collider</td><td>—</td></tr></table></div>
 <details><summary>Show steps</summary>
 <div class="f">Chance of A given B = number with A and B ÷ number with B</div>
 <div class="f">Admitted: smart and sporty 25, smart only 25, sporty only 25<br>(the 25 "neither" are rejected) → 75 students</div>
@@ -472,7 +484,7 @@ a{color:var(--blue)}
 <div class="f">In all 100: sporty given smart = 25/50 = 0.5, sporty given not smart = 25/50 = 0.5</div>
 <p>Inside the college: <span class="ans">0.5 vs 1.0</span>. Outside: 0.5 vs 0.5.</p>
 <p class="rem">No link in the population, a strong negative link among the admitted. That is collider bias.</p>
-</details></div>
+</details></div></div>
 
 </div>
 <div class="btns"><a class="go" href="#quiz">Next: quiz →</a></div>
@@ -598,13 +610,13 @@ $$('[data-rs]').forEach(b=>b.addEventListener('click',()=>{const k=b.dataset.rs;
 $$('#sc button').forEach(b=>b.addEventListener('click',()=>{sc=b.dataset.s;$$('#sc button').forEach(x=>x.classList.toggle('on',x===b));$('#cond2').checked=false;lab2()}));
 
 const Q=[
-['Z causes both X and Y. You want the causal effect of X on Y. What do you include in the regression?',['X only','X and Z','X, Z and anything correlated with Y'],1,'Z is a confounder: it opens the backdoor path X ← Z → Y. Adjusting for it blocks that path. Throwing in everything correlated with Y can add colliders or mediators.'],
-['A company hires people who are either very skilled or very well connected. Among employees, skill and connections are negatively correlated. Why?',['Skill causes fewer connections','Selection on a collider','Measurement error'],1,'Hiring is a collider (skill → hired ← connections). Looking only at hires conditions on it and creates a spurious negative association.'],
-['A drug lowers blood pressure, which improves survival. To get the drug\'s total effect on survival, should you adjust for blood pressure measured after treatment?',['Yes, it predicts survival','No, it is a mediator','Only if the sample is large'],1,'Blood pressure lies on the causal path. Adjusting for it removes the part of the effect that goes through it.'],
-['Your IPW estimate swings wildly between resamples. Most likely cause?',['Propensity scores near 0 or 1 (weak overlap)','Too large a sample','The outcome is binary'],0,'Positivity / overlap problems give a few units enormous weights, so the estimate is driven by them. Check overlap plots, trim or clip, or change the estimand.'],
-['AIPW gives a consistent ATE estimate when…',['both nuisance models are correct','at least one of the propensity or outcome models is correct','neither model matters'],1,'That is double robustness. If both are wrong, AIPW can still be biased, as Lab 3 shows when you tick both boxes.'],
-['In a randomised experiment with a fair coin deciding treatment, the plain difference in means is…',['biased without a propensity model','unbiased for the ATE','only valid with covariate adjustment'],1,'Randomisation makes T independent of all potential outcomes, so no backdoor paths exist. Adjustment can reduce variance but is not needed for unbiasedness.'],
-['An S-learner using a linear model with only T and X as features (no interaction) will…',['estimate a constant effect for everyone','recover τ(x) exactly','be the same as a T-learner'],0,'Without a T×X term the model can only shift the line, so every unit gets the same effect. Flexible base learners (trees, boosting) can split on T and do better.']];
+['Hot weather makes people buy more ice cream. Hot weather also makes more people swim, so more people drown. You want to know if ice cream causes drowning. What must you take into account?',['Nothing, just compare ice cream sales and drownings','The weather','Everything that goes up with drownings'],1,'Weather causes both, so it is a confounder (Zed). Compare days with the same weather, and the ice cream link disappears. Adding everything that moves with drownings can add colliders or mediators.'],
+['A company hires people who are very skilled OR have lots of contacts. Inside the company, skilled people seem to have fewer contacts. Why?',['Being skilled makes you lose contacts','The way people were hired creates a fake link (collider bias)','Someone measured skill wrongly'],1,'Being hired is caused by both skill and contacts (a collider, like Cole). Looking only at hired people means anyone with few contacts must be skilled, so a fake negative link appears.'],
+['A medicine lowers blood pressure, and lower blood pressure helps people live longer. You want the medicine\'s full effect on living longer. Should you adjust for blood pressure measured after taking the medicine?',['Yes, because it is related to living longer','No, because it is part of how the medicine works (a mediator)','Only if you have lots of data'],1,'Blood pressure is on the path from medicine to living longer. Adjusting for it removes the part of the effect that works through it.'],
+['You weight people by 1 ÷ their chance of treatment, and the answer jumps a lot every time you resample. What is the most likely reason?',['Some people had a chance very close to 0 or 1, so they get huge weights','The dataset is too big','The outcome is yes or no'],0,'A chance of 0.01 gives a weight of 100, so one person counts as 100. Check the overlap plot, clip extreme chances, or ask a narrower question.'],
+['Augmented inverse probability weighting gives the right answer when…',['both models are right','at least one of the two models (the outcome model or the chance-of-treatment model) is right','the models do not matter at all'],1,'That is what doubly robust means: two chances to be right. If both models are wrong it can still be wrong, as the propensity lab shows when you tick both boxes.'],
+['In an experiment where a coin flip decides who gets the treatment, is the plain difference in averages a fair answer?',['No, you still need weights','Yes, because the coin makes the two groups alike','Only after adjusting for everything you measured'],1,'The coin decides, so nothing about the person affects who gets treated. The groups start out the same, so the plain difference is fair. Adjusting can make it more precise, but it is not needed.'],
+['You fit one straight-line model with only "treated" and "age" as inputs, and no "treated × age" term. What will it say about the treatment effect?',['The same effect for everyone','A different effect for each age','Exactly the same as a T-learner'],0,'Without a "treated × age" term the model can only shift its line up or down, so every person gets the same effect. That is the S-learner\'s flat blue line in the lab.']];
 let ans={};
 function quiz(){$('#qs').innerHTML=Q.map((q,i)=>`<div class="q"><p>${i+1}. ${q[0]}</p><div class="btns">${q[1].map((o,j)=>`<button data-q="${i}" data-o="${j}" class="${i in ans?(j===q[2]?'ok':j===ans[i]?'no':''):''}">${o}</button>`).join('')}</div><p class="ex" ${i in ans?'':'hidden'} style="font-weight:400">${q[3]}</p></div>`).join('');
 const k=Object.keys(ans).length,s=Object.entries(ans).filter(([i,o])=>Q[i][2]===o).length;$('#score').textContent=k?`${s} / ${k} correct (${Q.length} questions)`:`${Q.length} questions. Pick an answer to see the explanation.`;
