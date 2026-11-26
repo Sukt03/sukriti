@@ -393,73 +393,83 @@ a{color:var(--blue)}
 
 <section class="cheat" id="v-numericals" hidden>
 <h2>Numericals</h2>
-<p>Five practice problems. Solve on paper first, then open the steps.</p>
+<p>Five practice problems. Each one says which method it uses. Solve on paper first, then open the steps.</p>
 <div class="cards">
 
-<div class="card"><h3>N1. ATE, ATT and the naive trap</h3>
+<div class="card"><h3>N1. Why a simple comparison lies</h3>
 <div class="who"><svg><use href="#zed"/></svg><div class="bub">I chose who got treated. Can you see through me?</div></div>
-<div class="scroll" style="margin:0"><table><tr><th>Person</th><th>T</th><th>Y(1)</th><th>Y(0)</th></tr>
-<tr><td>P1</td><td>1</td><td>12</td><td>10</td></tr><tr><td>P2</td><td>0</td><td>9</td><td>9</td></tr><tr><td>P3</td><td>1</td><td>15</td><td>10</td></tr><tr><td>P4</td><td>1</td><td>11</td><td>8</td></tr><tr><td>P5</td><td>0</td><td>7</td><td>6</td></tr></table></div>
-<p>Find (a) ATE, (b) ATT, (c) the naive difference, (d) the selection bias.</p>
+<p><b>Method:</b> potential outcomes (two possible outcomes per person).</p>
+<p style="margin:8px 0 0"><b>Terms used here</b></p><div class="scroll" style="margin:0"><table><tr><th>Term</th><th>Meaning</th><th>Short name</th></tr><tr><td>Individual effect</td><td style="white-space:normal">Outcome if treated minus outcome if not treated, for one person</td><td>ITE</td></tr><tr><td>Average treatment effect</td><td style="white-space:normal">Individual effect averaged over everyone</td><td>ATE</td></tr><tr><td>Average effect on the treated</td><td style="white-space:normal">Individual effect averaged over only the people who got the treatment</td><td>ATT</td></tr><tr><td>Naive difference</td><td style="white-space:normal">Treated average minus untreated average, as seen in data</td><td>—</td></tr><tr><td>Selection bias</td><td style="white-space:normal">How different the two groups were before any treatment</td><td>—</td></tr></table></div>
+<div class="scroll" style="margin:0"><table><tr><th>Person</th><th>Treated?</th><th>Outcome if treated</th><th>Outcome if not treated</th></tr>
+<tr><td>P1</td><td>Yes</td><td>12</td><td>10</td></tr><tr><td>P2</td><td>No</td><td>9</td><td>9</td></tr><tr><td>P3</td><td>Yes</td><td>15</td><td>10</td></tr><tr><td>P4</td><td>Yes</td><td>11</td><td>8</td></tr><tr><td>P5</td><td>No</td><td>7</td><td>6</td></tr></table></div>
+<p>Find (a) the average treatment effect, (b) the average effect on the treated, (c) the naive difference, (d) the selection bias.</p>
 <details><summary>Show steps</summary>
-<div class="f">Effects Y(1)−Y(0): 2, 0, 5, 3, 1</div>
-<div class="f">(a) ATE = (2+0+5+3+1)/5 = 11/5 = 2.2</div>
-<div class="f">(b) ATT = mean over treated P1, P3, P4 = (2+5+3)/3 = 3.33</div>
-<div class="f">(c) Treated show Y(1): 12, 15, 11 → mean 12.67<br>    Untreated show Y(0): 9, 6 → mean 7.5<br>    Naive = 12.67 − 7.5 = 5.17</div>
-<div class="f">(d) Bias = mean Y(0) of treated − mean Y(0) of untreated<br>    = mean(10, 10, 8) − mean(9, 6) = 9.33 − 7.5 = 1.83</div>
-<div class="f">Check: ATT + bias = 3.33 + 1.83 = 5.17 = naive ✓</div>
-<p>ATE <span class="ans">2.2</span>, ATT <span class="ans">3.33</span>, naive <span class="ans">5.17</span>, bias <span class="ans">1.83</span>.</p>
-<p class="rem">Trap: for untreated people you only see Y(0) (use 6 for P5, not 7). Naive (5.17) is more than double the ATE (2.2).</p>
+<div class="f">Each person's effect = outcome if treated − outcome if not treated<br>= 2, 0, 5, 3, 1</div>
+<div class="f">(a) Average treatment effect = (2+0+5+3+1) / 5 = 2.2</div>
+<div class="f">(b) Average effect on the treated = (2+5+3) / 3 = 3.33</div>
+<div class="f">(c) Treated people show "if treated": 12, 15, 11 → 12.67<br>    Untreated people show "if not treated": 9, 6 → 7.5<br>    Naive difference = 12.67 − 7.5 = 5.17</div>
+<div class="f">(d) Selection bias = mean "if not treated" of treated − mean "if not treated" of untreated<br>    = mean(10, 10, 8) − mean(9, 6) = 9.33 − 7.5 = 1.83</div>
+<div class="f">Check: naive = effect on treated + bias → 3.33 + 1.83 = 5.17 ✓</div>
+<p class="rem">For untreated people you only see the "if not treated" outcome (use 6 for P5, not 7). The naive answer (5.17) is more than double the true average (2.2).</p>
 </details></div>
 
-<div class="card"><h3>N2. Adjust by groups, and pick the right target</h3>
+<div class="card"><h3>N2. Compare within groups, then average</h3>
 <div class="who"><svg><use href="#dot"/></svg><div class="bub">Same data, two different questions, two different answers.</div></div>
-<div class="scroll" style="margin:0"><table><tr><th>Group</th><th>Share of everyone</th><th>Share of treated</th><th>Treated mean</th><th>Control mean</th></tr>
+<p><b>Method:</b> stratification (compare inside each group, then take a weighted average).</p>
+<p style="margin:8px 0 0"><b>Terms used here</b></p><div class="scroll" style="margin:0"><table><tr><th>Term</th><th>Meaning</th><th>Short name</th></tr><tr><td>Average treatment effect</td><td style="white-space:normal">Individual effect averaged over everyone</td><td>ATE</td></tr><tr><td>Average effect on the treated</td><td style="white-space:normal">Individual effect averaged over only the people who got the treatment</td><td>ATT</td></tr><tr><td>Group effect</td><td style="white-space:normal">Average effect for one kind of person (here: one age group)</td><td>CATE</td></tr><tr><td>Confounder</td><td style="white-space:normal">Affects both who gets treated and the outcome (here: age)</td><td>—</td></tr></table></div>
+<div class="scroll" style="margin:0"><table><tr><th>Group</th><th>Share of everyone</th><th>Share of treated</th><th>Treated average</th><th>Untreated average</th></tr>
 <tr><td>Young</td><td>60%</td><td>20%</td><td>50</td><td>40</td></tr><tr><td>Old</td><td>40%</td><td>80%</td><td>30</td><td>26</td></tr></table></div>
-<p>Assume age is the only confounder. Find the adjusted ATE and ATT.</p>
+<p>Age is the only thing that affects both. Find the average treatment effect and the average effect on the treated.</p>
 <details><summary>Show steps</summary>
 <div class="f">Effect in young = 50 − 40 = 10<br>Effect in old = 30 − 26 = 4</div>
-<div class="f">ATE = 0.6×10 + 0.4×4 = 6 + 1.6 = 7.6</div>
-<div class="f">ATT = 0.2×10 + 0.8×4 = 2 + 3.2 = 5.2</div>
-<p>ATE <span class="ans">7.6</span>, ATT <span class="ans">5.2</span>.</p>
+<div class="f">Average treatment effect (weights = share of everyone)<br>= 0.6×10 + 0.4×4 = 6 + 1.6 = 7.6</div>
+<div class="f">Average effect on the treated (weights = share of treated)<br>= 0.2×10 + 0.8×4 = 2 + 3.2 = 5.2</div>
+<p>Answers: <span class="ans">7.6</span> and <span class="ans">5.2</span>.</p>
 <p class="rem">Same group effects, different weights. Always say whose effect you want.</p>
 </details></div>
 
-<div class="card"><h3>N3. IPW by hand, two ways</h3>
+<div class="card"><h3>N3. Weighting by chance, two ways</h3>
 <div class="who"><svg><use href="#dot"/></svg><div class="bub">Divide by the chance of getting what you got.</div></div>
-<div class="scroll" style="margin:0"><table><tr><th>Unit</th><th>T</th><th>Y</th><th>e(x)</th></tr>
-<tr><td>1</td><td>1</td><td>10</td><td>0.8</td></tr><tr><td>2</td><td>1</td><td>6</td><td>0.4</td></tr><tr><td>3</td><td>0</td><td>4</td><td>0.8</td></tr><tr><td>4</td><td>0</td><td>3</td><td>0.4</td></tr></table></div>
-<p>Find (a) the plain IPW (Horvitz–Thompson) estimate and (b) the normalised (Hájek) estimate.</p>
+<p><b>Method:</b> inverse probability weighting.</p>
+<p style="margin:8px 0 0"><b>Terms used here</b></p><div class="scroll" style="margin:0"><table><tr><th>Term</th><th>Meaning</th><th>Short name</th></tr><tr><td>Chance of treatment</td><td style="white-space:normal">Probability a person like this gets treated (propensity score)</td><td>e(x)</td></tr><tr><td>Weight</td><td style="white-space:normal">1 ÷ chance of getting what you got</td><td>—</td></tr><tr><td>Inverse probability weighting</td><td style="white-space:normal">Average outcomes using those weights</td><td>IPW</td></tr><tr><td>Horvitz–Thompson estimate</td><td style="white-space:normal">Weighted sum ÷ number of people</td><td>HT</td></tr><tr><td>Normalised estimate</td><td style="white-space:normal">Weighted sum ÷ total weight</td><td>—</td></tr></table></div>
+<div class="scroll" style="margin:0"><table><tr><th>Unit</th><th>Treated?</th><th>Outcome</th><th>Chance of treatment</th></tr>
+<tr><td>1</td><td>Yes</td><td>10</td><td>0.8</td></tr><tr><td>2</td><td>Yes</td><td>6</td><td>0.4</td></tr><tr><td>3</td><td>No</td><td>4</td><td>0.8</td></tr><tr><td>4</td><td>No</td><td>3</td><td>0.4</td></tr></table></div>
+<p>Find (a) the Horvitz–Thompson estimate (divide by the number of people) and (b) the normalised estimate (divide by the total weight).</p>
 <details><summary>Show steps</summary>
-<div class="f">Treated weights 1/e: 1/0.8 = 1.25, 1/0.4 = 2.5<br>Control weights 1/(1−e): 1/0.2 = 5, 1/0.6 = 1.67</div>
-<div class="f">(a) HT: treated part = (10×1.25 + 6×2.5)/4 = 27.5/4 = 6.875<br>    control part = (4×5 + 3×1.67)/4 = 25/4 = 6.25<br>    ATE = 6.875 − 6.25 = 0.625</div>
-<div class="f">(b) Hájek: treated = 27.5 / (1.25+2.5) = 27.5/3.75 = 7.33<br>    control = 25 / (5+1.67) = 25/6.67 = 3.75<br>    ATE = 7.33 − 3.75 = 3.58</div>
-<p>HT <span class="ans">0.625</span>, Hájek <span class="ans">3.58</span>.</p>
-<p class="rem">With few units they disagree a lot. Unit 3 (weight 5) dominates the control side. Hájek divides by the total weight, which is usually more stable.</p>
+<div class="f">Weight if treated = 1 ÷ chance: 1/0.8 = 1.25, 1/0.4 = 2.5<br>Weight if not treated = 1 ÷ (1 − chance): 1/0.2 = 5, 1/0.6 = 1.67</div>
+<div class="f">(a) Treated part = (10×1.25 + 6×2.5) / 4 = 27.5 / 4 = 6.875<br>    Untreated part = (4×5 + 3×1.67) / 4 = 25 / 4 = 6.25<br>    Estimate = 6.875 − 6.25 = 0.625</div>
+<div class="f">(b) Treated = 27.5 / (1.25+2.5) = 27.5 / 3.75 = 7.33<br>    Untreated = 25 / (5+1.67) = 25 / 6.67 = 3.75<br>    Estimate = 7.33 − 3.75 = 3.58</div>
+<p>Answers: <span class="ans">0.625</span> and <span class="ans">3.58</span>.</p>
+<p class="rem">With few people the two disagree a lot. Unit 3 (weight 5) dominates the untreated side. Dividing by total weight is usually more stable.</p>
 </details></div>
 
-<div class="card"><h3>N4. AIPW for two people</h3>
+<div class="card"><h3>N4. Guess, then correct the guess</h3>
 <div class="who"><svg><use href="#coin"/></svg><div class="bub">Model guess plus a weighted correction.</div></div>
-<div class="scroll" style="margin:0"><table><tr><th>Person</th><th>T</th><th>Y</th><th>e</th><th>μ₁</th><th>μ₀</th></tr>
-<tr><td>A</td><td>1</td><td>9</td><td>0.6</td><td>8</td><td>5</td></tr><tr><td>B</td><td>0</td><td>4</td><td>0.6</td><td>7</td><td>5</td></tr></table></div>
-<p>Use ψ = μ₁ − μ₀ + T(Y−μ₁)/e − (1−T)(Y−μ₀)/(1−e). Find the AIPW estimate.</p>
+<p><b>Method:</b> augmented inverse probability weighting (doubly robust).</p>
+<p style="margin:8px 0 0"><b>Terms used here</b></p><div class="scroll" style="margin:0"><table><tr><th>Term</th><th>Meaning</th><th>Short name</th></tr><tr><td>Predicted if treated / not</td><td style="white-space:normal">A model's guess of the outcome with or without treatment</td><td>μ₁(x), μ₀(x)</td></tr><tr><td>Chance of treatment</td><td style="white-space:normal">Probability a person like this gets treated</td><td>e(x)</td></tr><tr><td>Augmented inverse probability weighting</td><td style="white-space:normal">Model guess plus a weighted correction</td><td>AIPW</td></tr><tr><td>Doubly robust</td><td style="white-space:normal">Right if either of the two models is right</td><td>—</td></tr></table></div>
+<div class="scroll" style="margin:0"><table><tr><th>Person</th><th>Treated?</th><th>Outcome</th><th>Chance of treatment</th><th>Predicted if treated</th><th>Predicted if not</th></tr>
+<tr><td>A</td><td>Yes</td><td>9</td><td>0.6</td><td>8</td><td>5</td></tr><tr><td>B</td><td>No</td><td>4</td><td>0.6</td><td>7</td><td>5</td></tr></table></div>
+<p>Score for a treated person = (predicted if treated − predicted if not) + (outcome − predicted if treated) ÷ chance.<br>Score for an untreated person = (predicted if treated − predicted if not) − (outcome − predicted if not) ÷ (1 − chance).<br>Find the average score.</p>
 <details><summary>Show steps</summary>
-<div class="f">A (treated): ψ = (8−5) + (9−8)/0.6 = 3 + 1.67 = 4.67</div>
-<div class="f">B (control): ψ = (7−5) − (4−5)/0.4 = 2 + 2.5 = 4.5</div>
-<div class="f">AIPW = (4.67 + 4.5)/2 = 4.58</div>
-<p>Answer <span class="ans">4.58</span>.</p>
-<p class="rem">Without the correction the model alone gives (3 + 2)/2 = 2.5. The residuals (A did better than predicted, B did worse) push it up.</p>
+<div class="f">A (treated): (8 − 5) + (9 − 8) ÷ 0.6 = 3 + 1.67 = 4.67</div>
+<div class="f">B (untreated): (7 − 5) − (4 − 5) ÷ 0.4 = 2 + 2.5 = 4.5</div>
+<div class="f">Average = (4.67 + 4.5) / 2 = 4.58</div>
+<p>Answer: <span class="ans">4.58</span>.</p>
+<p class="rem">The model's guess alone is (3 + 2) / 2 = 2.5. The corrections push it up because A did better than predicted and B did worse.</p>
 </details></div>
 
 <div class="card"><h3>N5. Cole's college in numbers</h3>
 <div class="who"><svg><use href="#cole"/></svg><div class="bub">Filter on me and watch a link appear from nothing.</div></div>
-<p>100 students, 25 of each type: smart+sporty, smart only, sporty only, neither. Smart and sporty are independent. The college admits anyone smart <b>or</b> sporty.</p>
-<p>Among admitted students, find P(sporty | smart) and P(sporty | not smart).</p>
+<p><b>Method:</b> conditional probability on a collider.</p>
+<p style="margin:8px 0 0"><b>Terms used here</b></p><div class="scroll" style="margin:0"><table><tr><th>Term</th><th>Meaning</th><th>Short name</th></tr><tr><td>Collider</td><td style="white-space:normal">Caused by two other things (admission, caused by smart and by sporty)</td><td>—</td></tr><tr><td>Conditional probability</td><td style="white-space:normal">Chance of A when you only look at cases where B is true</td><td>P(A | B)</td></tr><tr><td>Collider bias</td><td style="white-space:normal">A fake link from filtering on a collider</td><td>—</td></tr></table></div>
+<p>100 students, 25 of each type: smart and sporty, smart only, sporty only, neither. Smart and sporty are unrelated. The college admits anyone smart <b>or</b> sporty.</p>
+<p>Among admitted students, find the chance of being sporty if smart, and if not smart.</p>
 <details><summary>Show steps</summary>
-<div class="f">Admitted: smart+sporty 25, smart only 25, sporty only 25<br>(the 25 "neither" are rejected) → 75 students</div>
-<div class="f">P(sporty | smart, admitted) = 25 / (25+25) = 0.5</div>
-<div class="f">P(sporty | not smart, admitted) = 25 / 25 = 1.0</div>
-<div class="f">In the full 100: P(sporty | smart) = 25/50 = 0.5, P(sporty | not smart) = 25/50 = 0.5</div>
+<div class="f">Chance of A given B = number with A and B ÷ number with B</div>
+<div class="f">Admitted: smart and sporty 25, smart only 25, sporty only 25<br>(the 25 "neither" are rejected) → 75 students</div>
+<div class="f">Sporty given smart, admitted = 25 / (25+25) = 0.5</div>
+<div class="f">Sporty given not smart, admitted = 25 / 25 = 1.0</div>
+<div class="f">In all 100: sporty given smart = 25/50 = 0.5, sporty given not smart = 25/50 = 0.5</div>
 <p>Inside the college: <span class="ans">0.5 vs 1.0</span>. Outside: 0.5 vs 0.5.</p>
 <p class="rem">No link in the population, a strong negative link among the admitted. That is collider bias.</p>
 </details></div>
