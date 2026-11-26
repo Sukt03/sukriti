@@ -27,7 +27,10 @@ p{margin:0 0 10px;max-width:68ch}.lede{color:var(--muted);font-size:17px}
 .line a:focus-visible{outline:3px solid var(--blue)}
 .lab{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);gap:28px;margin-top:22px}
 .lab[hidden]{display:none}
-.fig{position:relative;min-height:420px;background:var(--card);border-radius:14px}
+.fig{position:relative;height:min(64vh,620px);min-height:380px;background:var(--card);border-radius:14px}
+.lab>div:first-child{position:sticky;top:12px;align-self:start}
+.read{margin-top:12px;padding:12px 16px;background:var(--card);border-radius:10px;font-size:15.5px;max-width:none}
+.read b{display:block;margin-bottom:2px}
 .fig>canvas{position:absolute;inset:0;width:100%;height:100%}
 .key{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:14px;color:var(--muted);margin-top:10px}
 .key span{display:inline-flex;align-items:center;gap:6px}.key b{width:18px;height:4px;border-radius:2px;display:inline-block}
@@ -102,7 +105,7 @@ summary:focus-visible{outline:3px solid var(--blue)}
 #score{font-weight:800;font-size:20px}
 footer{border-top:1px solid var(--grid)}
 a{color:var(--blue)}
-@media(max-width:860px){.lab{grid-template-columns:minmax(0,1fr)}.fig{min-height:340px}}
+@media(max-width:860px){.lab{grid-template-columns:minmax(0,1fr)}.fig{height:340px;min-height:0}.lab>div:first-child{position:static}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
 </style></head><body>
 <header class="band">
@@ -339,7 +342,7 @@ a{color:var(--blue)}
 
 <section class="lab" id="v-confounding" hidden>
 <div><div class="fig"><canvas id="cv1"></canvas></div>
-<div class="key"><span><b style="background:var(--blue)"></b>Z low</span><span><b style="background:var(--red)"></b>Z high</span><span><b style="background:var(--ink)"></b>Naive fit Y ~ X</span><span><b style="background:var(--green)"></b>Adjusted Y ~ X + Z</span><span><b style="background:var(--amber)"></b>True effect</span></div></div>
+<div class="key"><span><b style="background:var(--blue)"></b>Z low</span><span><b style="background:var(--red)"></b>Z high</span><span><b style="background:var(--ink)"></b>Naive fit Y ~ X</span><span><b style="background:var(--green)"></b>Adjusted Y ~ X + Z</span><span><b style="background:var(--amber)"></b>True effect</span></div><p class="read"><b>How to read it</b>Each dot is a person; colour shows the hidden cause Z. The black line ignores Z and is too steep, because high-Z people have both high X and high Y. The thick green line accounts for Z. When the amber dashed line sits on top of the green one, the estimate is correct. On the right, the amber tick in every bar is the true answer.</p></div>
 <div><h2>Confounding</h2>
 <p>Z causes both X and Y. Regressing Y on X alone picks up the path through Z. Adding Z to the model closes that backdoor.</p>
 <svg class="dag" id="d1" viewBox="0 0 360 190"></svg>
@@ -353,7 +356,7 @@ a{color:var(--blue)}
 
 <section class="lab" id="v-paths" hidden>
 <div><div class="fig"><canvas id="cv2"></canvas></div>
-<div class="key"><span><b style="background:var(--ink)"></b>Raw fit Y ~ X</span><span><b style="background:var(--green)"></b>With adjustment</span><span><b style="background:var(--amber)"></b>True total effect</span><span>Bright dots: one slice of the conditioned variable</span></div></div>
+<div class="key"><span><b style="background:var(--ink)"></b>Raw fit Y ~ X</span><span><b style="background:var(--green)"></b>With adjustment</span><span><b style="background:var(--amber)"></b>True total effect</span><span>Bright dots: one slice of the conditioned variable</span></div><p class="read"><b>How to read it</b>Grey dots are everyone. "Conditioning" means looking only at people with almost the same value of the third variable: those are the bright dots. The thick line is the slope inside that slice: green when it is correct, red when it misleads. Compare it with the amber dashed line (the truth).</p></div>
 <div><h2>What should you adjust for?</h2>
 <p>Adding a variable to the model is not always safe. Pick a graph, then condition on the third variable and watch the estimate.</p>
 <div class="btns" id="sc"><button data-s="confounder" class="on">Confounder</button><button data-s="mediator">Mediator</button><button data-s="collider">Collider</button></div>
@@ -368,7 +371,7 @@ a{color:var(--blue)}
 
 <section class="lab" id="v-ipw" hidden>
 <div><div class="fig"><canvas id="cv3"></canvas></div>
-<div class="key"><span><b style="background:var(--red)"></b>Treated</span><span><b style="background:var(--blue)"></b>Control</span><span>Overlap of estimated propensity scores. Little overlap = huge weights.</span></div></div>
+<div class="key"><span><b style="background:var(--red)"></b>Treated</span><span><b style="background:var(--blue)"></b>Control</span><span>Overlap of estimated propensity scores. Little overlap = huge weights.</span></div><p class="read"><b>How to read it</b>Each bar counts people with that chance of being treated. Red bars (up) are treated people, blue bars (down) are untreated. Where one colour has bars and the other has almost none, there is nobody to compare with, so those people get huge weights. Push "Selection on X" up and watch the colours separate. On the right, the bar that ends nearest its amber tick is the best estimate.</p></div>
 <div><h2>Propensity scores &amp; IPW (Inverse Probability Weighting)</h2>
 <p>Treatment T depends on covariate X, and X also affects Y. Five estimators of the average treatment effect, side by side.</p>
 <svg class="dag" id="d3" viewBox="0 0 360 190"></svg>
@@ -386,7 +389,7 @@ a{color:var(--blue)}
 
 <section class="lab" id="v-cate" hidden>
 <div><div class="fig"><canvas id="cv4"></canvas></div>
-<div class="key"><span><b style="background:var(--amber)"></b>True CATE τ(x)</span><span><b style="background:var(--red)"></b>T-learner</span><span><b style="background:var(--blue)"></b>S-learner (no interaction)</span><span><b style="background:var(--muted)"></b>Binned difference in means</span></div></div>
+<div class="key"><span><b style="background:var(--amber)"></b>True CATE τ(x)</span><span><b style="background:var(--red)"></b>T-learner</span><span><b style="background:var(--blue)"></b>S-learner (no interaction)</span><span><b style="background:var(--muted)"></b>Binned difference in means</span></div><p class="read"><b>How to read it</b>Each grey dot is a simple comparison (treated minus untreated) for people with similar X. The amber dashed line is the true effect at each X. The red line (T-learner) follows it. The blue line (S-learner) stays flat because its model cannot let the effect change with X. Set the slope to 0 and both learners agree.</p></div>
 <div><h2>Heterogeneous effects (CATE: Conditional Average Treatment Effect)</h2>
 <p>Randomised experiment, but the effect depends on X: τ(x) = base + slope·x. Meta-learners estimate τ(x) with ordinary regressions.</p>
 <div class="ctl"><label for="m4">Base effect <output id="m4o"></output></label><input type="range" id="m4" min="0" max="2" step="0.1" value="1"></div>
@@ -551,7 +554,7 @@ const nv=ols([X],Y),ad=ols([X,Z],Y);
 dag('#d1',{Z:[180,38],X:[60,150],Y:[300,150]},[['Z','X','o'],['Z','Y','o'],['X','Y','c']]);
 bars('#e1',[['True effect',b,'amber',1],['Naive: Y ~ X',nv[1],'ink'],['Adjusted: Y ~ X + Z',ad[1],'green']],b);
 plot('#cv1',{xr:ext(X),yr:ext(Y),xl:'X (treatment)',yl:'Y (outcome)',pts:X.map((x,i)=>[x,Y[i],Z[i]<-.5?'blue':Z[i]>.5?'red':'soft',.55]),
-lines:[{f:x=>b*x,col:'amber',dash:[8,6],w:3},{f:x=>nv[0]+nv[1]*x,col:'ink'},{f:x=>ad[0]+ad[1]*x,col:'green'}]})}
+lines:[{f:x=>nv[0]+nv[1]*x,col:'ink'},{f:x=>ad[0]+ad[1]*x,col:'green',w:6},{f:x=>b*x,col:'amber',dash:[10,8],w:3}]})}
 
 const SC={
 confounder:{v:'W',nodes:{W:[180,38],X:[60,150],Y:[300,150]},edges:c=>[['W','X',c?'b':'o'],['W','Y',c?'b':'o'],['X','Y','c']],gen:(G,b)=>{const w=G.n(),x=w+.8*G.n();return[x,b*x+1.5*w+G.n(),w]},good:[false,true],
@@ -569,8 +572,9 @@ dag('#d2',S.nodes,S.edges(cond),cond?S.v:null);
 const vd=$('#v2');vd.textContent=S.msg[+cond];vd.className='verdict'+(good?'':' bad');
 bars('#e2',[['True total effect',b,'amber',1],['Raw: Y ~ X',raw[1],'ink'],['Adjusted: Y ~ X + '+S.v,adj[1],good&&cond?'green':'red']],b);
 const mv=mean(V),sv=Math.sqrt(mean(V.map(v=>(v-mv)**2))),inS=V.map(v=>Math.abs(v-mv)<.3*sv),xs=X.filter((_,i)=>inS[i]),ys=Y.filter((_,i)=>inS[i]),mx=mean(xs),my=mean(ys),MX=mean(X),MY=mean(Y);
-const lines=[{f:x=>MY+b*(x-MX),col:'amber',dash:[8,6]},{f:x=>raw[0]+raw[1]*x,col:'ink',w:cond?2:3}];
-if(cond)lines.push({f:x=>my+adj[1]*(x-mx),col:good?'green':'red'});
+const lines=[{f:x=>raw[0]+raw[1]*x,col:'ink',w:cond?2:3}];
+if(cond)lines.push({f:x=>my+adj[1]*(x-mx),col:good?'green':'red',w:6});
+lines.push({f:x=>MY+b*(x-MX),col:'amber',dash:[10,8],w:3});
 plot('#cv2',{xr:ext(X),yr:ext(Y),xl:'X',yl:'Y',pts:X.map((x,i)=>cond?[x,Y[i],inS[i]?(good?'green':'red'):'soft',inS[i]?.9:.2,inS[i]?3.2:2.4]:[x,Y[i],'blue',.5]),lines})}
 
 function lab3(){const g=val('#g3'),h=val('#h3'),tau=val('#t3'),nl=$('#nl3').checked,pm=$('#pm3').checked,cl=$('#cl3').checked,G=gen(seeds[3]),n=800,X=[],T=[],Y=[];
@@ -589,8 +593,8 @@ bars('#e3',[['True ATE (Average Treatment Effect)',tau,'amber',1],['Naive differ
 $('#diag3').textContent=`Treated ${n1} of ${n}. Largest weight ${mw.toFixed(1)}. Effective sample size (ESS) ${(sw*sw/sw2).toFixed(0)} of ${n}.`;
 const nb=20,c1=Array(nb).fill(0),c0=Array(nb).fill(0);E.forEach((e,i)=>{const k=Math.min(nb-1,Math.floor(e*nb));(T[i]?c1:c0)[k]++});
 const m=Math.max(...c1,...c0)*1.1||1;
-plot('#cv3',{xr:[0,1],yr:[-m,m],xl:'Estimated propensity e(x) = P(T=1 | X)',yl:'Treated ↑   Control ↓',yf:v=>fmt(Math.abs(v)),custom:(G2,sx,sy,P)=>{for(let k=0;k<nb;k++){const a=sx(k/nb)+1,w=sx((k+1)/nb)-sx(k/nb)-2;G2.fillStyle=P.red;G2.fillRect(a,sy(c1[k]),w,sy(0)-sy(c1[k]));G2.fillStyle=P.blue;G2.fillRect(a,sy(0),w,sy(-c0[k])-sy(0))}
-G2.strokeStyle=P.ink;G2.lineWidth=1.5;G2.beginPath();G2.moveTo(sx(0),sy(0));G2.lineTo(sx(1),sy(0));G2.stroke();if(cl){G2.setLineDash([6,5]);G2.strokeStyle=P.amber;G2.lineWidth=2;[.05,.95].forEach(v=>{G2.beginPath();G2.moveTo(sx(v),sy(-m));G2.lineTo(sx(v),sy(m));G2.stroke()});G2.setLineDash([])}}})}
+plot('#cv3',{xr:[0,1],yr:[-m,m],xl:'Estimated propensity e(x) = P(T=1 | X)',yl:'Number of people',yf:v=>fmt(Math.abs(v)),custom:(G2,sx,sy,P)=>{for(let k=0;k<nb;k++){const a=sx(k/nb)+1,w=sx((k+1)/nb)-sx(k/nb)-2;G2.fillStyle=P.red;G2.fillRect(a,sy(c1[k]),w,sy(0)-sy(c1[k]));G2.fillStyle=P.blue;G2.fillRect(a,sy(0),w,sy(-c0[k])-sy(0))}
+G2.strokeStyle=P.ink;G2.lineWidth=1.5;G2.beginPath();G2.moveTo(sx(0),sy(0));G2.lineTo(sx(1),sy(0));G2.stroke();G2.font='700 14px Figtree,sans-serif';G2.textAlign='left';G2.fillStyle=P.red;G2.fillText('▲ Treated',sx(0)+8,sy(m)+20);G2.fillStyle=P.blue;G2.fillText('▼ Not treated',sx(0)+8,sy(-m)-10);if(cl){G2.setLineDash([6,5]);G2.strokeStyle=P.amber;G2.lineWidth=2;[.05,.95].forEach(v=>{G2.beginPath();G2.moveTo(sx(v),sy(-m));G2.lineTo(sx(v),sy(m));G2.stroke()});G2.setLineDash([])}}})}
 
 function lab4(){const base=val('#m4'),sl=val('#s4'),sd=val('#n4'),n=val('#N4'),G=gen(seeds[4]),X=[],T=[],Y=[];
 for(let i=0;i<n;i++){const x=G.n(),t=G.u()<.5?1:0;X.push(x);T.push(t);Y.push(x+(base+sl*x)*t+sd*G.n())}
@@ -602,7 +606,7 @@ bars('#e4',[['True ATE (base, since mean X = 0)',base,'amber',1],['T-learner ATE
 $('#e4').insertAdjacentHTML('beforeend',`<p class="small">CATE error (RMSE, root mean squared error): T-learner ${rm(tl).toFixed(2)}, S-learner ${rm(()=>sk).toFixed(2)}.</p>`);
 const pts=[];for(let k=0;k<10;k++){const lo=-2.5+k*.5,hi=lo+.5,a=[],c=[];X.forEach((x,i)=>{if(x>=lo&&x<hi)(T[i]?a:c).push(Y[i])});if(a.length>2&&c.length>2)pts.push([(lo+hi)/2,mean(a)-mean(c),'muted',.85,5])}
 const ys=[tru(-2.5),tru(2.5),tl(-2.5),tl(2.5),sk,...pts.map(p=>p[1])],lo=Math.min(...ys),hi=Math.max(...ys),pd=(hi-lo)*.12+.3;
-plot('#cv4',{xr:[-2.5,2.5],yr:[lo-pd,hi+pd],xl:'X (covariate)',yl:'Treatment effect τ(x)',pts,lines:[{f:tru,col:'amber',dash:[8,6],w:4},{f:tl,col:'red'},{f:()=>sk,col:'blue'}]})}
+plot('#cv4',{xr:[-2.5,2.5],yr:[lo-pd,hi+pd],xl:'X (covariate)',yl:'Treatment effect τ(x)',pts,lines:[{f:tl,col:'red',w:5},{f:()=>sk,col:'blue'},{f:tru,col:'amber',dash:[10,8],w:3}]})}
 
 const labs={1:lab1,2:lab2,3:lab3,4:lab4};
 [['#a1,#c1,#b1',1],['#b2,#cond2',2],['#g3,#h3,#t3,#nl3,#pm3,#cl3',3],['#m4,#s4,#n4,#N4',4]].forEach(([s,k])=>$$(s).forEach(e=>e.addEventListener('input',labs[k])));
