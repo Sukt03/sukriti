@@ -180,6 +180,48 @@ a{color:var(--blue)}
 </div>
 <div class="cards">
 
+<div class="card"><h3>Full forms</h3>
+<div class="who"><svg><use href="#dot"/></svg><div class="bub">Every short name on this site, spelled out.</div></div>
+<div class="scroll" style="margin:0"><table>
+<tr><th>Short</th><th>Full form</th><th>In plain words</th></tr>
+<tr><td>RCM</td><td>Rubin Causal Model</td><td>Effects defined as Y(1) − Y(0)</td></tr>
+<tr><td>Y(1), Y(0)</td><td>Potential outcomes</td><td>Outcome with / without treatment</td></tr>
+<tr><td>ITE</td><td>Individual Treatment Effect</td><td>Y(1) − Y(0) for one person</td></tr>
+<tr><td>ATE</td><td>Average Treatment Effect</td><td>Average effect over everyone</td></tr>
+<tr><td>ATT</td><td>Average Treatment effect on the Treated</td><td>Average over those who got it</td></tr>
+<tr><td>ATC</td><td>Average Treatment effect on the Controls</td><td>Average over those who didn't</td></tr>
+<tr><td>CATE</td><td>Conditional Average Treatment Effect</td><td>Average effect for people with a given x</td></tr>
+<tr><td>T</td><td>Treatment</td><td>1 = treated, 0 = not</td></tr>
+<tr><td>X, x</td><td>Covariates</td><td>Things measured before treatment</td></tr>
+<tr><td>e(x)</td><td>Propensity score</td><td>Chance of being treated given x</td></tr>
+<tr><td>μ₁(x), μ₀(x)</td><td>Outcome models</td><td>Predicted Y with / without treatment</td></tr>
+<tr><td>IPW</td><td>Inverse Probability Weighting</td><td>Weight each person by 1 / chance</td></tr>
+<tr><td>HT</td><td>Horvitz–Thompson estimator</td><td>Plain IPW, divide by n</td></tr>
+<tr><td>AIPW</td><td>Augmented Inverse Probability Weighting</td><td>Model guess + weighted correction</td></tr>
+<tr><td>DML</td><td>Double / Debiased Machine Learning</td><td>ML for nuisances, regress residuals</td></tr>
+<tr><td>DAG</td><td>Directed Acyclic Graph</td><td>Arrow diagram of who causes what</td></tr>
+<tr><td>RCT</td><td>Randomised Controlled Trial</td><td>Treatment decided by a coin</td></tr>
+<tr><td>SUTVA</td><td>Stable Unit Treatment Value Assumption</td><td>No spillover, one version of treatment</td></tr>
+<tr><td>OLS</td><td>Ordinary Least Squares</td><td>Plain linear regression</td></tr>
+<tr><td>ESS</td><td>Effective Sample Size</td><td>How many people the weights are "worth"</td></tr>
+<tr><td>RMSE</td><td>Root Mean Squared Error</td><td>Typical size of the error</td></tr>
+<tr><td>T-learner</td><td>Two-model learner</td><td>Separate model per arm</td></tr>
+<tr><td>S-learner</td><td>Single-model learner</td><td>One model, T as a feature</td></tr>
+</table></div></div>
+
+<div class="card"><h3>0. The Rubin Causal Model (RCM)</h3>
+<div class="who"><svg><use href="#dot"/></svg><div class="bub">Also called the potential outcomes framework. It defines what "cause" means.</div></div>
+<div class="f">Each person i has Y<sub>i</sub>(1) and Y<sub>i</sub>(0)<br>ITE<sub>i</sub> = Y<sub>i</sub>(1) − Y<sub>i</sub>(0)<br>ATE = E[ Y(1) − Y(0) ]</div>
+<p><b>Fundamental problem:</b> you only ever see one of the two. Causal inference is a missing-data problem.</p>
+<p><b>Three assumptions</b> let you estimate the ATE from data:</p>
+<div class="scroll" style="margin:0"><table><tr><th>Assumption</th><th>Plain words</th><th>Breaks when…</th></tr>
+<tr><td>1. SUTVA</td><td>My outcome depends only on my own treatment</td><td>Vaccines: your shot protects me too</td></tr>
+<tr><td>2. Ignorability</td><td>Given x, treatment is as good as random</td><td>An unmeasured Zed exists</td></tr>
+<tr><td>3. Positivity</td><td>Everyone had some chance of both options: 0 &lt; e(x) &lt; 1</td><td>All severe patients always get the drug</td></tr></table></div>
+<div class="f">If all 3 hold:<br>ATE = Σₓ P(x) · ( E[Y | T=1, x] − E[Y | T=0, x] )</div>
+<p><b>Mini numerical (positivity):</b> severe patients: 10 treated, 0 untreated. E[Y | T=0, severe] has no data, so the severe group's effect can't be computed. That's a positivity failure, and no estimator fixes it.</p>
+<p class="rem">RCM says <i>what</i> the effect is. A DAG (Directed Acyclic Graph) tells you <i>which x</i> to adjust for so ignorability holds. Ignorability can't be tested from data; you argue for it.</p></div>
+
 <div class="card"><h3>1. Two possible futures</h3>
 <div class="who"><svg><use href="#dot"/></svg><div class="bub">Every person has two futures: with the drug and without. You only ever see one.</div></div>
 <p><b>Y(1)</b> = outcome if treated, <b>Y(0)</b> = outcome if not. Here: days to recover.</p>
@@ -305,8 +347,8 @@ a{color:var(--blue)}
 <section class="lab" id="v-ipw" hidden>
 <div><div class="fig"><canvas id="cv3"></canvas></div>
 <div class="key"><span><b style="background:var(--red)"></b>Treated</span><span><b style="background:var(--blue)"></b>Control</span><span>Overlap of estimated propensity scores. Little overlap = huge weights.</span></div></div>
-<div><h2>Propensity scores &amp; IPW</h2>
-<p>Treatment T depends on X, and X also affects Y. Five estimators of the average treatment effect, side by side.</p>
+<div><h2>Propensity scores &amp; IPW (Inverse Probability Weighting)</h2>
+<p>Treatment T depends on covariate X, and X also affects Y. Five estimators of the average treatment effect, side by side.</p>
 <svg class="dag" id="d3" viewBox="0 0 360 190"></svg>
 <div class="ctl"><label for="g3">Selection on X (X → T) <output id="g3o"></output></label><input type="range" id="g3" min="0" max="3" step="0.1" value="1.2"></div>
 <div class="ctl"><label for="h3">X → Y strength <output id="h3o"></output></label><input type="range" id="h3" min="0" max="3" step="0.1" value="1.5"></div>
@@ -323,7 +365,7 @@ a{color:var(--blue)}
 <section class="lab" id="v-cate" hidden>
 <div><div class="fig"><canvas id="cv4"></canvas></div>
 <div class="key"><span><b style="background:var(--amber)"></b>True CATE τ(x)</span><span><b style="background:var(--red)"></b>T-learner</span><span><b style="background:var(--blue)"></b>S-learner (no interaction)</span><span><b style="background:var(--muted)"></b>Binned difference in means</span></div></div>
-<div><h2>Heterogeneous effects</h2>
+<div><h2>Heterogeneous effects (CATE: Conditional Average Treatment Effect)</h2>
 <p>Randomised experiment, but the effect depends on X: τ(x) = base + slope·x. Meta-learners estimate τ(x) with ordinary regressions.</p>
 <div class="ctl"><label for="m4">Base effect <output id="m4o"></output></label><input type="range" id="m4" min="0" max="2" step="0.1" value="1"></div>
 <div class="ctl"><label for="s4">Heterogeneity slope <output id="s4o"></output></label><input type="range" id="s4" min="-1.5" max="1.5" step="0.1" value="0.8"></div>
@@ -331,7 +373,7 @@ a{color:var(--blue)}
 <div class="ctl"><label for="N4">Sample size <output id="N4o"></output></label><input type="range" id="N4" min="100" max="3000" step="100" value="600"></div>
 <div class="est" id="e4"></div>
 <div class="btns"><button data-rs="4">Resample data</button></div>
-<h3>Notes</h3><ul><li><b>T-learner</b>: fit one model on treated, one on control, subtract.</li><li><b>S-learner</b>: one model with T as a feature. A model that cannot express T×X interactions returns a flat effect.</li><li>Small n + big noise: T-learner slope gets unstable. That is why X-learners, R-learners and DML exist.</li></ul>
+<h3>Notes</h3><ul><li><b>T-learner</b> (two-model): fit one model on treated, one on control, subtract.</li><li><b>S-learner</b> (single-model): one model with T as a feature. A model that cannot express T×X interactions returns a flat effect.</li><li>Small n + big noise: T-learner slope gets unstable. That is why X-learners, R-learners and DML exist.</li></ul>
 </div></section>
 
 <section class="cheat" id="v-numericals" hidden>
@@ -419,6 +461,7 @@ a{color:var(--blue)}
 <li><a href="https://miguelhernan.org/whatifbook">Hernán &amp; Robins, <i>Causal Inference: What If</i></a> (free book: confounding, IPW, g-methods)</li>
 <li>Pearl, Glymour &amp; Jewell, <i>Causal Inference in Statistics: A Primer</i> (DAGs, backdoor criterion)</li>
 <li><a href="https://arxiv.org/abs/1706.03461">Künzel et al., Metalearners for estimating heterogeneous treatment effects</a> (S/T/X-learners)</li>
+<li>Imbens &amp; Rubin, <i>Causal Inference for Statistics, Social, and Biomedical Sciences</i> (the Rubin Causal Model in full)</li>
 <li><a href="https://arxiv.org/abs/1608.00060">Chernozhukov et al., Double/debiased machine learning</a></li>
 </ul><p class="small">All data on this page is simulated in your browser from the stated equations.</p></footer>
 
@@ -505,8 +548,8 @@ for(let i=0;i<n;i++){const w=T[i]?1/E[i]:1/(1-E[i]);if(T[i]){s1+=w*Y[i];w1+=w}el
 const ipw=s1/w1-s0/w0;
 const XT=X.filter((_,i)=>T[i]),XC=X.filter((_,i)=>!T[i]),m1=ols([XT],Y1),m0=ols([XC],Y0);
 const aipw=mean(X.map((x,i)=>{const mu1=m1[0]+m1[1]*x,mu0=m0[0]+m0[1]*x;return mu1-mu0+(T[i]?(Y[i]-mu1)/E[i]:0)-(T[i]?0:(Y[i]-mu0)/(1-E[i]))}));
-bars('#e3',[['True ATE',tau,'amber',1],['Naive difference in means',naive,'ink'],['Regression: Y ~ T + X',reg,'blue'],['IPW (normalised)',ipw,'red'],['AIPW (doubly robust)',aipw,'green']],tau);
-$('#diag3').textContent=`Treated ${n1} of ${n}. Largest weight ${mw.toFixed(1)}. Effective sample size ${(sw*sw/sw2).toFixed(0)} of ${n}.`;
+bars('#e3',[['True ATE (Average Treatment Effect)',tau,'amber',1],['Naive difference in means',naive,'ink'],['Regression (OLS): Y ~ T + X',reg,'blue'],['IPW, Inverse Probability Weighting (normalised)',ipw,'red'],['AIPW, Augmented IPW (doubly robust)',aipw,'green']],tau);
+$('#diag3').textContent=`Treated ${n1} of ${n}. Largest weight ${mw.toFixed(1)}. Effective sample size (ESS) ${(sw*sw/sw2).toFixed(0)} of ${n}.`;
 const nb=20,c1=Array(nb).fill(0),c0=Array(nb).fill(0);E.forEach((e,i)=>{const k=Math.min(nb-1,Math.floor(e*nb));(T[i]?c1:c0)[k]++});
 const m=Math.max(...c1,...c0)*1.1||1;
 plot('#cv3',{xr:[0,1],yr:[-m,m],xl:'Estimated propensity e(x) = P(T=1 | X)',yl:'Treated ↑   Control ↓',yf:v=>fmt(Math.abs(v)),custom:(G2,sx,sy,P)=>{for(let k=0;k<nb;k++){const a=sx(k/nb)+1,w=sx((k+1)/nb)-sx(k/nb)-2;G2.fillStyle=P.red;G2.fillRect(a,sy(c1[k]),w,sy(0)-sy(c1[k]));G2.fillStyle=P.blue;G2.fillRect(a,sy(0),w,sy(-c0[k])-sy(0))}
@@ -519,7 +562,7 @@ const f1=ols([tr.map(i=>X[i])],tr.map(i=>Y[i])),f0=ols([co.map(i=>X[i])],co.map(
 const tl=x=>f1[0]-f0[0]+(f1[1]-f0[1])*x,sk=sL[1],tru=x=>base+sl*x;
 const rm=f=>Math.sqrt(mean(X.map(x=>(f(x)-tru(x))**2)));
 bars('#e4',[['True ATE (base, since mean X = 0)',base,'amber',1],['T-learner ATE',mean(X.map(tl)),'red'],['S-learner ATE',sk,'blue']],base);
-$('#e4').insertAdjacentHTML('beforeend',`<p class="small">CATE error (RMSE over units): T-learner ${rm(tl).toFixed(2)}, S-learner ${rm(()=>sk).toFixed(2)}.</p>`);
+$('#e4').insertAdjacentHTML('beforeend',`<p class="small">CATE error (RMSE, root mean squared error): T-learner ${rm(tl).toFixed(2)}, S-learner ${rm(()=>sk).toFixed(2)}.</p>`);
 const pts=[];for(let k=0;k<10;k++){const lo=-2.5+k*.5,hi=lo+.5,a=[],c=[];X.forEach((x,i)=>{if(x>=lo&&x<hi)(T[i]?a:c).push(Y[i])});if(a.length>2&&c.length>2)pts.push([(lo+hi)/2,mean(a)-mean(c),'muted',.85,5])}
 const ys=[tru(-2.5),tru(2.5),tl(-2.5),tl(2.5),sk,...pts.map(p=>p[1])],lo=Math.min(...ys),hi=Math.max(...ys),pd=(hi-lo)*.12+.3;
 plot('#cv4',{xr:[-2.5,2.5],yr:[lo-pd,hi+pd],xl:'X (covariate)',yl:'Treatment effect τ(x)',pts,lines:[{f:tru,col:'amber',dash:[8,6],w:4},{f:tl,col:'red'},{f:()=>sk,col:'blue'}]})}
