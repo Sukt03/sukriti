@@ -180,33 +180,48 @@ a{color:var(--blue)}
 </div>
 <div class="cards">
 
+<div class="card" style="grid-column:1/-1;border-top-color:var(--ink)"><h3>The whole idea in 5 lines</h3>
+<div class="who"><svg><use href="#coin"/></svg><div class="bub">Read this first. Everything else is details.</div></div>
+<p>1. A <b>cause</b> means: things would be different if we changed it. For each person there are two stories, "with" and "without", and we only get to see one.</p>
+<p>2. Just comparing people who got something with people who didn't can trick you, because they were different to begin with (that's Zed).</p>
+<p>3. The best fix is a <b>coin flip</b> (an RCT). Then the two groups start out the same.</p>
+<p>4. When you can't flip a coin, you fix it afterwards: compare like with like, give <b>weights</b> (IPW), or combine a guess with weights (AIPW).</p>
+<p>5. All of these only work if you measured every Zed. That part needs thinking, not computing.</p></div>
+
+<div class="card" style="grid-column:1/-1"><h3>Why each method was invented</h3>
+<div class="who"><svg><use href="#dot"/></svg><div class="bub">Every method was made to fix a problem with the one before it.</div></div>
+<div class="scroll" style="margin:0"><table><tr><th>When</th><th>Method</th><th>The problem it fixed</th></tr>
+<tr><td>1923</td><td>Potential outcomes (Neyman)</td><td>Gave a way to write "what would have happened" for crop experiments</td></tr>
+<tr><td>1920s–1935</td><td>Randomisation (Fisher)</td><td>Farmers chose which fields got fertiliser. A coin flip stops that choice from fooling you</td></tr>
+<tr><td>1952</td><td>Horvitz–Thompson weighting</td><td>Surveys reached some people more than others. Weight by 1 / chance of being picked</td></tr>
+<tr><td>1974</td><td>Rubin's potential outcomes</td><td>Most real data has no coin flip. Rubin brought "two stories per person" to such data (Holland named it the Rubin Causal Model in 1986)</td></tr>
+<tr><td>1983</td><td>Propensity score (Rosenbaum &amp; Rubin)</td><td>Too many things to match on. Squash them into one number: the chance of being treated</td></tr>
+<tr><td>1990s</td><td>IPW for causal effects (Robins and colleagues)</td><td>Treatments that change over time (like HIV drugs) broke regression. Weighting handled it</td></tr>
+<tr><td>1994</td><td>AIPW, doubly robust (Robins, Rotnitzky &amp; Zhao)</td><td>IPW alone is jumpy and relies on one model being right. Adding an outcome model gives two chances to be right</td></tr>
+<tr><td>1995–2000</td><td>DAGs and the backdoor rule (Pearl)</td><td>People adjusted for the wrong things. Arrow pictures show what to adjust for</td></tr>
+<tr><td>2016–2019</td><td>Meta-learners (Künzel et al.) and DML (Chernozhukov et al.)</td><td>Lots of data and features. Use machine learning without letting its mistakes bias the answer</td></tr></table></div>
+<p class="rem">The chain: coin flip (best) → can't flip? match like with like → too many things to match? propensity score → weights are jumpy? add a model (AIPW) → too many features? machine learning (DML).</p></div>
+
 <div class="card"><h3>Full forms</h3>
-<div class="who"><svg><use href="#dot"/></svg><div class="bub">Every short name on this site, spelled out.</div></div>
+<div class="who"><svg><use href="#dot"/></svg><div class="bub">The standard short names, in plain words.</div></div>
 <div class="scroll" style="margin:0"><table>
 <tr><th>Short</th><th>Full form</th><th>In plain words</th></tr>
-<tr><td>RCM</td><td>Rubin Causal Model</td><td>Effects defined as Y(1) − Y(0)</td></tr>
-<tr><td>Y(1), Y(0)</td><td>Potential outcomes</td><td>Outcome with / without treatment</td></tr>
-<tr><td>ITE</td><td>Individual Treatment Effect</td><td>Y(1) − Y(0) for one person</td></tr>
-<tr><td>ATE</td><td>Average Treatment Effect</td><td>Average effect over everyone</td></tr>
-<tr><td>ATT</td><td>Average Treatment effect on the Treated</td><td>Average over those who got it</td></tr>
-<tr><td>ATC</td><td>Average Treatment effect on the Controls</td><td>Average over those who didn't</td></tr>
-<tr><td>CATE</td><td>Conditional Average Treatment Effect</td><td>Average effect for people with a given x</td></tr>
-<tr><td>T</td><td>Treatment</td><td>1 = treated, 0 = not</td></tr>
-<tr><td>X, x</td><td>Covariates</td><td>Things measured before treatment</td></tr>
-<tr><td>e(x)</td><td>Propensity score</td><td>Chance of being treated given x</td></tr>
-<tr><td>μ₁(x), μ₀(x)</td><td>Outcome models</td><td>Predicted Y with / without treatment</td></tr>
-<tr><td>IPW</td><td>Inverse Probability Weighting</td><td>Weight each person by 1 / chance</td></tr>
-<tr><td>HT</td><td>Horvitz–Thompson estimator</td><td>Plain IPW, divide by n</td></tr>
-<tr><td>AIPW</td><td>Augmented Inverse Probability Weighting</td><td>Model guess + weighted correction</td></tr>
-<tr><td>DML</td><td>Double / Debiased Machine Learning</td><td>ML for nuisances, regress residuals</td></tr>
-<tr><td>DAG</td><td>Directed Acyclic Graph</td><td>Arrow diagram of who causes what</td></tr>
-<tr><td>RCT</td><td>Randomised Controlled Trial</td><td>Treatment decided by a coin</td></tr>
-<tr><td>SUTVA</td><td>Stable Unit Treatment Value Assumption</td><td>No spillover, one version of treatment</td></tr>
-<tr><td>OLS</td><td>Ordinary Least Squares</td><td>Plain linear regression</td></tr>
-<tr><td>ESS</td><td>Effective Sample Size</td><td>How many people the weights are "worth"</td></tr>
-<tr><td>RMSE</td><td>Root Mean Squared Error</td><td>Typical size of the error</td></tr>
-<tr><td>T-learner</td><td>Two-model learner</td><td>Separate model per arm</td></tr>
-<tr><td>S-learner</td><td>Single-model learner</td><td>One model, T as a feature</td></tr>
+<tr><td>RCM</td><td>Rubin Causal Model</td><td>Compare "with" vs "without" for the same person</td></tr>
+<tr><td>ITE</td><td>Individual Treatment Effect</td><td>How much it changed one person</td></tr>
+<tr><td>ATE</td><td>Average Treatment Effect</td><td>How much it changed people, on average</td></tr>
+<tr><td>ATT</td><td>Average Treatment effect on the Treated</td><td>Average change for people who got it</td></tr>
+<tr><td>ATC</td><td>Average Treatment effect on the Controls</td><td>Average change for people who didn't get it</td></tr>
+<tr><td>CATE</td><td>Conditional Average Treatment Effect</td><td>Average change for one kind of person (e.g. only kids)</td></tr>
+<tr><td>IPW</td><td>Inverse Probability Weighting</td><td>Rare people get a bigger vote</td></tr>
+<tr><td>HT</td><td>Horvitz–Thompson estimator</td><td>The first, simplest weighting formula</td></tr>
+<tr><td>AIPW</td><td>Augmented Inverse Probability Weighting</td><td>A guess, then fix the guess using weights</td></tr>
+<tr><td>DML</td><td>Double / Debiased Machine Learning</td><td>Use machine learning, then remove its bias</td></tr>
+<tr><td>DAG</td><td>Directed Acyclic Graph</td><td>A picture with arrows: what causes what</td></tr>
+<tr><td>RCT</td><td>Randomised Controlled Trial</td><td>Flip a coin to decide who gets it</td></tr>
+<tr><td>SUTVA</td><td>Stable Unit Treatment Value Assumption</td><td>My result isn't changed by your treatment</td></tr>
+<tr><td>OLS</td><td>Ordinary Least Squares</td><td>Draw the best straight line</td></tr>
+<tr><td>ESS</td><td>Effective Sample Size</td><td>How many people your data is really worth</td></tr>
+<tr><td>RMSE</td><td>Root Mean Squared Error</td><td>How wrong, on average</td></tr>
 </table></div></div>
 
 <div class="card"><h3>0. The Rubin Causal Model (RCM)</h3>
@@ -373,7 +388,7 @@ a{color:var(--blue)}
 <div class="ctl"><label for="N4">Sample size <output id="N4o"></output></label><input type="range" id="N4" min="100" max="3000" step="100" value="600"></div>
 <div class="est" id="e4"></div>
 <div class="btns"><button data-rs="4">Resample data</button></div>
-<h3>Notes</h3><ul><li><b>T-learner</b> (two-model): fit one model on treated, one on control, subtract.</li><li><b>S-learner</b> (single-model): one model with T as a feature. A model that cannot express T×X interactions returns a flat effect.</li><li>Small n + big noise: T-learner slope gets unstable. That is why X-learners, R-learners and DML exist.</li></ul>
+<h3>Notes</h3><ul><li><b>T-learner</b>: fit one model on treated, one on control, subtract.</li><li><b>S-learner</b>: one model with T as a feature. A model that cannot express T×X interactions returns a flat effect.</li><li>Small n + big noise: T-learner slope gets unstable. That is why X-learners, R-learners and DML exist.</li></ul>
 </div></section>
 
 <section class="cheat" id="v-numericals" hidden>
