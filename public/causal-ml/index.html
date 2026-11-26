@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Causal ML Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+/* VOICE: a precise lab bench, plain and direct, every number live
+   IDEA: a metro map of causal inference; each lab is a station on one line
+   PICTURE: each lab's live simulation plot plus its causal graph drawn as metro lines
+   COLOUR and TYPE: white / night #0e1116, line red, causal green, bias red, truth amber; Figtree 800 + Figtree
+   LAYOUT: station line on top, then plot left with graph + controls + estimates right; stacks under 860px */
+:root{color-scheme:light dark;--bg:light-dark(#fff,#0e1116);--ink:light-dark(#111418,#eef1f5);--muted:light-dark(#5b6270,#9aa3b2);--grid:light-dark(#e6e8ed,#262c37);--card:light-dark(#f5f6f8,#161b23);--red:#e6261f;--blue:light-dark(#0a5cff,#5b93ff);--amber:#ffb400;--green:#00a05a}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Figtree,system-ui,sans-serif;overflow-x:clip}
+.band{padding:clamp(24px,4vw,52px) max(5vw,16px);max-width:1340px;margin:0 auto}
+h1{font-weight:800;font-size:clamp(32px,5vw,48px);line-height:1.05;margin:0 0 8px;text-wrap:balance}
+h2{font-weight:800;font-size:28px;line-height:1.1;margin:0 0 6px;text-wrap:balance}
+h3{font-size:17px;margin:18px 0 6px}
+p{margin:0 0 10px;max-width:68ch}.lede{color:var(--muted);font-size:17px}
+.scroll{overflow-x:auto;margin-top:18px;padding-bottom:4px}
+.line{display:flex;width:max-content;position:relative}
+.line::before{content:"";position:absolute;left:48px;right:48px;top:21px;height:8px;border-radius:4px;background:var(--red)}
+.line a{flex:none;display:flex;flex-direction:column;align-items:center;gap:6px;padding:8px 16px;min-height:44px;color:inherit;text-decoration:none;font-weight:600;position:relative;border-radius:8px}
+.line a i{width:26px;height:26px;border-radius:50%;background:var(--bg);border:6px solid var(--ink)}
+.line a.on{font-weight:800}.line a.on i{background:var(--ink);transform:scale(1.15)}
+.line a:focus-visible{outline:3px solid var(--blue)}
+.lab{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);gap:28px;margin-top:22px}
+.lab[hidden]{display:none}
+.fig{position:relative;min-height:420px;background:var(--card);border-radius:14px}
+.fig>canvas{position:absolute;inset:0;width:100%;height:100%}
+.key{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:14px;color:var(--muted);margin-top:10px}
+.key span{display:inline-flex;align-items:center;gap:6px}.key b{width:18px;height:4px;border-radius:2px;display:inline-block}
+.dag{width:100%;max-width:360px;height:auto;display:block}
+.ctl{display:grid;gap:4px;margin:10px 0}
+.ctl label{display:flex;justify-content:space-between;font-size:15px;font-weight:600}
+.ctl output{font-variant-numeric:tabular-nums;color:var(--muted)}
+input[type=range]{width:100%;height:32px;accent-color:var(--red)}
+.btns{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+button{font:inherit;font-weight:600;min-height:44px;padding:8px 16px;border-radius:22px;border:2px solid var(--ink);background:var(--bg);color:var(--ink);cursor:pointer}
+button.on{background:var(--ink);color:var(--bg)}
+button:focus-visible,input:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.tog{display:flex;align-items:center;gap:10px;min-height:44px;font-weight:600;cursor:pointer}
+.tog input{width:22px;height:22px;accent-color:var(--red)}
+.est{margin:12px 0}.row{margin:10px 0}
+.rl{display:flex;justify-content:space-between;gap:12px;font-size:15px}.rl b{font-variant-numeric:tabular-nums;white-space:nowrap}
+.track{position:relative;height:12px;background:var(--grid);border-radius:6px;margin-top:4px}
+.fill{position:absolute;top:0;bottom:0;border-radius:6px}
+.tm{position:absolute;top:-4px;bottom:-4px;width:3px;margin-left:-1px;background:var(--amber)}
+.bias{font-size:13px;color:var(--muted);margin-top:2px}
+.verdict{padding:12px 14px;border-radius:10px;background:var(--card);border-left:6px solid var(--green);margin:10px 0}
+.verdict.bad{border-left-color:var(--red)}
+ul{padding-left:20px;margin:6px 0}li{margin:3px 0}
+.small{font-size:13px;color:var(--muted)}
+.quiz{grid-template-columns:minmax(0,1fr)}
+.cheat{margin-top:22px}.cheat[hidden]{display:none}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,370px),1fr));gap:18px;margin-top:14px}
+.card{background:var(--card);border-radius:14px;padding:18px;border-top:8px solid var(--red)}
+.card:nth-child(4n+2){border-top-color:var(--blue)}.card:nth-child(4n+3){border-top-color:var(--amber)}.card:nth-child(4n){border-top-color:var(--green)}
+.card h3{margin:0 0 6px;font-size:19px;font-weight:800}
+.card p{font-size:15.5px}
+.f{font:14px/1.5 ui-monospace,Menlo,Consolas,monospace;background:var(--bg);padding:8px 10px;border-radius:8px;margin:8px 0;overflow-x:auto;white-space:nowrap}
+.card table{border-collapse:collapse;width:100%;font-size:14px;margin:6px 0 10px;font-variant-numeric:tabular-nums}
+.card th,.card td{padding:5px 6px;border-bottom:1px solid var(--grid);text-align:right;white-space:nowrap}
+.card th:first-child,.card td:first-child{text-align:left}.card th{color:var(--muted);font-weight:600}
+.card .tot td{font-weight:800}
+.rem{font-weight:700;border-left:4px solid var(--amber);padding-left:10px}
+.go{font-weight:700}
+details{margin-top:10px;border-top:2px dashed var(--grid);padding-top:8px}
+summary{cursor:pointer;font-weight:800;min-height:44px;display:flex;align-items:center;color:var(--blue)}
+summary:focus-visible{outline:3px solid var(--blue)}
+.ans{background:var(--amber);color:#111;font-weight:800;padding:2px 8px;border-radius:4px}
+.who{display:flex;gap:12px;align-items:center;margin:4px 0 12px}
+.who svg{width:64px;height:64px;flex:none}
+.bub{position:relative;background:var(--bg);border:2px solid var(--ink);border-radius:14px;padding:8px 12px;font-size:15px;font-weight:600;line-height:1.35}
+.bub::before{content:"";position:absolute;left:-9px;top:50%;margin-top:-7px;border:7px solid transparent;border-right-color:var(--ink);border-left:0}
+.strip{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:10px 0 6px}
+.pan{border:3px solid var(--ink);border-radius:6px;background:var(--card);padding:12px;display:flex;flex-direction:column;justify-content:space-between;gap:10px;min-height:250px}
+.pan .b{position:relative;background:var(--bg);border:2px solid var(--ink);border-radius:14px;padding:8px 11px;font-size:15px;font-weight:600;line-height:1.35}
+.pan .b::after{content:"";position:absolute;bottom:-9px;left:30px;border:8px solid transparent;border-top-color:var(--ink);border-bottom:0}
+.pan .b.r::after{left:auto;right:30px}
+.pan .ch{display:flex;justify-content:space-between;align-items:flex-end}.pan .ch svg{width:78px;height:78px}
+.lesson{font-weight:700;margin:2px 0 30px}.lesson span{background:var(--amber);color:#111;padding:2px 8px;border-radius:4px;margin-right:6px}
+@media(max-width:820px){.strip{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:430px){.strip{grid-template-columns:minmax(0,1fr)}.pan{min-height:0}}
+.cast{display:flex;flex-wrap:wrap;gap:12px 22px;margin:10px 0 4px}
+.cast div{display:flex;align-items:center;gap:8px;font-size:15px}.cast svg{width:52px;height:52px;flex:none}
+@media(prefers-reduced-motion:no-preference){.who svg{animation:bob 3s ease-in-out infinite}@keyframes bob{50%{transform:translateY(-3px)}}}
+.q{background:var(--card);border-radius:14px;padding:18px;margin-bottom:14px;max-width:820px}
+.q p{font-weight:600}.q .btns{flex-direction:column;align-items:stretch}
+.q button{text-align:left;border-radius:10px;border-width:2px}
+.q button.ok{border-color:var(--green);background:color-mix(in srgb,var(--green) 18%,var(--bg))}
+.q button.no{border-color:var(--red);background:color-mix(in srgb,var(--red) 14%,var(--bg))}
+.ex{font-size:15px}.ex[hidden]{display:none}
+#score{font-weight:800;font-size:20px}
+footer{border-top:1px solid var(--grid)}
+a{color:var(--blue)}
+@media(max-width:860px){.lab{grid-template-columns:minmax(0,1fr)}.fig{min-height:340px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style></head><body>
+<header class="band">
+<h1>Causal ML, by hand</h1>
+<p class="lede">Follow the line left to right: comic strips for the intuition, a cheat sheet with small numbers you can check by hand, live labs where every slider re-runs the maths, then a quiz.</p>
+<div class="scroll"><nav class="line" id="nav">
+<a href="#comics" data-v="comics"><i></i>Comic strips</a>
+<a href="#cheat" data-v="cheat"><i></i>Cheat sheet</a>
+<a href="#confounding" data-v="confounding"><i></i>Confounding</a>
+<a href="#paths" data-v="paths"><i></i>What to adjust</a>
+<a href="#ipw" data-v="ipw"><i></i>Propensity &amp; IPW</a>
+<a href="#cate" data-v="cate"><i></i>Heterogeneous effects</a>
+<a href="#numericals" data-v="numericals"><i></i>Numericals</a>
+<a href="#quiz" data-v="quiz"><i></i>Quiz</a>
+</nav></div>
+</header>
+<main class="band" style="padding-top:0">
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<symbol id="dot" viewBox="0 0 80 80"><ellipse cx="38" cy="76" rx="22" ry="3" style="fill:var(--grid)"/><path d="M18 74c0-16 8-24 20-24s20 8 20 24z" style="fill:var(--blue)"/><circle cx="38" cy="34" r="17" fill="#ffd7b0"/><path d="M19 30c2-14 36-14 38 0z" fill="#7a4a24"/><rect x="16" y="28" width="44" height="5" rx="2.5" fill="#5c3517"/><circle cx="32" cy="36" r="2.4" fill="#111"/><circle cx="44" cy="36" r="2.4" fill="#111"/><path d="M33 43q5 4 10 0" stroke="#111" stroke-width="2" fill="none" stroke-linecap="round"/><circle cx="64" cy="52" r="9" fill="#cfe4ff" stroke="#333" stroke-width="3"/><path d="M58 59l-7 8" stroke="#333" stroke-width="4" stroke-linecap="round"/></symbol>
+<symbol id="zed" viewBox="0 0 80 80"><ellipse cx="40" cy="76" rx="22" ry="3" style="fill:var(--grid)"/><path d="M16 74c0-30 8-48 24-48s24 18 24 48z" style="fill:var(--red)"/><rect x="20" y="36" width="40" height="10" rx="5" fill="#111"/><circle cx="31" cy="41" r="3" fill="#fff"/><circle cx="49" cy="41" r="3" fill="#fff"/><path d="M25 31l10 3M55 31l-10 3" stroke="#111" stroke-width="2.5" stroke-linecap="round"/><path d="M32 55q8 5 16-1" stroke="#111" stroke-width="2.5" fill="none" stroke-linecap="round"/><rect x="26" y="10" width="28" height="14" rx="3" fill="#111"/><rect x="20" y="22" width="40" height="5" rx="2.5" fill="#111"/></symbol>
+<symbol id="coin" viewBox="0 0 80 80"><ellipse cx="40" cy="76" rx="20" ry="3" style="fill:var(--grid)"/><path d="M14 46l-9 6M66 46l9 6" stroke="#b07c00" stroke-width="4" stroke-linecap="round"/><circle cx="40" cy="40" r="28" style="fill:var(--amber)"/><circle cx="40" cy="40" r="21" fill="none" stroke="#b07c00" stroke-width="3"/><circle cx="33" cy="37" r="3" fill="#111"/><circle cx="47" cy="37" r="3" fill="#111"/><path d="M32 47q8 7 16 0" stroke="#111" stroke-width="2.5" fill="none" stroke-linecap="round"/></symbol>
+<symbol id="cole" viewBox="0 0 80 80"><ellipse cx="40" cy="76" rx="20" ry="3" style="fill:var(--grid)"/><rect x="22" y="28" width="36" height="46" rx="16" style="fill:var(--green)"/><circle cx="33" cy="44" r="4" fill="#fff"/><circle cx="47" cy="44" r="4" fill="#fff"/><circle cx="33" cy="44" r="2" fill="#111"/><circle cx="47" cy="44" r="2" fill="#111"/><ellipse cx="40" cy="58" rx="4" ry="5" fill="#111"/><path d="M2 14l16 14M78 14l-16 14" stroke="#111" stroke-width="4" stroke-linecap="round"/><path d="M10 28l8 0 0-8M70 28l-8 0 0-8" stroke="#111" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</defs></svg>
+
+<section class="cheat" id="v-comics" hidden>
+<h2>Comic strips</h2>
+<p>Four short stories. Each one is a whole idea in causal inference.</p>
+<div class="cast">
+<div><svg><use href="#dot"/></svg><span><b>Dot</b>, the detective</span></div>
+<div><svg><use href="#zed"/></svg><span><b>Zed</b>, the confounder</span></div>
+<div><svg><use href="#cole"/></svg><span><b>Cole</b>, the collider</span></div>
+<div><svg><use href="#coin"/></svg><span><b>Coin</b>, the randomiser</span></div>
+</div>
+
+<h3>1. The drug that looked bad</h3>
+<div class="strip">
+<div class="pan"><div class="b">Hospital data: 58% recover with the drug, 72% without. So the drug is bad?</div><div class="ch"><svg><use href="#dot"/></svg></div></div>
+<div class="pan"><div class="b r">Psst. I'm Severity. I sent the really sick people to get the drug.</div><div class="ch"><span></span><svg><use href="#zed"/></svg></div></div>
+<div class="pan"><div class="b">Split by severity. Mild: 90% vs 80%. Severe: 50% vs 40%. The drug wins by +10 in both!</div><div class="ch"><svg><use href="#dot"/></svg></div></div>
+<div class="pan"><div class="b">Adjust for Zed and the truth shows: drug helps by +10 points.</div><div class="ch"><svg><use href="#dot"/></svg><svg><use href="#zed"/></svg></div></div>
+</div>
+<p class="lesson"><span>Lesson</span>A hidden common cause can flip the answer. Compare within groups.</p>
+
+<h3>2. Cole's college</h3>
+<div class="strip">
+<div class="pan"><div class="b">In the whole city, being smart and being sporty are unrelated.</div><div class="ch"><svg><use href="#dot"/></svg></div></div>
+<div class="pan"><div class="b r">My college lets you in if you're smart OR sporty.</div><div class="ch"><span></span><svg><use href="#cole"/></svg></div></div>
+<div class="pan"><div class="b">Wait, inside the college, smart students are less sporty?!</div><div class="ch"><svg><use href="#dot"/></svg></div></div>
+<div class="pan"><div class="b r">That's me. Look only inside a collider and fake links appear.</div><div class="ch"><svg><use href="#dot"/></svg><svg><use href="#cole"/></svg></div></div>
+</div>
+<p class="lesson"><span>Lesson</span>Never filter or adjust on something both X and Y cause.</p>
+
+<h3>3. Coin takes over</h3>
+<div class="strip">
+<div class="pan"><div class="b r">I pick who gets treated. My favourites always look great.</div><div class="ch"><span></span><svg><use href="#zed"/></svg></div></div>
+<div class="pan"><div class="b">Not anymore. Heads: treated. Tails: not treated.</div><div class="ch"><svg><use href="#coin"/></svg></div></div>
+<div class="pan"><div class="b r">Both groups look the same now. I can't hide in either one!</div><div class="ch"><svg><use href="#coin"/></svg><svg><use href="#zed"/></svg></div></div>
+<div class="pan"><div class="b">So a plain difference in averages is the true effect.</div><div class="ch"><svg><use href="#dot"/></svg><svg><use href="#coin"/></svg></div></div>
+</div>
+<p class="lesson"><span>Lesson</span>Randomise when you can. It removes every confounder at once, even unknown ones.</p>
+
+<h3>4. The weighting trick</h3>
+<div class="strip">
+<div class="pan"><div class="b">Old data, no coin. Only 10 of 50 mild patients got the drug.</div><div class="ch"><svg><use href="#dot"/></svg></div></div>
+<div class="pan"><div class="b">Chance of treatment for mild = 10/50 = 0.2. So each one counts 1/0.2 = 5 times.</div><div class="ch"><svg><use href="#dot"/></svg></div></div>
+<div class="pan"><div class="b">Now both groups have 50 mild and 50 severe. A fair fight!</div><div class="ch"><svg><use href="#dot"/></svg><svg><use href="#coin"/></svg></div></div>
+<div class="pan"><div class="b r">Balanced again... the weights did Coin's job.</div><div class="ch"><span></span><svg><use href="#zed"/></svg></div></div>
+</div>
+<p class="lesson"><span>Lesson</span>Inverse probability weighting turns old, unfair data into a fake randomised trial (if you measured all the Zeds).</p>
+<div class="btns"><a class="go" href="#cheat">Next: cheat sheet with the numbers →</a></div>
+</section>
+
+<section class="cheat" id="v-cheat" hidden>
+<h2>Cheat sheet</h2>
+<p>One idea per card. Every number is small enough to check on paper.</p>
+<div class="cast">
+<div><svg><use href="#dot"/></svg><span><b>Dot</b>, the detective. Asks "what would have happened otherwise?"</span></div>
+<div><svg><use href="#zed"/></svg><span><b>Zed</b>, the confounder. Secretly pushes both treatment and outcome.</span></div>
+<div><svg><use href="#cole"/></svg><span><b>Cole</b>, the collider. Two arrows crash into him.</span></div>
+<div><svg><use href="#coin"/></svg><span><b>Coin</b>. Randomises, so Zed has no power.</span></div>
+</div>
+<div class="cards">
+
+<div class="card"><h3>1. Two possible futures</h3>
+<div class="who"><svg><use href="#dot"/></svg><div class="bub">Every person has two futures: with the drug and without. You only ever see one.</div></div>
+<p><b>Y(1)</b> = outcome if treated, <b>Y(0)</b> = outcome if not. Here: days to recover.</p>
+<div class="scroll" style="margin:0"><table><tr><th>Person</th><th>Y(1)</th><th>Y(0)</th><th>Effect Y(1) − Y(0)</th></tr>
+<tr><td>A</td><td>5</td><td>8</td><td>−3</td></tr><tr><td>B</td><td>6</td><td>7</td><td>−1</td></tr><tr><td>C</td><td>4</td><td>9</td><td>−5</td></tr><tr><td>D</td><td>7</td><td>7</td><td>0</td></tr>
+<tr class="tot"><td>Average</td><td></td><td></td><td>−9 / 4 = −2.25</td></tr></table></div>
+<div class="f">ATE = average of Y(1) − Y(0) = −2.25 days</div>
+<p class="rem">Causal inference = guessing the missing column.</p></div>
+
+<div class="card"><h3>2. Why "treated vs untreated" lies</h3>
+<div class="who"><svg><use href="#zed"/></svg><div class="bub">I made the sicker people (A and C) take the drug. Now your comparison is off.</div></div>
+<p>What you observe: A and C were treated, B and D were not.</p>
+<div class="f">Naive = mean(5, 4) − mean(7, 7) = 4.5 − 7 = −2.5</div>
+<p>Split it up (same numbers as card 1):</p>
+<div class="f">Effect on treated (ATT) = mean(−3, −5) = −4</div>
+<div class="f">Selection bias = mean Y(0) of treated − mean Y(0) of untreated<br>= mean(8, 9) − mean(7, 7) = 8.5 − 7 = +1.5</div>
+<div class="f">Naive = ATT + bias = −4 + 1.5 = −2.5 ✓</div>
+<p class="rem">The treated group was sicker anyway (higher Y(0)), so the drug looks weaker than it is.</p></div>
+
+<div class="card"><h3>3. Fix it: compare within groups</h3>
+<div class="who"><svg><use href="#dot"/></svg><div class="bub">Compare like with like, then average the groups.</div></div>
+<p>Recovery rates. Severe patients mostly got the drug.</p>
+<div class="scroll" style="margin:0"><table><tr><th>Group</th><th>Drug</th><th>No drug</th><th>Diff</th></tr>
+<tr><td>Mild (50 people)</td><td>9/10 = 90%</td><td>32/40 = 80%</td><td>+10</td></tr>
+<tr><td>Severe (50 people)</td><td>20/40 = 50%</td><td>4/10 = 40%</td><td>+10</td></tr>
+<tr class="tot"><td>All mixed</td><td>29/50 = 58%</td><td>36/50 = 72%</td><td>−14 😬</td></tr></table></div>
+<div class="f">Adjusted = Σ P(group) × diff = 0.5×10 + 0.5×10 = +10 points</div>
+<p class="rem">Mixed together the drug looks harmful (−14). Within every group it helps (+10). This flip is Simpson's paradox.</p>
+<p><a class="go" href="#confounding">Play with it live →</a></p></div>
+
+<div class="card"><h3>4. What to adjust for</h3>
+<div class="who"><svg><use href="#cole"/></svg><div class="bub">Don't condition on me! It creates fake links between X and Y.</div></div>
+<div class="scroll" style="margin:0"><table><tr><th>Third variable is a…</th><th>Picture</th><th>Adjust?</th></tr>
+<tr><td>Confounder (Zed)</td><td>X ← Z → Y</td><td>✅ Yes</td></tr>
+<tr><td>Mediator</td><td>X → M → Y</td><td>❌ No (for total effect)</td></tr>
+<tr><td>Collider (Cole)</td><td>X → C ← Y</td><td>❌ Never</td></tr>
+<tr><td>Caused by treatment</td><td>X → D</td><td>❌ No</td></tr>
+<tr><td>Only causes Y</td><td>W → Y</td><td>👍 Optional, lowers noise</td></tr></table></div>
+<p><b>Collider example:</b> a college admits students who are smart <i>or</i> sporty. Inside the college, smart students tend to be less sporty, even though in the population the two are unrelated.</p>
+<p class="rem">Adjust only for things that happen before treatment and cause it.</p>
+<p><a class="go" href="#paths">See it break live →</a></p></div>
+
+<div class="card"><h3>5. Propensity score &amp; IPW</h3>
+<div class="who"><svg><use href="#dot"/></svg><div class="bub">Give rare people a bigger vote, so both groups look like everyone.</div></div>
+<p>Propensity <b>e(x)</b> = chance of being treated given x. Same data as card 3:</p>
+<div class="f">e(mild) = 10/50 = 0.2    e(severe) = 40/50 = 0.8</div>
+<div class="f">Weight = 1/e if treated, 1/(1 − e) if not</div>
+<div class="scroll" style="margin:0"><table><tr><th>Cell</th><th>People</th><th>Weight</th><th>Counts as</th><th>Recovered ×w</th></tr>
+<tr><td>Drug, mild</td><td>10</td><td>5</td><td>50</td><td>45</td></tr>
+<tr><td>Drug, severe</td><td>40</td><td>1.25</td><td>50</td><td>25</td></tr>
+<tr><td>No drug, mild</td><td>40</td><td>1.25</td><td>50</td><td>40</td></tr>
+<tr><td>No drug, severe</td><td>10</td><td>5</td><td>50</td><td>20</td></tr></table></div>
+<div class="f">Drug: 70/100 = 70%   No drug: 60/100 = 60%   IPW = +10 ✓</div>
+<p class="rem">Same answer as card 3. Weighting rebuilds a fake population where each arm is 50% mild, 50% severe.</p>
+<p><a class="go" href="#ipw">Try IPW live →</a></p></div>
+
+<div class="card"><h3>6. Overlap (positivity)</h3>
+<div class="who"><svg><use href="#zed"/></svg><div class="bub">If almost everyone like you got treated, there's nobody to compare you with. Hehe.</div></div>
+<div class="f">e = 0.5 → weight 2<br>e = 0.95 → control weight 1/0.05 = 20<br>e = 0.99 → control weight 1/0.01 = 100</div>
+<p>One person standing in for 100 makes the estimate jump around.</p>
+<p class="rem">Always plot propensity scores for both groups. No overlap means no trustworthy answer for those people. Clip, trim or change the question.</p></div>
+
+<div class="card"><h3>7. AIPW (doubly robust)</h3>
+<div class="who"><svg><use href="#dot"/></svg><div class="bub">Predict first, then fix the prediction with weighted errors.</div></div>
+<div class="f">ψ = μ₁(x) − μ₀(x) + T·(Y − μ₁)/e − (1−T)·(Y − μ₀)/(1−e)</div>
+<p>μ₁, μ₀ = models predicting Y with and without treatment. One treated person with μ₁ = 6, μ₀ = 4, Y = 7, e = 0.5:</p>
+<div class="f">ψ = (6 − 4) + (7 − 6)/0.5 = 2 + 2 = 4</div>
+<p>ATE = average ψ over everyone.</p>
+<p class="rem">Correct if <i>either</i> the outcome model or the propensity model is right. Both wrong: still biased.</p></div>
+
+<div class="card"><h3>8. Randomisation</h3>
+<div class="who"><svg><use href="#coin"/></svg><div class="bub">I decide who's treated. Zed can't push anyone, so the groups match.</div></div>
+<div class="f">Coin flip ⇒ mean Y(0) treated = mean Y(0) untreated<br>⇒ selection bias = 0<br>⇒ naive difference = ATE</div>
+<p>In card 2 the bias was +1.5 because Zed picked who got treated. With a coin, on average it's 0.</p>
+<p class="rem">This is why A/B tests and RCTs are the gold standard.</p></div>
+
+<div class="card"><h3>9. Effects that differ by person (CATE)</h3>
+<div class="who"><svg><use href="#coin"/></svg><div class="bub">Same experiment, but young and old people react differently.</div></div>
+<div class="scroll" style="margin:0"><table><tr><th>Group (half each)</th><th>Treated</th><th>Control</th><th>CATE</th></tr>
+<tr><td>Young</td><td>80</td><td>70</td><td>+10</td></tr><tr><td>Old</td><td>60</td><td>58</td><td>+2</td></tr>
+<tr class="tot"><td>ATE</td><td></td><td></td><td>0.5×10 + 0.5×2 = +6</td></tr></table></div>
+<div class="f">T-learner: model₁ on treated, model₀ on control; CATE(x) = model₁(x) − model₀(x)<br>S-learner: one model f(x, t); CATE(x) = f(x, 1) − f(x, 0)</div>
+<p class="rem">The average (+6) hides that old people barely benefit (+2).</p>
+<p><a class="go" href="#cate">Compare learners live →</a></p></div>
+
+<div class="card"><h3>10. The full recipe</h3>
+<div class="who"><svg><use href="#dot"/></svg><div class="bub">Six steps, in this order. Don't skip step 2.</div></div>
+<div class="f">1. Question: effect of what, on what, for whom?<br>2. Draw the graph (who causes what)<br>3. Pick adjustment set (card 4)<br>4. Check overlap (card 6)<br>5. Estimate: regression / IPW / AIPW / DML<br>6. Stress-test: what if there's a hidden Zed?</div>
+<p><b>DML</b> in one line: use ML to predict Y from x and T from x, then regress the leftover part of Y on the leftover part of T (with cross-fitting).</p>
+<p class="rem">ML helps with step 5 only. Steps 1 to 4 are thinking, not fitting.</p></div>
+
+</div></section>
+
+<section class="lab" id="v-confounding" hidden>
+<div><div class="fig"><canvas id="cv1"></canvas></div>
+<div class="key"><span><b style="background:var(--blue)"></b>Z low</span><span><b style="background:var(--red)"></b>Z high</span><span><b style="background:var(--ink)"></b>Naive fit Y ~ X</span><span><b style="background:var(--green)"></b>Adjusted Y ~ X + Z</span><span><b style="background:var(--amber)"></b>True effect</span></div></div>
+<div><h2>Confounding</h2>
+<p>Z causes both X and Y. Regressing Y on X alone picks up the path through Z. Adding Z to the model closes that backdoor.</p>
+<svg class="dag" id="d1" viewBox="0 0 360 190"></svg>
+<div class="ctl"><label for="a1">Z → X strength <output id="a1o"></output></label><input type="range" id="a1" min="0" max="2" step="0.1" value="1.2"></div>
+<div class="ctl"><label for="c1">Z → Y strength <output id="c1o"></output></label><input type="range" id="c1" min="-2" max="2" step="0.1" value="1.5"></div>
+<div class="ctl"><label for="b1">True X → Y effect <output id="b1o"></output></label><input type="range" id="b1" min="-1" max="2" step="0.1" value="0.5"></div>
+<div class="est" id="e1"></div>
+<div class="btns"><button data-rs="1">Resample data</button></div>
+<h3>Try</h3><ul><li>Set the true effect to 0. The naive slope still shows a strong "effect".</li><li>Make Z → Y negative: the naive estimate can flip sign (Simpson's paradox).</li></ul>
+</div></section>
+
+<section class="lab" id="v-paths" hidden>
+<div><div class="fig"><canvas id="cv2"></canvas></div>
+<div class="key"><span><b style="background:var(--ink)"></b>Raw fit Y ~ X</span><span><b style="background:var(--green)"></b>With adjustment</span><span><b style="background:var(--amber)"></b>True total effect</span><span>Bright dots: one slice of the conditioned variable</span></div></div>
+<div><h2>What should you adjust for?</h2>
+<p>Adding a variable to the model is not always safe. Pick a graph, then condition on the third variable and watch the estimate.</p>
+<div class="btns" id="sc"><button data-s="confounder" class="on">Confounder</button><button data-s="mediator">Mediator</button><button data-s="collider">Collider</button></div>
+<svg class="dag" id="d2" viewBox="0 0 360 190"></svg>
+<label class="tog"><input type="checkbox" id="cond2"> <span id="cond2l">Condition on W</span></label>
+<div class="ctl"><label for="b2">True total X → Y effect <output id="b2o"></output></label><input type="range" id="b2" min="-1" max="2" step="0.1" value="0.6"></div>
+<div class="verdict" id="v2"></div>
+<div class="est" id="e2"></div>
+<div class="btns"><button data-rs="2">Resample data</button></div>
+<p class="small">Graph colours: green = causal path, red = open non-causal path, grey = blocked. A square node is conditioned on.</p>
+</div></section>
+
+<section class="lab" id="v-ipw" hidden>
+<div><div class="fig"><canvas id="cv3"></canvas></div>
+<div class="key"><span><b style="background:var(--red)"></b>Treated</span><span><b style="background:var(--blue)"></b>Control</span><span>Overlap of estimated propensity scores. Little overlap = huge weights.</span></div></div>
+<div><h2>Propensity scores &amp; IPW</h2>
+<p>Treatment T depends on X, and X also affects Y. Five estimators of the average treatment effect, side by side.</p>
+<svg class="dag" id="d3" viewBox="0 0 360 190"></svg>
+<div class="ctl"><label for="g3">Selection on X (X → T) <output id="g3o"></output></label><input type="range" id="g3" min="0" max="3" step="0.1" value="1.2"></div>
+<div class="ctl"><label for="h3">X → Y strength <output id="h3o"></output></label><input type="range" id="h3" min="0" max="3" step="0.1" value="1.5"></div>
+<div class="ctl"><label for="t3">True ATE <output id="t3o"></output></label><input type="range" id="t3" min="-1" max="2" step="0.1" value="1"></div>
+<label class="tog"><input type="checkbox" id="nl3"> Outcome is nonlinear in X (linear outcome model now wrong)</label>
+<label class="tog"><input type="checkbox" id="pm3"> Propensity is nonlinear in X (logistic model now wrong)</label>
+<label class="tog"><input type="checkbox" id="cl3"> Clip propensities to [0.05, 0.95]</label>
+<div class="est" id="e3"></div>
+<p class="small" id="diag3"></p>
+<div class="btns"><button data-rs="3">Resample data</button></div>
+<h3>Try</h3><ul><li>Tick one box at a time and resample a few times: AIPW stays close because the other model is still right.</li><li>Tick both: every estimator drifts, AIPW included. Doubly robust, not magic.</li><li>Push selection to 3: watch effective sample size collapse.</li></ul>
+</div></section>
+
+<section class="lab" id="v-cate" hidden>
+<div><div class="fig"><canvas id="cv4"></canvas></div>
+<div class="key"><span><b style="background:var(--amber)"></b>True CATE τ(x)</span><span><b style="background:var(--red)"></b>T-learner</span><span><b style="background:var(--blue)"></b>S-learner (no interaction)</span><span><b style="background:var(--muted)"></b>Binned difference in means</span></div></div>
+<div><h2>Heterogeneous effects</h2>
+<p>Randomised experiment, but the effect depends on X: τ(x) = base + slope·x. Meta-learners estimate τ(x) with ordinary regressions.</p>
+<div class="ctl"><label for="m4">Base effect <output id="m4o"></output></label><input type="range" id="m4" min="0" max="2" step="0.1" value="1"></div>
+<div class="ctl"><label for="s4">Heterogeneity slope <output id="s4o"></output></label><input type="range" id="s4" min="-1.5" max="1.5" step="0.1" value="0.8"></div>
+<div class="ctl"><label for="n4">Noise SD <output id="n4o"></output></label><input type="range" id="n4" min="0.2" max="3" step="0.1" value="1"></div>
+<div class="ctl"><label for="N4">Sample size <output id="N4o"></output></label><input type="range" id="N4" min="100" max="3000" step="100" value="600"></div>
+<div class="est" id="e4"></div>
+<div class="btns"><button data-rs="4">Resample data</button></div>
+<h3>Notes</h3><ul><li><b>T-learner</b>: fit one model on treated, one on control, subtract.</li><li><b>S-learner</b>: one model with T as a feature. A model that cannot express T×X interactions returns a flat effect.</li><li>Small n + big noise: T-learner slope gets unstable. That is why X-learners, R-learners and DML exist.</li></ul>
+</div></section>
+
+<section class="cheat" id="v-numericals" hidden>
+<h2>Numericals</h2>
+<p>Five practice problems. Solve on paper first, then open the steps.</p>
+<div class="cards">
+
+<div class="card"><h3>N1. ATE, ATT and the naive trap</h3>
+<div class="who"><svg><use href="#zed"/></svg><div class="bub">I chose who got treated. Can you see through me?</div></div>
+<div class="scroll" style="margin:0"><table><tr><th>Person</th><th>T</th><th>Y(1)</th><th>Y(0)</th></tr>
+<tr><td>P1</td><td>1</td><td>12</td><td>10</td></tr><tr><td>P2</td><td>0</td><td>9</td><td>9</td></tr><tr><td>P3</td><td>1</td><td>15</td><td>10</td></tr><tr><td>P4</td><td>1</td><td>11</td><td>8</td></tr><tr><td>P5</td><td>0</td><td>7</td><td>6</td></tr></table></div>
+<p>Find (a) ATE, (b) ATT, (c) the naive difference, (d) the selection bias.</p>
+<details><summary>Show steps</summary>
+<div class="f">Effects Y(1)−Y(0): 2, 0, 5, 3, 1</div>
+<div class="f">(a) ATE = (2+0+5+3+1)/5 = 11/5 = 2.2</div>
+<div class="f">(b) ATT = mean over treated P1, P3, P4 = (2+5+3)/3 = 3.33</div>
+<div class="f">(c) Treated show Y(1): 12, 15, 11 → mean 12.67<br>    Untreated show Y(0): 9, 6 → mean 7.5<br>    Naive = 12.67 − 7.5 = 5.17</div>
+<div class="f">(d) Bias = mean Y(0) of treated − mean Y(0) of untreated<br>    = mean(10, 10, 8) − mean(9, 6) = 9.33 − 7.5 = 1.83</div>
+<div class="f">Check: ATT + bias = 3.33 + 1.83 = 5.17 = naive ✓</div>
+<p>ATE <span class="ans">2.2</span>, ATT <span class="ans">3.33</span>, naive <span class="ans">5.17</span>, bias <span class="ans">1.83</span>.</p>
+<p class="rem">Trap: for untreated people you only see Y(0) (use 6 for P5, not 7). Naive (5.17) is more than double the ATE (2.2).</p>
+</details></div>
+
+<div class="card"><h3>N2. Adjust by groups, and pick the right target</h3>
+<div class="who"><svg><use href="#dot"/></svg><div class="bub">Same data, two different questions, two different answers.</div></div>
+<div class="scroll" style="margin:0"><table><tr><th>Group</th><th>Share of everyone</th><th>Share of treated</th><th>Treated mean</th><th>Control mean</th></tr>
+<tr><td>Young</td><td>60%</td><td>20%</td><td>50</td><td>40</td></tr><tr><td>Old</td><td>40%</td><td>80%</td><td>30</td><td>26</td></tr></table></div>
+<p>Assume age is the only confounder. Find the adjusted ATE and ATT.</p>
+<details><summary>Show steps</summary>
+<div class="f">Effect in young = 50 − 40 = 10<br>Effect in old = 30 − 26 = 4</div>
+<div class="f">ATE = 0.6×10 + 0.4×4 = 6 + 1.6 = 7.6</div>
+<div class="f">ATT = 0.2×10 + 0.8×4 = 2 + 3.2 = 5.2</div>
+<p>ATE <span class="ans">7.6</span>, ATT <span class="ans">5.2</span>.</p>
+<p class="rem">Same group effects, different weights. Always say whose effect you want.</p>
+</details></div>
+
+<div class="card"><h3>N3. IPW by hand, two ways</h3>
+<div class="who"><svg><use href="#dot"/></svg><div class="bub">Divide by the chance of getting what you got.</div></div>
+<div class="scroll" style="margin:0"><table><tr><th>Unit</th><th>T</th><th>Y</th><th>e(x)</th></tr>
+<tr><td>1</td><td>1</td><td>10</td><td>0.8</td></tr><tr><td>2</td><td>1</td><td>6</td><td>0.4</td></tr><tr><td>3</td><td>0</td><td>4</td><td>0.8</td></tr><tr><td>4</td><td>0</td><td>3</td><td>0.4</td></tr></table></div>
+<p>Find (a) the plain IPW (Horvitz–Thompson) estimate and (b) the normalised (Hájek) estimate.</p>
+<details><summary>Show steps</summary>
+<div class="f">Treated weights 1/e: 1/0.8 = 1.25, 1/0.4 = 2.5<br>Control weights 1/(1−e): 1/0.2 = 5, 1/0.6 = 1.67</div>
+<div class="f">(a) HT: treated part = (10×1.25 + 6×2.5)/4 = 27.5/4 = 6.875<br>    control part = (4×5 + 3×1.67)/4 = 25/4 = 6.25<br>    ATE = 6.875 − 6.25 = 0.625</div>
+<div class="f">(b) Hájek: treated = 27.5 / (1.25+2.5) = 27.5/3.75 = 7.33<br>    control = 25 / (5+1.67) = 25/6.67 = 3.75<br>    ATE = 7.33 − 3.75 = 3.58</div>
+<p>HT <span class="ans">0.625</span>, Hájek <span class="ans">3.58</span>.</p>
+<p class="rem">With few units they disagree a lot. Unit 3 (weight 5) dominates the control side. Hájek divides by the total weight, which is usually more stable.</p>
+</details></div>
+
+<div class="card"><h3>N4. AIPW for two people</h3>
+<div class="who"><svg><use href="#coin"/></svg><div class="bub">Model guess plus a weighted correction.</div></div>
+<div class="scroll" style="margin:0"><table><tr><th>Person</th><th>T</th><th>Y</th><th>e</th><th>μ₁</th><th>μ₀</th></tr>
+<tr><td>A</td><td>1</td><td>9</td><td>0.6</td><td>8</td><td>5</td></tr><tr><td>B</td><td>0</td><td>4</td><td>0.6</td><td>7</td><td>5</td></tr></table></div>
+<p>Use ψ = μ₁ − μ₀ + T(Y−μ₁)/e − (1−T)(Y−μ₀)/(1−e). Find the AIPW estimate.</p>
+<details><summary>Show steps</summary>
+<div class="f">A (treated): ψ = (8−5) + (9−8)/0.6 = 3 + 1.67 = 4.67</div>
+<div class="f">B (control): ψ = (7−5) − (4−5)/0.4 = 2 + 2.5 = 4.5</div>
+<div class="f">AIPW = (4.67 + 4.5)/2 = 4.58</div>
+<p>Answer <span class="ans">4.58</span>.</p>
+<p class="rem">Without the correction the model alone gives (3 + 2)/2 = 2.5. The residuals (A did better than predicted, B did worse) push it up.</p>
+</details></div>
+
+<div class="card"><h3>N5. Cole's college in numbers</h3>
+<div class="who"><svg><use href="#cole"/></svg><div class="bub">Filter on me and watch a link appear from nothing.</div></div>
+<p>100 students, 25 of each type: smart+sporty, smart only, sporty only, neither. Smart and sporty are independent. The college admits anyone smart <b>or</b> sporty.</p>
+<p>Among admitted students, find P(sporty | smart) and P(sporty | not smart).</p>
+<details><summary>Show steps</summary>
+<div class="f">Admitted: smart+sporty 25, smart only 25, sporty only 25<br>(the 25 "neither" are rejected) → 75 students</div>
+<div class="f">P(sporty | smart, admitted) = 25 / (25+25) = 0.5</div>
+<div class="f">P(sporty | not smart, admitted) = 25 / 25 = 1.0</div>
+<div class="f">In the full 100: P(sporty | smart) = 25/50 = 0.5, P(sporty | not smart) = 25/50 = 0.5</div>
+<p>Inside the college: <span class="ans">0.5 vs 1.0</span>. Outside: 0.5 vs 0.5.</p>
+<p class="rem">No link in the population, a strong negative link among the admitted. That is collider bias.</p>
+</details></div>
+
+</div>
+<div class="btns"><a class="go" href="#quiz">Next: quiz →</a></div>
+</section>
+
+<section class="lab quiz" id="v-quiz" hidden>
+<div><h2>Check yourself</h2><p id="score"></p><div id="qs"></div><div class="btns"><button id="qr">Reset quiz</button></div></div>
+</section>
+</main>
+<footer class="band"><h3>Go deeper</h3><ul>
+<li><a href="https://miguelhernan.org/whatifbook">Hernán &amp; Robins, <i>Causal Inference: What If</i></a> (free book: confounding, IPW, g-methods)</li>
+<li>Pearl, Glymour &amp; Jewell, <i>Causal Inference in Statistics: A Primer</i> (DAGs, backdoor criterion)</li>
+<li><a href="https://arxiv.org/abs/1706.03461">Künzel et al., Metalearners for estimating heterogeneous treatment effects</a> (S/T/X-learners)</li>
+<li><a href="https://arxiv.org/abs/1608.00060">Chernozhukov et al., Double/debiased machine learning</a></li>
+</ul><p class="small">All data on this page is simulated in your browser from the stated equations.</p></footer>
+
+<script>
+{
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const seeds={1:11,2:22,3:33,4:44};
+function rng(s){return()=>{s|=0;s=s+0x6D2B79F5|0;let t=Math.imul(s^s>>>15,1|s);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function gen(s){const r=rng(s);let sp=null;return{u:r,n(){if(sp!==null){const v=sp;sp=null;return v}let a;do a=r();while(a<1e-12);const b=r(),m=Math.sqrt(-2*Math.log(a));sp=m*Math.sin(2*Math.PI*b);return m*Math.cos(2*Math.PI*b)}}}
+function solve(A,b){const n=b.length;A=A.map((r,i)=>[...r,b[i]]);for(let i=0;i<n;i++){let p=i;for(let k=i+1;k<n;k++)if(Math.abs(A[k][i])>Math.abs(A[p][i]))p=k;[A[i],A[p]]=[A[p],A[i]];for(let k=i+1;k<n;k++){const f=A[k][i]/A[i][i];for(let j=i;j<=n;j++)A[k][j]-=f*A[i][j]}}const x=Array(n).fill(0);for(let i=n-1;i>=0;i--){let s=A[i][n];for(let j=i+1;j<n;j++)s-=A[i][j]*x[j];x[i]=s/A[i][i]}return x}
+function ols(cols,y){const k=cols.length+1,M=Array.from({length:k},()=>Array(k).fill(0)),v=Array(k).fill(0);for(let i=0;i<y.length;i++){const r=[1,...cols.map(c=>c[i])];for(let a=0;a<k;a++){v[a]+=r[a]*y[i];for(let b=0;b<k;b++)M[a][b]+=r[a]*r[b]}}return solve(M,v)}
+function logit(x,t){let b0=0,b1=0;for(let it=0;it<30;it++){let g0=0,g1=0,h0=0,h1=0,h2=0;for(let i=0;i<x.length;i++){const p=1/(1+Math.exp(-(b0+b1*x[i]))),r=t[i]-p,w=p*(1-p)+1e-9;g0+=r;g1+=r*x[i];h0+=w;h1+=w*x[i];h2+=w*x[i]*x[i]}const d=h0*h2-h1*h1;if(Math.abs(d)<1e-12)break;b0+=(h2*g0-h1*g1)/d;b1+=(h0*g1-h1*g0)/d;b0=Math.max(-20,Math.min(20,b0));b1=Math.max(-20,Math.min(20,b1))}return[b0,b1]}
+const mean=a=>a.reduce((s,v)=>s+v,0)/a.length;
+function ext(a,p=.08){const s=[...a].sort((x,y)=>x-y),lo=s[Math.floor(s.length*.01)],hi=s[Math.floor(s.length*.99)],d=(hi-lo)||1;return[lo-d*p,hi+d*p]}
+function isDark(){const t=document.documentElement.dataset.theme;return t==='dark'||(t!=='light'&&matchMedia('(prefers-color-scheme: dark)').matches)}
+function pal(){return isDark()?{ink:'#eef1f5',muted:'#9aa3b2',grid:'#262c37',blue:'#5b93ff',red:'#ff4a43',amber:'#ffb400',green:'#19c27a',soft:'#5d6675'}:{ink:'#111418',muted:'#5b6270',grid:'#dfe2e8',blue:'#0a5cff',red:'#e6261f',amber:'#ffb400',green:'#00a05a',soft:'#a9afba'}}
+function ticks(a,b,n){const raw=(b-a)/n,s=Math.pow(10,Math.floor(Math.log10(raw))),st=[1,2,5,10].map(m=>m*s).find(m=>m>=raw)||10*s,o=[];for(let v=Math.ceil(a/st)*st;v<=b+1e-9;v+=st)o.push(+v.toFixed(6));return o}
+const fmt=v=>Math.abs(v)<1e-9?'0':String(+v.toFixed(2));
+function draw(cv){const c=cv._c;if(!c)return;const W=cv.clientWidth,H=cv.clientHeight;if(!W||!H)return;const d=devicePixelRatio||1;cv.width=W*d;cv.height=H*d;const g=cv.getContext('2d');g.setTransform(d,0,0,d,0,0);g.clearRect(0,0,W,H);
+const P=pal(),L=48,R=14,T=14,B=40,[x0,x1]=c.xr,[y0,y1]=c.yr,sx=x=>L+(x-x0)/(x1-x0)*(W-L-R),sy=y=>H-B-(y-y0)/(y1-y0)*(H-T-B);
+g.font='12px Figtree,sans-serif';g.lineWidth=1;g.strokeStyle=P.grid;g.fillStyle=P.muted;
+ticks(x0,x1,W<520?4:7).forEach(v=>{g.beginPath();g.moveTo(sx(v),T);g.lineTo(sx(v),H-B);g.stroke();g.textAlign='center';g.fillText(fmt(v),sx(v),H-B+16)});
+ticks(y0,y1,5).forEach(v=>{g.beginPath();g.moveTo(L,sy(v));g.lineTo(W-R,sy(v));g.stroke();g.textAlign='right';g.fillText(c.yf?c.yf(v):fmt(v),L-6,sy(v)+4)});
+g.textAlign='center';g.font='600 13px Figtree,sans-serif';g.fillText(c.xl,L+(W-L-R)/2,H-6);
+g.save();g.translate(13,T+(H-T-B)/2);g.rotate(-Math.PI/2);g.fillText(c.yl,0,0);g.restore();
+g.save();g.beginPath();g.rect(L,T,W-L-R,H-T-B);g.clip();
+if(c.custom)c.custom(g,sx,sy,P);
+for(const p of c.pts||[]){g.globalAlpha=p[3];g.fillStyle=P[p[2]];g.beginPath();g.arc(sx(p[0]),sy(p[1]),p[4]||2.6,0,7);g.fill()}
+g.globalAlpha=1;
+for(const l of c.lines||[]){g.setLineDash(l.dash||[]);g.strokeStyle=P[l.col];g.lineWidth=l.w||3;g.beginPath();for(let i=0;i<=80;i++){const x=x0+(x1-x0)*i/80;i?g.lineTo(sx(x),sy(l.f(x))):g.moveTo(sx(x),sy(l.f(x)))}g.stroke()}
+g.setLineDash([]);g.restore()}
+function plot(id,c){const cv=$(id);cv._c=c;draw(cv)}
+const ro=new ResizeObserver(es=>es.forEach(e=>draw(e.target)));$$('canvas').forEach(c=>ro.observe(c));
+const redrawAll=()=>$$('canvas').forEach(draw);
+new MutationObserver(redrawAll).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change',redrawAll);
+
+function dag(id,nodes,edges,cond){const col={c:'var(--green)',o:'var(--red)',b:'var(--grid)'};const svg=$(id);
+let h='<defs>'+Object.keys(col).map(k=>`<marker id="${svg.id}${k}" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="3" markerHeight="3" orient="auto"><path d="M0,0L10,5L0,10z" style="fill:${col[k]}"/></marker>`).join('')+'</defs>';
+for(const [a,b,s] of edges){const [x1,y1]=nodes[a],[x2,y2]=nodes[b],dx=x2-x1,dy=y2-y1,L=Math.hypot(dx,dy);h+=`<line x1="${x1+dx/L*28}" y1="${y1+dy/L*28}" x2="${x2-dx/L*34}" y2="${y2-dy/L*34}" style="stroke:${col[s]};stroke-width:7;stroke-linecap:round" marker-end="url(#${svg.id}${s})"/>`}
+for(const k in nodes){const [x,y]=nodes[k];h+=k===cond?`<rect x="${x-23}" y="${y-23}" width="46" height="46" rx="8" style="fill:var(--ink)"/><text x="${x}" y="${y+7}" text-anchor="middle" style="fill:var(--bg);font:800 20px Figtree,sans-serif">${k}</text>`:`<circle cx="${x}" cy="${y}" r="21" style="fill:var(--bg);stroke:var(--ink);stroke-width:5"/><text x="${x}" y="${y+7}" text-anchor="middle" style="fill:var(--ink);font:800 20px Figtree,sans-serif">${k}</text>`}
+svg.innerHTML=h}
+function bars(id,rows,truth){const M=Math.max(.5,Math.abs(truth),...rows.map(r=>Math.abs(r[1])))*1.1,tp=50+truth/M*50;
+$(id).innerHTML=rows.map(([l,v,c,isT])=>{const b=v-truth,left=50+Math.min(0,v)/M*50,w=Math.abs(v)/M*50;return`<div class="row"><div class="rl"><span>${l}</span><b>${v.toFixed(2)}</b></div><div class="track"><div class="fill" style="left:${left}%;width:${w}%;background:var(--${c})"></div><div class="tm" style="left:${tp}%"></div></div>${isT?'':`<div class="bias">${Math.abs(b)<.1?'Within 0.1 of truth':'Bias '+(b>0?'+':'')+b.toFixed(2)}</div>`}</div>`}).join('')}
+const val=id=>{const e=$(id),o=$(id+'o');if(o)o.textContent=e.value;return +e.value};
+
+function lab1(){const a=val('#a1'),c=val('#c1'),b=val('#b1'),G=gen(seeds[1]),Z=[],X=[],Y=[];
+for(let i=0;i<500;i++){const z=G.n(),x=a*z+G.n(),y=b*x+c*z+G.n();Z.push(z);X.push(x);Y.push(y)}
+const nv=ols([X],Y),ad=ols([X,Z],Y);
+dag('#d1',{Z:[180,38],X:[60,150],Y:[300,150]},[['Z','X','o'],['Z','Y','o'],['X','Y','c']]);
+bars('#e1',[['True effect',b,'amber',1],['Naive: Y ~ X',nv[1],'ink'],['Adjusted: Y ~ X + Z',ad[1],'green']],b);
+plot('#cv1',{xr:ext(X),yr:ext(Y),xl:'X (treatment)',yl:'Y (outcome)',pts:X.map((x,i)=>[x,Y[i],Z[i]<-.5?'blue':Z[i]>.5?'red':'soft',.55]),
+lines:[{f:x=>b*x,col:'amber',dash:[8,6],w:3},{f:x=>nv[0]+nv[1]*x,col:'ink'},{f:x=>ad[0]+ad[1]*x,col:'green'}]})}
+
+const SC={
+confounder:{v:'W',nodes:{W:[180,38],X:[60,150],Y:[300,150]},edges:c=>[['W','X',c?'b':'o'],['W','Y',c?'b':'o'],['X','Y','c']],gen:(G,b)=>{const w=G.n(),x=w+.8*G.n();return[x,b*x+1.5*w+G.n(),w]},good:[false,true],
+msg:['The backdoor path X ← W → Y is open, so the slope mixes in W.','Conditioning on W blocks the backdoor. Only X → Y remains.']},
+mediator:{v:'M',nodes:{X:[50,110],M:[180,110],Y:[310,110]},edges:c=>[['X','M',c?'b':'c'],['M','Y',c?'b':'c']],gen:(G,b)=>{const x=G.n(),m=x+.7*G.n();return[x,b*m+G.n(),m]},good:[true,false],
+msg:['No backdoor paths. The raw slope is the total effect.','You blocked the causal path through M. What is left is the direct effect (zero here), not the total effect.']},
+collider:{v:'C',nodes:{X:[60,45],Y:[300,45],C:[180,155]},edges:c=>[['X','Y','c'],['X','C',c?'o':'b'],['Y','C',c?'o':'b']],gen:(G,b)=>{const x=G.n(),y=b*x+G.n();return[x,y,x+y+.6*G.n()]},good:[true,false],
+msg:['The path X → C ← Y is blocked at the collider. The raw slope is fine.','Conditioning on the collider opens a spurious path. Inside a slice of C, high X means low Y.']}};
+let sc='confounder';
+function lab2(){const S=SC[sc],b=val('#b2'),cond=$('#cond2').checked,G=gen(seeds[2]),X=[],Y=[],V=[];
+for(let i=0;i<500;i++){const [x,y,v]=S.gen(G,b);X.push(x);Y.push(y);V.push(v)}
+$('#cond2l').textContent='Condition on '+S.v;
+const raw=ols([X],Y),adj=ols([X,V],Y),good=S.good[+cond],est=cond?adj[1]:raw[1];
+dag('#d2',S.nodes,S.edges(cond),cond?S.v:null);
+const vd=$('#v2');vd.textContent=S.msg[+cond];vd.className='verdict'+(good?'':' bad');
+bars('#e2',[['True total effect',b,'amber',1],['Raw: Y ~ X',raw[1],'ink'],['Adjusted: Y ~ X + '+S.v,adj[1],good&&cond?'green':'red']],b);
+const mv=mean(V),sv=Math.sqrt(mean(V.map(v=>(v-mv)**2))),inS=V.map(v=>Math.abs(v-mv)<.3*sv),xs=X.filter((_,i)=>inS[i]),ys=Y.filter((_,i)=>inS[i]),mx=mean(xs),my=mean(ys),MX=mean(X),MY=mean(Y);
+const lines=[{f:x=>MY+b*(x-MX),col:'amber',dash:[8,6]},{f:x=>raw[0]+raw[1]*x,col:'ink',w:cond?2:3}];
+if(cond)lines.push({f:x=>my+adj[1]*(x-mx),col:good?'green':'red'});
+plot('#cv2',{xr:ext(X),yr:ext(Y),xl:'X',yl:'Y',pts:X.map((x,i)=>cond?[x,Y[i],inS[i]?(good?'green':'red'):'soft',inS[i]?.9:.2,inS[i]?3.2:2.4]:[x,Y[i],'blue',.5]),lines})}
+
+function lab3(){const g=val('#g3'),h=val('#h3'),tau=val('#t3'),nl=$('#nl3').checked,pm=$('#pm3').checked,cl=$('#cl3').checked,G=gen(seeds[3]),n=800,X=[],T=[],Y=[];
+dag('#d3',{X:[180,38],T:[60,150],Y:[300,150]},[['X','T','o'],['X','Y','o'],['T','Y','c']]);
+for(let i=0;i<n;i++){const x=G.n(),z=g*(x+(pm?1.1*(x*x-1):0)),t=G.u()<1/(1+Math.exp(-z))?1:0;X.push(x);T.push(t);Y.push(tau*t+h*x+(nl?.8*h*(Math.exp(x)-1.6487):0)+G.n())}
+const n1=T.reduce((s,t)=>s+t,0);
+if(n1<5||n-n1<5){$('#e3').textContent='Too few units in one arm. Lower the selection strength.';return}
+const [b0,b1]=logit(X,T),E=X.map(x=>{let e=1/(1+Math.exp(-(b0+b1*x)));e=Math.min(1-1e-6,Math.max(1e-6,e));return cl?Math.min(.95,Math.max(.05,e)):e});
+const Y1=Y.filter((_,i)=>T[i]),Y0=Y.filter((_,i)=>!T[i]),naive=mean(Y1)-mean(Y0),reg=ols([T,X],Y)[1];
+let s1=0,w1=0,s0=0,w0=0,sw=0,sw2=0,mw=0;
+for(let i=0;i<n;i++){const w=T[i]?1/E[i]:1/(1-E[i]);if(T[i]){s1+=w*Y[i];w1+=w}else{s0+=w*Y[i];w0+=w}sw+=w;sw2+=w*w;mw=Math.max(mw,w)}
+const ipw=s1/w1-s0/w0;
+const XT=X.filter((_,i)=>T[i]),XC=X.filter((_,i)=>!T[i]),m1=ols([XT],Y1),m0=ols([XC],Y0);
+const aipw=mean(X.map((x,i)=>{const mu1=m1[0]+m1[1]*x,mu0=m0[0]+m0[1]*x;return mu1-mu0+(T[i]?(Y[i]-mu1)/E[i]:0)-(T[i]?0:(Y[i]-mu0)/(1-E[i]))}));
+bars('#e3',[['True ATE',tau,'amber',1],['Naive difference in means',naive,'ink'],['Regression: Y ~ T + X',reg,'blue'],['IPW (normalised)',ipw,'red'],['AIPW (doubly robust)',aipw,'green']],tau);
+$('#diag3').textContent=`Treated ${n1} of ${n}. Largest weight ${mw.toFixed(1)}. Effective sample size ${(sw*sw/sw2).toFixed(0)} of ${n}.`;
+const nb=20,c1=Array(nb).fill(0),c0=Array(nb).fill(0);E.forEach((e,i)=>{const k=Math.min(nb-1,Math.floor(e*nb));(T[i]?c1:c0)[k]++});
+const m=Math.max(...c1,...c0)*1.1||1;
+plot('#cv3',{xr:[0,1],yr:[-m,m],xl:'Estimated propensity e(x) = P(T=1 | X)',yl:'Treated ↑   Control ↓',yf:v=>fmt(Math.abs(v)),custom:(G2,sx,sy,P)=>{for(let k=0;k<nb;k++){const a=sx(k/nb)+1,w=sx((k+1)/nb)-sx(k/nb)-2;G2.fillStyle=P.red;G2.fillRect(a,sy(c1[k]),w,sy(0)-sy(c1[k]));G2.fillStyle=P.blue;G2.fillRect(a,sy(0),w,sy(-c0[k])-sy(0))}
+G2.strokeStyle=P.ink;G2.lineWidth=1.5;G2.beginPath();G2.moveTo(sx(0),sy(0));G2.lineTo(sx(1),sy(0));G2.stroke();if(cl){G2.setLineDash([6,5]);G2.strokeStyle=P.amber;G2.lineWidth=2;[.05,.95].forEach(v=>{G2.beginPath();G2.moveTo(sx(v),sy(-m));G2.lineTo(sx(v),sy(m));G2.stroke()});G2.setLineDash([])}}})}
+
+function lab4(){const base=val('#m4'),sl=val('#s4'),sd=val('#n4'),n=val('#N4'),G=gen(seeds[4]),X=[],T=[],Y=[];
+for(let i=0;i<n;i++){const x=G.n(),t=G.u()<.5?1:0;X.push(x);T.push(t);Y.push(x+(base+sl*x)*t+sd*G.n())}
+const tr=X.map((_,i)=>i).filter(i=>T[i]),co=X.map((_,i)=>i).filter(i=>!T[i]);
+const f1=ols([tr.map(i=>X[i])],tr.map(i=>Y[i])),f0=ols([co.map(i=>X[i])],co.map(i=>Y[i])),sL=ols([T,X],Y);
+const tl=x=>f1[0]-f0[0]+(f1[1]-f0[1])*x,sk=sL[1],tru=x=>base+sl*x;
+const rm=f=>Math.sqrt(mean(X.map(x=>(f(x)-tru(x))**2)));
+bars('#e4',[['True ATE (base, since mean X = 0)',base,'amber',1],['T-learner ATE',mean(X.map(tl)),'red'],['S-learner ATE',sk,'blue']],base);
+$('#e4').insertAdjacentHTML('beforeend',`<p class="small">CATE error (RMSE over units): T-learner ${rm(tl).toFixed(2)}, S-learner ${rm(()=>sk).toFixed(2)}.</p>`);
+const pts=[];for(let k=0;k<10;k++){const lo=-2.5+k*.5,hi=lo+.5,a=[],c=[];X.forEach((x,i)=>{if(x>=lo&&x<hi)(T[i]?a:c).push(Y[i])});if(a.length>2&&c.length>2)pts.push([(lo+hi)/2,mean(a)-mean(c),'muted',.85,5])}
+const ys=[tru(-2.5),tru(2.5),tl(-2.5),tl(2.5),sk,...pts.map(p=>p[1])],lo=Math.min(...ys),hi=Math.max(...ys),pd=(hi-lo)*.12+.3;
+plot('#cv4',{xr:[-2.5,2.5],yr:[lo-pd,hi+pd],xl:'X (covariate)',yl:'Treatment effect τ(x)',pts,lines:[{f:tru,col:'amber',dash:[8,6],w:4},{f:tl,col:'red'},{f:()=>sk,col:'blue'}]})}
+
+const labs={1:lab1,2:lab2,3:lab3,4:lab4};
+[['#a1,#c1,#b1',1],['#b2,#cond2',2],['#g3,#h3,#t3,#nl3,#pm3,#cl3',3],['#m4,#s4,#n4,#N4',4]].forEach(([s,k])=>$$(s).forEach(e=>e.addEventListener('input',labs[k])));
+$$('[data-rs]').forEach(b=>b.addEventListener('click',()=>{const k=b.dataset.rs;seeds[k]+=101;labs[k]()}));
+$$('#sc button').forEach(b=>b.addEventListener('click',()=>{sc=b.dataset.s;$$('#sc button').forEach(x=>x.classList.toggle('on',x===b));$('#cond2').checked=false;lab2()}));
+
+const Q=[
+['Z causes both X and Y. You want the causal effect of X on Y. What do you include in the regression?',['X only','X and Z','X, Z and anything correlated with Y'],1,'Z is a confounder: it opens the backdoor path X ← Z → Y. Adjusting for it blocks that path. Throwing in everything correlated with Y can add colliders or mediators.'],
+['A company hires people who are either very skilled or very well connected. Among employees, skill and connections are negatively correlated. Why?',['Skill causes fewer connections','Selection on a collider','Measurement error'],1,'Hiring is a collider (skill → hired ← connections). Looking only at hires conditions on it and creates a spurious negative association.'],
+['A drug lowers blood pressure, which improves survival. To get the drug\'s total effect on survival, should you adjust for blood pressure measured after treatment?',['Yes, it predicts survival','No, it is a mediator','Only if the sample is large'],1,'Blood pressure lies on the causal path. Adjusting for it removes the part of the effect that goes through it.'],
+['Your IPW estimate swings wildly between resamples. Most likely cause?',['Propensity scores near 0 or 1 (weak overlap)','Too large a sample','The outcome is binary'],0,'Positivity / overlap problems give a few units enormous weights, so the estimate is driven by them. Check overlap plots, trim or clip, or change the estimand.'],
+['AIPW gives a consistent ATE estimate when…',['both nuisance models are correct','at least one of the propensity or outcome models is correct','neither model matters'],1,'That is double robustness. If both are wrong, AIPW can still be biased, as Lab 3 shows when you tick both boxes.'],
+['In a randomised experiment with a fair coin deciding treatment, the plain difference in means is…',['biased without a propensity model','unbiased for the ATE','only valid with covariate adjustment'],1,'Randomisation makes T independent of all potential outcomes, so no backdoor paths exist. Adjustment can reduce variance but is not needed for unbiasedness.'],
+['An S-learner using a linear model with only T and X as features (no interaction) will…',['estimate a constant effect for everyone','recover τ(x) exactly','be the same as a T-learner'],0,'Without a T×X term the model can only shift the line, so every unit gets the same effect. Flexible base learners (trees, boosting) can split on T and do better.']];
+let ans={};
+function quiz(){$('#qs').innerHTML=Q.map((q,i)=>`<div class="q"><p>${i+1}. ${q[0]}</p><div class="btns">${q[1].map((o,j)=>`<button data-q="${i}" data-o="${j}" class="${i in ans?(j===q[2]?'ok':j===ans[i]?'no':''):''}">${o}</button>`).join('')}</div><p class="ex" ${i in ans?'':'hidden'} style="font-weight:400">${q[3]}</p></div>`).join('');
+const k=Object.keys(ans).length,s=Object.entries(ans).filter(([i,o])=>Q[i][2]===o).length;$('#score').textContent=k?`${s} / ${k} correct (${Q.length} questions)`:`${Q.length} questions. Pick an answer to see the explanation.`;
+$$('#qs button').forEach(b=>b.addEventListener('click',()=>{const i=+b.dataset.q;if(i in ans)return;ans[i]=+b.dataset.o;quiz()}))}
+$('#qr').addEventListener('click',()=>{ans={};quiz()});
+
+const views=['comics','cheat','confounding','paths','ipw','cate','numericals','quiz'];
+function show(){const v=views.includes(location.hash.slice(1))?location.hash.slice(1):'comics';window.scrollTo(0,0);views.forEach(x=>{$('#v-'+x).hidden=x!==v});$$('#nav a').forEach(a=>a.classList.toggle('on',a.dataset.v===v))}
+addEventListener('hashchange',show);
+lab1();lab2();lab3();lab4();quiz();show();
+}
+</script>
+</body></html>
