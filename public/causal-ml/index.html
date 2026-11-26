@@ -424,14 +424,14 @@ a{color:var(--blue)}
 <p class="rem">For untreated people you only see the "if not treated" outcome (use 6 for P5, not 7). The naive answer (5.17) is more than double the true average (2.2).</p>
 </details></div></div>
 
-<div class="card"><div><h3>N2. Compare within groups, then average</h3>
+<div class="card"><div><h3>N2. Compare within groups (strata), then average</h3>
 <div class="who"><svg><use href="#dot"/></svg><div class="bub">Same data, two different questions, two different answers.</div></div>
-<p><b>Method:</b> stratification (compare inside each group, then take a weighted average).</p>
+<p><b>Method:</b> stratification (split people into groups, called strata, compare inside each one, then take a weighted average).</p>
 
 <div class="scroll" style="margin:0"><table><tr><th>Group</th><th>Share of everyone</th><th>Share of treated</th><th>Treated average</th><th>Untreated average</th></tr>
 <tr><td>Young</td><td>60%</td><td>20%</td><td>50</td><td>40</td></tr><tr><td>Old</td><td>40%</td><td>80%</td><td>30</td><td>26</td></tr></table></div>
 <div class="ask"><b class="l">Question</b>Age is the only thing that affects both who gets treated and the outcome. Find:<ol><li>The average treatment effect (for everyone)</li><li>The average effect on the treated (only for people who got it)</li></ol></div>
-</div><div><p style="margin:8px 0 0"><b>Terms used here</b></p><div class="scroll terms" style="margin:0"><table><tr><th>Term</th><th>Meaning</th><th>Short name</th></tr><tr><td>Average treatment effect</td><td style="white-space:normal">Individual effect averaged over everyone</td><td>ATE</td></tr><tr><td>Average effect on the treated</td><td style="white-space:normal">Individual effect averaged over only the people who got the treatment</td><td>ATT</td></tr><tr><td>Group effect</td><td style="white-space:normal">Average effect for one kind of person (here: one age group)</td><td>CATE</td></tr><tr><td>Confounder</td><td style="white-space:normal">Affects both who gets treated and the outcome (here: age)</td><td>—</td></tr></table></div>
+</div><div><p style="margin:8px 0 0"><b>Terms used here</b></p><div class="scroll terms" style="margin:0"><table><tr><th>Term</th><th>Meaning</th><th>Short name</th></tr><tr><td>Average treatment effect</td><td style="white-space:normal">Individual effect averaged over everyone</td><td>ATE</td></tr><tr><td>Average effect on the treated</td><td style="white-space:normal">Individual effect averaged over only the people who got the treatment</td><td>ATT</td></tr><tr><td>Strata</td><td style="white-space:normal">The groups you split people into (here: young and old). One group is a stratum</td><td>—</td></tr><tr><td>Group effect</td><td style="white-space:normal">Average effect for one kind of person (here: one age group)</td><td>CATE</td></tr><tr><td>Confounder</td><td style="white-space:normal">Affects both who gets treated and the outcome (here: age)</td><td>—</td></tr></table></div>
 <details><summary>Show steps</summary>
 <div class="f">Effect in young = 50 − 40 = 10<br>Effect in old = 30 − 26 = 4</div>
 <div class="f">Average treatment effect (weights = share of everyone)<br>= 0.6×10 + 0.4×4 = 6 + 1.6 = 7.6</div>
