@@ -4,9 +4,10 @@ import Research from './components/Research'
 import Publications from './components/Publications'
 import Experience from './components/Experience'
 import Projects from './components/Projects'
+import Blogs from './components/Blogs'
 import Contact from './components/Contact'
 import { site } from './data/content'
 
 export default function App() {
-  return <><Nav/><main className="w-full"><Hero/><Research/><Publications/><Experience/><Projects/><Contact/></main><footer className="border-t border-hairline px-5 py-8 text-center text-sm text-inkSoft">{site.footer}</footer></>
+  return <><Nav/><main className="w-full"><Hero/><Research/><Publications/><Experience/><Projects/><Blogs/><Contact/></main><footer className="border-t border-hairline px-5 py-8 text-center text-sm text-inkSoft">{site.footer}</footer></>
 }

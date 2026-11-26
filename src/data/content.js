@@ -7,6 +7,7 @@ export const site = {
     { label: 'Publications', href: '#publications' },
     { label: 'Experience', href: '#experience' },
     { label: 'Projects', href: '#projects' },
+    { label: 'Blogs', href: '#blogs' },
     { label: 'Contact', href: '#contact' },
   ],
   hero: {
@@ -89,6 +90,10 @@ export const projects = [
   { title: 'SHAP-based model interpretability interface', description: 'Interactive dashboard for local and global interpretability in tabular ML models, with report export.', stack: 'Streamlit · SHAP · Pandas', href: 'https://github.com/Sukt03/Explainable-AI-Dashboard', linkLabel: 'Code ↗' },
 ]
 
+export const blogs = [
+  { title: 'Causal ML, by hand', date: 'Nov 2026', description: 'An interactive guide to causal inference: comic strips, a cheat sheet with small worked numbers, live simulation labs (confounding, colliders, inverse probability weighting, heterogeneous effects), five numericals and a quiz.', tags: 'Causal inference · Interactive', href: `${import.meta.env.BASE_URL}causal-ml/`, linkLabel: 'Read →' },
+]
+
 export const contact = {
   details: 'tiwarisukriti2003@gmail.com',
   github: 'github.com/Sukt03',
@@ -107,5 +112,6 @@ export const sectionMeta = {
   publications: { number: '02', title: 'Publications' },
   experience: { number: '03', title: 'Experience' },
   projects: { number: '04', title: 'Projects', graphLabel: 'Generative AI node graph decoration' },
-  contact: { number: '05', title: 'Contact' },
+  blogs: { number: '05', title: 'Blogs' },
+  contact: { number: '06', title: 'Contact' },
 }
