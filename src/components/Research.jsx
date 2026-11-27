@@ -1,16 +1,15 @@
 import { research, sectionMeta } from '../data/content'
 import LogoBadge from './LogoBadge'
-import NetworkDecoration from './NetworkDecoration'
 import ResearchIcon from './ResearchIcon'
 import RevealItem from './RevealItem'
 import SectionHeading from './SectionHeading'
 
 const focusIcons = ['brain', 'signal', 'spark', 'map']
-const serviceMarks = { 'IEEE ICETCI 2026': 'ICETCI', 'CIKM 2026': 'CIKM', 'ICIP 2026': 'ICIP', 'IEEE WCCI 2026 / IJCNN': 'WCCI' }
+const serviceMarks = { 'IEEE ICETCI 2026': 'ICETCI', 'CIKM 2026': 'CIKM', 'ICIP 2026': 'ICIP', 'IEEE WCCI 2026 / IJCNN': 'WCCI', 'Volunteer · IJCAI–ECAI 2026, Bremen': 'IJCAI' }
 const talkMarks = { 'Osmania University': 'OU', 'ACE Engineering College': 'ACE' }
 
 export default function Research() {
-  return <section id="research" className="section-shell relative scroll-mt-28 overflow-hidden py-10 sm:py-12"><NetworkDecoration position="right"/><NetworkDecoration position="left" className="bottom-[18%] scale-75 opacity-70"/>
+  return <section id="research" className="section-shell relative py-8 sm:py-10">
     <div className="relative"><SectionHeading {...sectionMeta.research}/>
     <div className="mb-6 flex max-w-5xl items-center gap-4 rounded-xl border-l-2 border-pink bg-card/60 px-5 py-4 text-sm leading-6 text-inkSoft"><LogoBadge mark="MU" label="Mahindra University"/><p>{research.supervision.prefix} <a href={research.supervision.href} target="_blank" rel="noopener" className="font-medium text-purpleDeep underline decoration-purple/30 underline-offset-4 hover:decoration-pink">{research.supervision.name}</a>, {research.supervision.suffix}</p></div>
     <div className="mb-10 grid max-w-6xl gap-4 text-base leading-7 text-inkSoft lg:grid-cols-2 lg:gap-10">{research.intro.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}</div>
@@ -20,6 +19,10 @@ export default function Research() {
       <div><h3 className="mb-3 font-display text-lg text-purpleDeep">{research.serviceTitle}</h3><ul className="space-y-2 text-xs text-inkSoft">{research.service.map((item) => <li key={item} className="flex items-center gap-2"><LogoBadge compact mark={serviceMarks[item]} label={item}/><span className="font-mono">{item}</span></li>)}</ul></div>
       <div><h3 className="mb-3 font-display text-lg text-purpleDeep">{research.talksTitle}</h3><ul className="space-y-3 text-sm text-inkSoft">{research.talks.map((item) => <li key={item.title} className="flex items-center gap-3"><LogoBadge compact mark={talkMarks[item.venue]} label={item.venue}/><span><span className="block font-medium text-ink">{item.title}</span>{item.venue}</span></li>)}</ul></div>
       <div><h3 className="mb-3 font-display text-lg text-purpleDeep">{research.openWorkTitle}</h3><ul className="space-y-3 text-sm">{research.openWork.map((item) => <li key={item.label} className="flex items-center gap-3">{item.label.includes('IIIT') && <LogoBadge compact mark="IIITH" label="IIIT Hyderabad"/>}<a href={item.href} target="_blank" rel="noopener" className="text-purpleDeep underline decoration-purple/30 underline-offset-4 hover:decoration-pink">{item.label}</a></li>)}</ul></div>
+    </div>
+    <div className="grid gap-8 py-7 md:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
+      <div><h3 className="mb-4 font-display text-lg text-purpleDeep">{research.skillsTitle}</h3><div className="space-y-3">{research.skills.map((row) => <div key={row.group} className="flex flex-col gap-2 sm:flex-row sm:items-baseline sm:gap-4"><span className="w-32 shrink-0 font-mono text-[0.68rem] uppercase tracking-wider text-inkSoft">{row.group}</span><ul className="flex flex-wrap gap-1.5">{row.items.map((skill) => <li key={skill} className="rounded-md border border-hairline bg-card px-2 py-0.5 font-mono text-xs text-ink">{skill}</li>)}</ul></div>)}</div></div>
+      <div><h3 className="mb-4 font-display text-lg text-purpleDeep">{research.languagesTitle}</h3><ul className="space-y-2 text-sm text-inkSoft">{research.languages.map((lang) => <li key={lang}>{lang}</li>)}</ul></div>
     </div>
     </div></section>
 }

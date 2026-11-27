@@ -1,32 +1,36 @@
 export const site = {
   title: 'Sukriti Tiwari — Research Portfolio',
   brand: 'Sukriti Tiwari',
-  navLabel: 'Primary navigation',
-  nav: [
-    { label: 'Research', href: '#research' },
-    { label: 'Publications', href: '#publications' },
-    { label: 'Experience', href: '#experience' },
-    { label: 'Projects', href: '#projects' },
-    { label: 'Blogs', href: '#blogs' },
-    { label: 'Contact', href: '#contact' },
-  ],
+  monogram: 'ST',
   hero: {
     name: 'Sukriti Tiwari',
+    role: 'AI Researcher',
+    focus: 'EEG brain decoding, generative AI & biomedical graph learning',
     lede: 'Trying to figure out how brains work and whether AI can read them.',
-    visualLabel: 'Abstract research network connecting geospatial AI, generative AI, and machine learning',
-    ambientLabel: 'Decorative floating research particles',
-    portraitAlt: 'Sukriti Tiwari',
-    portraitSrc: `${import.meta.env.BASE_URL}sukriti-linkedin-portrait.png`,
+    portraitAlt: 'Portrait of Sukriti Tiwari',
+    portraitSrc: `${import.meta.env.BASE_URL}sukriti-portrait.jpg`,
   },
+  // Drop your CV into public/ (e.g. public/sukriti-tiwari-cv.pdf) and set this to
+  // `${import.meta.env.BASE_URL}sukriti-tiwari-cv.pdf` to show the "CV" button.
+  cvHref: null,
   footer: '© 2026 Sukriti Tiwari',
 }
 
+// The folders on the home screen. Each opens as a full-screen panel at #/<id>.
+export const folders = [
+  { id: 'research', label: 'Research', icon: 'brain', blurb: 'What I study and why' },
+  { id: 'publications', label: 'Publications', icon: 'paper', blurb: '5 papers · 2 awards' },
+  { id: 'experience', label: 'Experience', icon: 'briefcase', blurb: 'Labs, industry, leadership' },
+  { id: 'blogs', label: 'Blogs', icon: 'pen', blurb: 'Three shelves of writing' },
+  { id: 'contact', label: 'Contact', icon: 'mail', blurb: 'Say hello' },
+]
+
 export const publications = [
   { title: 'OMNI: Optimized Multiview Network Integration with Heterogeneous Graph Attention', description: 'Scalable multi-view heterogeneous graph attention framework for large-scale biomedical interaction prediction. AUROC 0.91 on chemical–gene interaction tasks.', status: 'Published', venue: 'ACS JCIM · Jun 2026', link: 'https://doi.org/10.1021/acs.jcim.6c00441', linkLabel: 'DOI ↗' },
-  { title: 'Lost in Visual Translation: VLM-Assisted EEG-to-Image Evaluation', description: 'BCI-aware perceptual–semantic coherence framework for EEG-to-image reconstruction evaluation using VLM-routed annotations and human validation across 6,885 image pairs from ATM, ENIGMA, BrainVis, and DreamDiffusion.', status: 'Accepted', venue: 'IJCAI-ECAI 2026 HBAI' },
-  { title: 'Evolutionary Fitness Shaping for Safe Clinical Text Generation', description: 'Evolutionary algorithms applied to safe clinical text generation with large language models.', status: 'Accepted', venue: 'IEEE WCCI 2026 · CEC SS03' },
-  { title: 'Multi-View Contrastive and Semantically-Aligned EEG Emotion Recognition', description: 'TAMA — a topology- and asymmetry-aware adapter for subject-independent EEG emotion recognition using focal classification, NT-Xent contrastive learning, and BERT-based semantic alignment.', status: 'Accepted', venue: 'IEEE ICETCI 2026' },
-  { title: 'Generative AI for Non-Invasive Brain Decoding', description: 'Survey of generative AI approaches, challenges, and future directions for non-invasive brain decoding across EEG, fMRI, MEG, and hybrid systems.', status: 'Accepted', venue: 'IEEE ICETCI 2026' },
+  { title: 'Lost in Visual Translation: A VLM-Assisted Perceptual-Semantic Coherence Framework for EEG-to-Image Reconstruction', description: 'Shows that pixel and embedding metrics misjudge EEG-to-image reconstructions, then scores 6,855 pairs (ATM, ENIGMA, BrainVis, DreamDiffusion) with four VLMs on separate perceptual and semantic questions and distils their consensus into the BCI-Coherence Score (BCS). Human validation: κ = 0.882 on joint coherence.', status: 'Accepted', award: 'Best Poster Award', venue: 'IJCAI-ECAI 2026 HBAI', link: 'https://sukt03.github.io/BCS/', linkLabel: 'Project site ↗' },
+  { title: 'Generate, Verify and Select: Evolutionary Fitness Shaping for Safe Clinical Text Generation', description: 'Inference-time generation for clinical text with medication, number, negation, and contradiction checks, and Differential Evolution-based selection of the safest output.', status: 'Published', venue: 'IEEE WCCI 2026 · CEC', link: 'https://ieeexplore.ieee.org/document/11727414', linkLabel: 'IEEE Xplore ↗' },
+  { title: 'Multi-View Contrastive and Semantically-Aligned EEG Emotion Recognition with Topology and Asymmetry-Aware Adaptation', description: 'TAMA — a topology- and asymmetry-aware adapter for subject-independent EEG emotion recognition, combining focal classification, NT-Xent contrastive learning, and frozen-BERT semantic alignment. Best macro F1 (0.475) and the only positive MCC on strict leave-subjects-out DEAP.', status: 'Published', award: 'Best Presentation Award', venue: 'IEEE ICETCI 2026', link: 'https://ieeexplore.ieee.org/document/11710471', linkLabel: 'IEEE Xplore ↗' },
+  { title: 'Generative AI for Non-Invasive Brain Decoding: Cross-Modal Approaches, Challenges, and Future Directions', description: 'Survey of generative AI approaches, challenges, and future directions for non-invasive brain decoding across EEG, fMRI, MEG, and hybrid systems.', status: 'Published', venue: 'IEEE ICETCI 2026', link: 'https://ieeexplore.ieee.org/document/11710746', linkLabel: 'IEEE Xplore ↗' },
 ]
 
 export const research = {
@@ -48,12 +52,20 @@ export const research = {
     { title: 'GeoAI and remote sensing', description: 'Terrace detection, hyperspectral preprocessing, and multi-temporal satellite-image segmentation.' },
   ],
   serviceTitle: 'Reviewing & service',
-  service: ['IEEE ICETCI 2026', 'CIKM 2026', 'ICIP 2026', 'IEEE WCCI 2026 / IJCNN'],
+  service: ['IEEE ICETCI 2026', 'CIKM 2026', 'ICIP 2026', 'IEEE WCCI 2026 / IJCNN', 'Volunteer · IJCAI–ECAI 2026, Bremen'],
   talksTitle: 'Talks & outreach',
   talks: [
     { title: 'Generative AI and NLP sessions', venue: 'Osmania University' },
     { title: 'PM SHRI Schools session', venue: 'ACE Engineering College' },
   ],
+  skillsTitle: 'Toolkit',
+  skills: [
+    { group: 'ML / AI', items: ['PyTorch', 'PyTorch Geometric', 'TensorFlow', 'Hugging Face', 'vLLM', 'scikit-learn'] },
+    { group: 'Science & data', items: ['MNE-Python', 'NumPy', 'pandas', 'OpenCV', 'FAISS', 'SHAP'] },
+    { group: 'Engineering', items: ['Python', 'TypeScript', 'SQL', 'Linux', 'Slurm', 'Vertex AI', 'RunPod', 'LaTeX'] },
+  ],
+  languagesTitle: 'Languages',
+  languages: ['Hindi · native', 'English · C1 (IELTS Academic 8.0)', 'German · learning'],
   openWorkTitle: 'Open work',
   openWork: [
     { label: 'Agricultural terrace mapping using ML', href: 'https://github.com/Sukt03/Agricultural-terrace-mapping-using-ML' },
@@ -62,36 +74,55 @@ export const research = {
 }
 
 export const experience = [
-  { when: 'Nov 2024 — Sept 2025', title: 'Research Intern, Lab for Spatial Informatics, IIIT Hyderabad', description: 'Automated terrace-detection pipeline in Google Earth Engine and Python for geomorphological analysis in the Western Himalayas. Hyperspectral preprocessing (PCA, radiometric/geometric/atmospheric correction). Multi-temporal Sentinel-2 lake-encroachment mapping over Hyderabad using deep-learning segmentation.' },
-  { when: 'Aug 2024 — Aug 2025', title: 'Machine Learning Engineer, Magnocode Tech Pvt. Ltd.', description: 'Automated data pipelines for large-scale web crawling and domain-specific dataset preprocessing. Dataset preparation for LLM fine-tuning and inference on Runpod GPU infrastructure. Contributed to a patent-filed AI prediction system.' },
-  { when: 'Jan 2024 — Aug 2024', title: 'Machine Learning Engineer Trainee, Magnocode Tech Pvt. Ltd.', description: 'Data collection, cleaning, and schema validation for downstream model development. Git-based version control and testing of end-to-end ML pipelines.' },
+  { mark: 'IIITH', when: 'Nov 2024 — Sept 2025', title: 'Research Student, Lab for Spatial Informatics, IIIT Hyderabad', description: 'Automated terrace-detection pipeline in Google Earth Engine and Python for geomorphological analysis in the Western Himalayas. Hyperspectral preprocessing (PCA, radiometric/geometric/atmospheric correction). Multi-temporal Sentinel-2 lake-encroachment mapping over Hyderabad using deep-learning segmentation.' },
+  { mark: 'M', when: 'Aug 2024 — Aug 2025', title: 'Machine Learning Engineer, Magnocode Tech Pvt. Ltd.', description: 'Automated data pipelines for large-scale web crawling and domain-specific dataset preprocessing. Dataset preparation for LLM fine-tuning and inference on Runpod GPU infrastructure. Contributed to a patent-filed AI prediction system.' },
+  { mark: 'M', when: 'Jan 2024 — Aug 2024', title: 'Machine Learning Engineer Trainee, Magnocode Tech Pvt. Ltd.', description: 'Data collection, cleaning, and schema validation for downstream model development. Git-based version control and testing of end-to-end ML pipelines.' },
 ]
 
-export const education = {
-  mark: 'JNTUH',
-  school: 'Keshav Memorial Institute of Technology',
-  affiliation: 'Affiliated to Jawaharlal Nehru Technological University Hyderabad',
-  qualification: 'B.Tech in Computer Science',
-  when: 'June 2024',
-}
+export const education = [
+  { mark: 'JNTUH', school: 'Keshav Memorial Institute of Technology', affiliation: 'Affiliated to Jawaharlal Nehru Technological University Hyderabad', qualification: 'B.Tech in Computer Science and Engineering', when: 'June 2024' },
+  { mark: 'FIITJEE', school: 'FIITJEE Junior College', affiliation: 'Hyderabad', qualification: 'Mathematics, Physics & Chemistry', when: 'June 2020' },
+]
 
 export const achievements = [
+  { year: '2026', title: 'Best Poster Award · IJCAI–ECAI 2026 HBAI', detail: 'For EEG-to-image evaluation research (Lost in Visual Translation).' },
+  { year: '2026', title: 'Best Presentation Award · IEEE ICETCI 2026', detail: 'For multi-view contrastive EEG emotion recognition research.' },
   { year: '2023 — 2024', title: 'Student Council, KMIT', detail: 'Head of Organizing Committee and member; led cultural and technical events with 4,000+ attendees.' },
   { year: '2024', title: 'Smart India Hackathon Runner-Up', detail: 'Internal KMIT competition — cyclone-eye detection using deep learning.' },
   { year: '2020', title: 'Vachan Speakers Club', detail: 'Core member and mentor for public speaking, stage presence, and speaker development.' },
-  { year: '2018', title: 'CBSE Computer Science Centum', detail: 'Scored 100/100 in the Class X board examination.' },
   { year: '2020', title: 'Creative Lead, KMIT', detail: 'Created branding, posters, logos, and promotional media for college events.' },
   { year: '2024', title: 'Awarded Exceptional Work Ethic', detail: 'Certificate of appreciation awarded by KMIT.' },
 ]
 
-export const projects = [
-  { title: 'CLIP-based reverse image search', description: 'Multimodal caption generation and reverse image search via visual-semantic similarity, with FAISS-based retrieval.', stack: 'Python · PyTorch · CLIP · FAISS', href: 'https://github.com/Sukt03/CLIP-reverse-image-search', linkLabel: 'Code ↗' },
-  { title: 'AutoGNN — neural architecture search on GNNs', description: 'Automated NAS over GCN, GAT, GraphSAGE, GIN for node classification on Cora, CiteSeer, PubMed.', stack: 'PyTorch Geometric · scikit-learn', href: 'https://github.com/Sukt03/AutoGNN', linkLabel: 'Code ↗' },
-  { title: 'SHAP-based model interpretability interface', description: 'Interactive dashboard for local and global interpretability in tabular ML models, with report export.', stack: 'Streamlit · SHAP · Pandas', href: 'https://github.com/Sukt03/Explainable-AI-Dashboard', linkLabel: 'Code ↗' },
-]
-
-export const blogs = [
-  { title: 'Causal ML, by hand', date: 'Nov 2026', description: 'An interactive guide to causal inference: comic strips, a cheat sheet with small worked numbers, live simulation labs (confounding, colliders, inverse probability weighting, heterogeneous effects), five numericals and a quiz.', tags: 'Causal inference · Interactive', href: `${import.meta.env.BASE_URL}causal-ml/`, linkLabel: 'Read →' },
+// Blog shelves. Add a post by appending to a shelf's `posts` array.
+export const blogShelves = [
+  {
+    id: 'human-in-the-loop',
+    title: 'Human in the Loop',
+    kicker: 'Machine learning',
+    description: 'Machine learning worked out by a human, slowly: small numbers you can check yourself and simulations you can poke.',
+    posts: [
+      { title: 'Causal ML, by hand', date: 'Nov 2026', description: 'An interactive guide to causal inference: comic strips, a cheat sheet with small worked numbers, live simulation labs (confounding, colliders, inverse probability weighting, heterogeneous effects), five numericals and a quiz.', tags: 'Causal inference · Interactive', href: `${import.meta.env.BASE_URL}causal-ml/`, linkLabel: 'Read →' },
+    ],
+  },
+  {
+    id: 'lore-of-the-experiments',
+    title: 'Lore of the Experiments',
+    kicker: 'My work',
+    description: 'The story behind my papers, told as comics: the question, the dead ends, and what finally worked.',
+    posts: [
+      { title: 'The Robot Who Learned to Read Moods', date: 'IEEE ICETCI 2026', description: 'A six-panel comic about my Best Presentation paper: reading emotions from EEG in people the model has never met, using two disguises, a teacher made of words, and a head map (TAMA).', tags: 'EEG emotion recognition · Comic · ★ Best Presentation', href: `${import.meta.env.BASE_URL}lore/tama/`, linkLabel: 'Read the comic →', extraLinks: [{ label: 'Paper on IEEE Xplore ↗', href: 'https://ieeexplore.ieee.org/document/11710471' }] },
+      { title: 'The Blurry Cat Trial', date: 'IJCAI–ECAI 2026 HBAI', description: 'A six-panel comic about my Best Poster paper: why pixel scorecards judge brain-decoded images unfairly, how a jury of four AI judges does better, and the pocket-sized judge (BCS) that learned from them.', tags: 'EEG-to-image · Comic · ★ Best Poster', href: `${import.meta.env.BASE_URL}lore/bcs/`, linkLabel: 'Read the comic →', extraLinks: [{ label: 'BCS website ↗', href: 'https://sukt03.github.io/BCS/' }] },
+      { title: 'Three Ways to Read a Mind', date: 'IEEE ICETCI 2026', description: 'A six-panel comic about my survey: a map of how generative AI decodes the brain from EEG, fMRI and MEG, the race between sharp and fast signals, the traps that inflate scores, and a five-point checklist for honest reporting.', tags: 'Brain decoding survey · Comic', href: `${import.meta.env.BASE_URL}lore/mind-map/`, linkLabel: 'Read the comic →', extraLinks: [{ label: 'Paper on IEEE Xplore ↗', href: 'https://ieeexplore.ieee.org/document/11710746' }] },
+    ],
+  },
+  {
+    id: 'active-visual-cortex',
+    title: 'Active Visual Cortex',
+    kicker: 'Through my eyes',
+    description: 'Things I notice outside the lab: research life, people, places, and whatever my brain decides to decode.',
+    posts: [],
+  },
 ]
 
 export const contact = {
@@ -111,7 +142,6 @@ export const sectionMeta = {
   research: { number: '01', title: 'Research' },
   publications: { number: '02', title: 'Publications' },
   experience: { number: '03', title: 'Experience' },
-  projects: { number: '04', title: 'Projects', graphLabel: 'Generative AI node graph decoration' },
-  blogs: { number: '05', title: 'Blogs' },
-  contact: { number: '06', title: 'Contact' },
+  blogs: { number: '04', title: 'Blogs' },
+  contact: { number: '05', title: 'Contact' },
 }
