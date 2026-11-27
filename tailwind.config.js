@@ -17,8 +17,8 @@ export default {
         hairline: '#2B2332',
       },
       fontFamily: {
-        display: ['Fraunces', 'serif'],
-        sans: ['IBM Plex Sans', 'sans-serif'],
+        display: ['"Source Serif 4"', 'Georgia', 'serif'],
+        sans: ['"Source Sans 3"', 'system-ui', 'sans-serif'],
         mono: ['IBM Plex Mono', 'monospace'],
       },
     },
