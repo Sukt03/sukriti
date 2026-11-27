@@ -4,15 +4,14 @@ export const site = {
   monogram: 'ST',
   hero: {
     name: 'Sukriti Tiwari',
-    role: 'AI Researcher',
-    focus: 'EEG brain decoding, generative AI & biomedical graph learning',
-    lede: 'Trying to figure out how brains work and whether AI can read them.',
+    role: 'AI Researcher · EEG & Brain Decoding · Generative AI',
+    bio: [
+      'I work on decoding the brain with AI: turning EEG into images, emotions and language, and building graph models for biomedical data.',
+      'My papers won the Best Poster at IJCAI–ECAI 2026 and the Best Presentation at IEEE ICETCI 2026, and I was selected for OpenAI’s academic research programme.',
+    ],
     portraitAlt: 'Portrait of Sukriti Tiwari',
     portraitSrc: `${import.meta.env.BASE_URL}sukriti-portrait.jpg`,
   },
-  // Drop your CV into public/ (e.g. public/sukriti-tiwari-cv.pdf) and set this to
-  // `${import.meta.env.BASE_URL}sukriti-tiwari-cv.pdf` to show the "CV" button.
-  cvHref: null,
   footer: '© 2026 Sukriti Tiwari',
 }
 

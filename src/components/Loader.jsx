@@ -22,9 +22,9 @@ function sampleText(text, width, height) {
   off.width = width; off.height = height
   const ctx = off.getContext('2d')
   let size = Math.min(width * 0.13, 150)
-  ctx.font = `500 ${size}px Fraunces, Georgia, serif`
+  ctx.font = `600 ${size}px "Source Serif 4", Georgia, serif`
   const measured = ctx.measureText(text).width
-  if (measured > width * 0.86) { size *= (width * 0.86) / measured; ctx.font = `500 ${size}px Fraunces, Georgia, serif` }
+  if (measured > width * 0.86) { size *= (width * 0.86) / measured; ctx.font = `600 ${size}px "Source Serif 4", Georgia, serif` }
   ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'
   ctx.fillText(text, width / 2, height / 2)
   const data = ctx.getImageData(0, 0, width, height).data
@@ -120,8 +120,8 @@ export default function Loader({ name, onDone }) {
       raf = requestAnimationFrame(frame)
     }
 
-    // Wait briefly for the display font so the name samples in Fraunces.
-    const fontReady = document.fonts?.load ? document.fonts.load('500 80px Fraunces') : Promise.resolve()
+    // Wait briefly for the display font so the name samples in Source Serif.
+    const fontReady = document.fonts?.load ? document.fonts.load('600 80px "Source Serif 4"') : Promise.resolve()
     Promise.race([fontReady, new Promise((r) => setTimeout(r, 400))]).then(() => run(sampleText(name, w, h)))
 
     const skip = () => finish()
