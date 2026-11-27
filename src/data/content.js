@@ -87,6 +87,7 @@ export const education = [
 export const achievements = [
   { year: '2026', title: 'Best Poster Award · IJCAI–ECAI 2026 HBAI', detail: 'For EEG-to-image evaluation research (Lost in Visual Translation).' },
   { year: '2026', title: 'Best Presentation Award · IEEE ICETCI 2026', detail: 'For multi-view contrastive EEG emotion recognition research.' },
+  { year: '2026', title: 'ChatGPT for Academic Researchers · OpenAI', detail: 'Selected for OpenAI’s academic research programme.' },
   { year: '2023 — 2024', title: 'Student Council, KMIT', detail: 'Head of Organizing Committee and member; led cultural and technical events with 4,000+ attendees.' },
   { year: '2024', title: 'Smart India Hackathon Runner-Up', detail: 'Internal KMIT competition — cyclone-eye detection using deep learning.' },
   { year: '2020', title: 'Vachan Speakers Club', detail: 'Core member and mentor for public speaking, stage presence, and speaker development.' },
